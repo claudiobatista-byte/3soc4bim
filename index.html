@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sociologia · Revisa Goiás · 3ª Série · 4º Bimestre</title>
+<style>
+:root{
+  --navy:#12304a;--navy2:#1c4a6b;--teal:#1f6f78;--teal-bg:#e6f1f1;--teal-dk:#14565d;
+  --gold:#b8842b;--gold-bg:#f8efdc;--gold-dk:#8a6119;
+  --ink:#1d2731;--muted:#5d6a74;--line:#dcd6c8;--paper:#fcfbf7;--stone:#efece4;
+  --serif:Georgia,"Times New Roman",serif;--sans:Inter,"Segoe UI",Arial,sans-serif;
+  --measure:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--stone);color:var(--ink);font:18px/1.7 var(--serif);-webkit-font-smoothing:antialiased}
+a{color:var(--teal)}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:var(--gold);z-index:99}
+
+/* capa */
+.cover{width:100%;background:#082f4d;line-height:0}
+.cover img{display:block;width:100%;height:auto;max-height:100vh;object-fit:cover;object-position:center}
+
+/* navegação */
+.nav{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);display:flex;justify-content:safe center;gap:6px;overflow-x:auto;padding:10px 14px;scrollbar-width:thin}
+.nav a{font:700 13px var(--sans);text-decoration:none;color:var(--navy);padding:8px 13px;border-radius:99px;white-space:nowrap;transition:background .2s,color .2s}
+.nav a:hover{background:var(--gold-bg)}
+.nav a.on{background:var(--navy);color:#fff}
+
+/* capítulos */
+main{padding:0 14px}
+section.chapter{background:var(--paper);margin:28px auto;max-width:var(--measure);box-shadow:0 18px 44px -26px #1d27314d;border-radius:4px;overflow:hidden}
+.ch-head{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;padding:48px 64px 28px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#f4f1e8,var(--paper));text-align:left}
+.ch-num{font:800 82px/1 var(--sans);color:var(--navy);opacity:.14}
+.eyebrow{font:700 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--teal)}
+h2{font-size:38px;line-height:1.12;color:var(--navy);margin:6px 0}
+.deck{color:var(--muted);margin:8px 0 0;font-size:17px}
+.body{padding:36px 64px 52px;text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+
+/* texto corrido — justificado */
+.body p{margin:0 0 .85em;text-align:justify}
+.body p.par{text-indent:1.25cm}
+.body p.noind{text-indent:0}
+.body h3.tsub{font:700 22px/1.25 var(--serif);color:var(--navy);margin:34px 0 12px;text-align:center;text-wrap:balance}
+.body h3.tsub::after{content:"";display:block;width:56px;height:3px;background:var(--gold);margin:12px auto 0;border-radius:2px}
+.body h4.tsub{font:700 19px/1.3 var(--serif);color:var(--teal-dk);margin:26px 0 10px;text-align:left}
+.lead{font-size:19px;color:var(--navy2);font-style:italic;text-align:justify;border-left:4px solid var(--gold);padding:4px 0 4px 18px;margin:0 0 20px}
+.source{font:13.5px/1.55 var(--sans);color:var(--muted);overflow-wrap:anywhere;text-align:left!important;text-indent:0!important;margin:-.2em 0 1.3em!important;padding-top:6px}
+.source.cite{border-top:1px solid var(--line)}
+
+blockquote.cite{margin:18px 0;padding:14px 22px;background:#f4f1e8;border-left:4px solid var(--navy2);font-style:italic;color:#2c3a46}
+blockquote.cite p{margin:0;text-indent:0}
+blockquote.def{background:var(--navy);color:#fff;border-left:6px solid var(--gold);font-size:19px;border-radius:0 8px 8px 0;padding:18px 24px}
+blockquote.def .lab{color:#e3b45a}
+blockquote.def p{color:#fff}
+.attr{display:block;font:13px var(--sans);font-style:normal;color:var(--muted);margin-top:6px;text-align:right}
+
+/* figuras (legendas dos gráficos) */
+figure.fig{margin:22px 0;padding:14px 18px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--teal);border-radius:6px}
+figure.fig img{display:block;width:100%;height:auto;margin:0 0 12px;border-radius:4px}
+figure.fig figcaption{font:14px/1.5 var(--sans);color:var(--ink);text-align:justify}
+figure.fig figcaption b{color:var(--teal-dk);letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;display:block;margin-bottom:3px}
+
+.theme{background:var(--navy);color:#fff;border-left:6px solid var(--gold);padding:16px 22px;margin:0 0 24px;font:700 17px/1.45 var(--sans);text-align:left;border-radius:0 8px 8px 0}
+.theme small{display:block;font:700 11px var(--sans);letter-spacing:.16em;color:#e3b45a;margin-bottom:4px}
+.callout{border-radius:12px;padding:18px 24px;margin:20px 0;border:1px solid #c4dede;background:var(--teal-bg);font-size:16.5px;text-align:justify}
+.callout.gold{background:var(--gold-bg);border-color:#ead8ae}
+.callout p{margin:0 0 .6em;text-indent:0}
+.callout p:last-child{margin-bottom:0}
+.lab{font:800 10.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--teal-dk);display:block;margin-bottom:6px;text-align:left}
+.callout.gold .lab{color:var(--gold-dk)}
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.meta-grid .callout{margin:0}
+.eixos{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.eixos span{font:700 12.5px var(--sans);background:#fff;border:1px solid #c4dede;color:var(--teal-dk);padding:6px 12px;border-radius:99px}
+
+/* atividades */
+.act-title{margin:42px 0 16px;background:var(--gold);color:#fff;padding:11px 20px;border-radius:10px;font:800 12px var(--sans);letter-spacing:.2em;text-align:center}
+.q{background:#fffdf6;border:1px solid #efe5cc;border-left:5px solid var(--gold);border-radius:0 10px 10px 0;padding:20px 24px 18px;margin:18px 0}
+.q-head{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.q-num{font:800 15px var(--sans);background:var(--gold);color:#fff;min-width:34px;height:34px;border-radius:50%;display:grid;place-items:center;margin-top:2px}
+.q .stem p{margin:0 0 .7em;text-indent:0}
+.q .stem p:last-child{margin-bottom:0}
+.q .parts{margin:12px 0 0 48px}
+.q .part{margin:0 0 14px}
+.q .part>p{margin:0 0 .5em;text-indent:0}
+.q .part .pl{font:800 14px var(--sans);color:var(--gold-dk);margin-right:4px}
+.alts{margin:14px 0 6px 48px}
+.alt{display:grid;grid-template-columns:2.1em 1fr;align-items:start;margin:8px 0;text-align:justify}
+.alt .l{font:800 13px var(--sans);color:var(--navy);background:var(--gold-bg);border:1px solid #ead8ae;border-radius:50%;width:26px;height:26px;display:grid;place-items:center;margin-top:3px}
+.q .q-foot{margin:12px 0 0 48px}
+details.answer{margin:12px 0 0;background:#f2f5f7;border:1px solid #d7e0e5;border-radius:8px;padding:10px 16px;font-size:16px;text-align:justify}
+details.answer summary{cursor:pointer;font:700 13px var(--sans);color:var(--navy);text-align:left;letter-spacing:.02em}
+details.answer[open] summary{margin-bottom:8px}
+details.answer p{margin:0 0 .6em;text-indent:0}
+details.answer .gab{font:800 13px var(--sans);color:#fff;background:var(--teal);padding:3px 11px;border-radius:99px;display:inline-block;margin-bottom:8px}
+details.answer b.k{color:var(--navy)}
+.q .parts details.answer,.q>details.answer{margin-left:0}
+.q>details.answer{margin-left:48px}
+.skill{background:var(--teal-bg);border-left:4px solid var(--teal);padding:9px 14px;margin:12px 0 0;font:600 13.5px/1.5 var(--sans);color:var(--teal-dk);text-align:left;border-radius:0 6px 6px 0}
+.skill b{margin-right:4px}
+
+/* materiais */
+ul.mat{list-style:none;margin:16px 0 0;padding:0}
+ul.mat li{background:#fff;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:13px 18px;margin:0 0 12px;font:15px/1.55 var(--sans);text-align:justify}
+ul.mat li b{display:block;font:700 16px var(--serif);color:var(--navy);margin-bottom:2px}
+ul.mat li a{overflow-wrap:anywhere;font-size:13.5px}
+
+/* sumário lateral */
+.toc-tab{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:60;background:var(--navy);color:#fff;border:0;border-radius:12px 0 0 12px;padding:14px 11px;cursor:pointer;font:700 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;writing-mode:vertical-rl}
+.toc-ov{position:fixed;inset:0;background:#0b1a2988;opacity:0;pointer-events:none;transition:.25s;z-index:70}
+.toc-ov.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(400px,92vw);background:var(--navy);color:#e9eef2;z-index:80;transform:translateX(102%);transition:.28s;display:flex;flex-direction:column;font-family:var(--sans)}
+.drawer.open{transform:none}
+.dr-head{display:flex;justify-content:space-between;padding:22px;border-bottom:1px solid #ffffff1f}
+.k{font:700 12px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:#e3b45a}
+.dr-close{background:#ffffff14;border:1px solid #ffffff33;color:#fff;width:36px;height:36px;border-radius:9px;font-size:20px;cursor:pointer}
+.dr-body{overflow:auto;padding:12px}
+.dr-link{display:flex;gap:10px;padding:12px;border-radius:8px;color:#dce6ed;text-decoration:none;font-size:14px;line-height:1.45}
+.dr-link:hover{background:#ffffff18}
+.dr-link b{color:#e3b45a;min-width:22px}
+.footer{max-width:var(--measure);margin:20px auto 50px;padding:20px;text-align:center;color:var(--muted);font:13px/1.5 var(--sans)}
+
+/* atalhos do Texto I */
+.topic-title-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.topic-title-copy{min-width:0;flex:1}
+.topic-tools{display:flex;gap:8px;justify-content:flex-end;align-items:center;flex:0 0 auto;margin:0}
+.topic-tool{width:42px;height:42px;border:0;border-radius:11px;background:var(--navy);color:#f3a51b;text-decoration:none;display:grid;place-items:center;font:700 23px/1 var(--sans);box-shadow:0 8px 16px #12304a22;cursor:pointer;transition:transform .18s,background .18s}
+.topic-tool:hover{transform:translateY(-2px);background:var(--navy2);color:#f3a51b}
+.topic-tool .square-icon{width:14px;height:14px;border:2px solid currentColor;display:block}
+@media(max-width:700px){.topic-title-row{align-items:flex-start}.topic-tools{gap:6px}.topic-tool{width:36px;height:36px;border-radius:9px;font-size:20px}.topic-tool .square-icon{width:12px;height:12px}}
+@media(max-width:700px){
+  body{font-size:17px}
+  .ch-head{padding:34px 22px 20px;grid-template-columns:1fr;gap:6px}
+  .ch-num{font-size:52px}
+  .body{padding:24px 20px 36px}
+  h2{font-size:29px}
+  .meta-grid{grid-template-columns:1fr}
+  .q{padding:16px 16px 14px}
+  .alts,.q .parts,.q .q-foot,.q>details.answer{margin-left:0}
+  .toc-tab{padding:11px 8px}
+  .body p.par{text-indent:.9cm}
+}
+@media(max-width:700px){.cover img{max-height:none;object-fit:contain}}
+@media print{
+  body{background:#fff}
+  .nav,#progress,.toc-tab,.drawer,.toc-ov{display:none!important}
+  .cover{page-break-after:always}.cover img{width:100%;height:auto;max-height:none}
+  section.chapter{box-shadow:none!important;page-break-before:always;margin:0;max-width:none}
+  .body{padding:10mm 12mm}.ch-head{padding:10mm 12mm}
+  .q{page-break-inside:avoid}
+  details.answer>*{display:block!important}
+}
+
+/* box da atividade do Texto I */
+.activity-link-box{margin:28px 0 8px;padding:22px 24px;background:linear-gradient(135deg,#fff4f8,#f9dce8);border:1px solid #edc2d3;border-left:6px solid #c43d78;border-radius:12px;font-family:var(--sans);text-align:left;box-shadow:0 10px 24px -18px #7b2148;}
+.activity-link-box .activity-kicker{display:block;font:800 10.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#9d285d;margin-bottom:5px;}
+.activity-link-box h3{margin:0 0 6px;color:#6f1d46;font:700 22px/1.25 var(--serif);}
+.activity-link-box p{margin:0 0 14px!important;text-indent:0!important;font:15px/1.55 var(--sans);color:#684454;text-align:left!important;}
+.activity-link-box a{display:inline-flex;align-items:center;gap:8px;background:#a82f65;color:#fff;text-decoration:none;font:800 13px var(--sans);padding:10px 17px;border-radius:8px;transition:.2s;}
+.activity-link-box a:hover{background:#7b2148;transform:translateY(-1px);}
+
+</style>
+</head>
+<body>
+
+<div class="cover" id="capa"><img src="img/capa.webp" alt="Capa Revisa Goiás — Sociologia — 3ª Série — 4º Bimestre 2026"></div>
+<div id="progress"></div>
+<button class="toc-tab" id="tocTab" aria-label="Abrir sumário" aria-expanded="false">☰ Sumário</button>
+<div class="toc-ov" id="tocOv"></div>
+
+<aside class="drawer" id="tocDrawer" aria-label="Sumário">
+  <div class="dr-head">
+    <div><div class="k">Revisa Goiás · Sociologia</div><div style="font-weight:700;font-size:20px">Sumário</div></div>
+    <button class="dr-close" id="tocClose" aria-label="Fechar sumário">×</button>
+  </div>
+  <div class="dr-body">
+    <a class="dr-link" href="#matriz"><b>◆</b><span>Matriz e objeto de conhecimento</span></a>
+    <a class="dr-link" href="#discurso-odio"><b>01</b><span>Enfrentamento ao discurso de ódio — ObservaDH</span></a>
+    <a class="dr-link" href="#liberdade-expressao"><b>02</b><span>A liberdade de expressão como um Direito Humano e seus limites democráticos</span></a>
+    <a class="dr-link" href="#sistema-prisional"><b>03</b><span>Brasil caminha para atingir a marca de 1 milhão de pessoas presas em 2027</span></a>
+    <a class="dr-link" href="#violencia-racial"><b>04</b><span>Atlas da Violência 2026 — Violência contra pessoas negras</span></a>
+    <a class="dr-link" href="#refugiados"><b>05</b><span>O direito a ter direitos e a questão dos refugiados</span></a>
+    <a class="dr-link" href="#materiais"><b>◆</b><span>Materiais de apoio ao professor</span></a>
+  </div>
+</aside>
+
+<nav class="nav" id="nav" aria-label="Navegação por seções">
+  <a href="#matriz">Matriz</a>
+  <a href="#discurso-odio">1 · Discurso de ódio</a>
+  <a href="#liberdade-expressao">2 · Liberdade de expressão</a>
+  <a href="#sistema-prisional">3 · Sistema prisional</a>
+  <a href="#violencia-racial">4 · Violência racial</a>
+  <a href="#refugiados">5 · Refugiados</a>
+  <a href="#materiais">Materiais</a>
+</nav>
+
+<main>
+
+<!-- ============ MATRIZ ============ -->
+<section class="chapter" id="matriz">
+  <div class="ch-head">
+    <div class="ch-num">S</div>
+    <div>
+      <div class="eyebrow">Sociologia · 3ª Série</div>
+      <h2>Direitos Humanos em diferentes contextos</h2>
+      <p class="deck">4º Bimestre · Ciências Humanas e Sociais Aplicadas<br>Profª. Marta Valeriano · CEPMG – Mansões Paraíso – Aparecida de Goiânia</p>
+    </div>
+  </div>
+  <div class="body">
+    <div class="theme"><small>OBJETO DE CONHECIMENTO</small>Violação dos direitos humanos em diferentes contextos</div>
+
+    <div class="callout">
+      <span class="lab">Matriz de Habilidades Essenciais DC-GOEM</span>
+      <p><b>(GO-EMCH605D)</b> Avaliar como o conjunto de valores dos Direitos Humanos (direito à vida e à liberdade, à liberdade de opinião e de expressão, o direito ao trabalho e à educação, entre outros) se manifestam concretamente para o indivíduo, através do estudo do cotidiano, de documentários sobre violação de direitos fundamentais em guerras e da filosofia humanista sobre os valores éticos universais, para perceber que a defesa de tais direitos faz parte indispensável de uma sociedade justa e inclusiva.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ TEXTO I ============ -->
+<section class="chapter" id="discurso-odio">
+  <div class="ch-head">
+    <div class="ch-num">01</div>
+    <div class="topic-title-row">
+      <div class="topic-title-copy">
+        <div class="eyebrow">Sociologia · Texto I</div>
+        <h2>Enfrentamento ao discurso de ódio — ObservaDH</h2>
+        <p class="deck">Direitos Humanos · leitura e análise</p>
+      </div>
+      <div class="topic-tools" aria-label="Materiais do tópico 1">
+        <a class="topic-tool" href="img/info1.webp" target="_blank" rel="noopener" title="Abrir infográfico em nova aba" aria-label="Abrir infográfico em nova aba">↗</a>
+        <a class="topic-tool" href="https://drive.google.com/file/d/1V3KOoirt4AOZoAbOGbaO2n3zKQwqW6SS/view?usp=sharing" target="_blank" rel="noopener" title="Abrir material em nova aba" aria-label="Abrir material em nova aba"><span class="square-icon" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </div>
+  <div class="body">
+    <blockquote class="cite def">
+      <span class="lab">O que é discurso de ódio?</span>
+      <p>“Toda forma de expressão que incita, promove ou justifica o ódio, a discriminação ou a violência contra um indivíduo ou um grupo, em razão de sua origem, etnia, raça, cor, religião, gênero, orientação sexual, identidade de gênero, idade, deficiência, condição social ou política”.</p>
+    </blockquote>
+    <p class="source">Fonte: Relatório de recomendações para o enfrentamento ao discurso de ódio e ao extremismo no Brasil, do MDHC (adaptado).</p>
+
+    <p class="par">O discurso de ódio, entendido como uma forma de ataque verbal ou simbólico contra pessoas ou grupos em razão de sua identidade, sexo, origem, orientação sexual, raça ou cor, religião, gênero, entre outras características, é um fenômeno que vem ganhando destaque e preocupação na sociedade brasileira, especialmente nas redes sociais, onde se multiplicam casos de ofensas, ameaças, humilhações e incitações à violência contra determinados segmentos sociais.</p>
+
+    <h3 class="tsub">Violência on-line no Brasil</h3>
+
+    <h4 class="tsub">Acesso à internet no Brasil</h4>
+    <p class="par">A internet é um importante meio de inclusão social, cultural e política, que permite aos brasileiros exercer seus direitos de cidadania, expressar suas opiniões, informar-se sobre os acontecimentos do país e do mundo, divertir-se e se relacionar com outras pessoas. No entanto, a internet também é um espaço de conflito, tensão e violência, onde se manifestam diversas formas de discriminação, preconceito e intolerância, sendo um dos principais ambientes de propagação do discurso de ódio no Brasil. O aumento da incidência desses crimes no ambiente virtual está relacionado com a expansão do acesso à internet no país.</p>
+    <p class="par">Segundo dados da Pesquisa Nacional por Amostra de Domicílios Contínua (Pnad Contínua), do Instituto Brasileiro de Geografia e Estatística (IBGE), o número de pessoas de 10 anos ou mais de idade que utilizaram a internet nos três meses anteriores à pesquisa aumentou de 116 milhões em 2016 para 161,6 milhões em 2022, o que significa que a proporção passou de 66,1% para 87,2% dos brasileiros nesse período.</p>
+
+    <h4 class="tsub">Quem são as vítimas?</h4>
+    <p class="par">A violência na internet é um problema grave que afeta milhares de pessoas no Brasil. Segundo a Pesquisa Nacional de Saúde (PNS) de 2019, realizada pelo IBGE em parceria com o Ministério da Saúde, 1.623.333 pessoas de 18 anos ou mais de idade relataram ter sofrido algum tipo de agressão on-line nos últimos doze meses. O estado que registrou o maior número de agressões on-line, segundo a pesquisa, foi São Paulo, com 400.294 agressões, seguido de Minas Gerais (147.327) e Rio de Janeiro (145.267).</p>
+    <p class="par">A agressão on-line foi definida como o uso de redes sociais ou celular para ameaçar, ofender, xingar ou expor imagens sem o consentimento da vítima. As principais vítimas dessas agressões foram as mulheres, com quase 53% dos relatos de ameaça, ofensa, xingamentos ou exposição de imagens sem o consentimento das pessoas com 18 anos ou mais.</p>
+    <p class="par">Os dados indicam que as pessoas jovens de 18 a 29 anos foram as que receberam o maior número de agressões on-line (31,6%), e esses números diminuem quanto maior a idade. Isso pode indicar que as pessoas mais jovens estão mais expostas e vulneráveis à violência on-line, seja por usarem mais as redes sociais ou o celular, seja por serem mais visadas pelos agressores.</p>
+
+    <figure class="fig"><img src="img/grafico1.webp" alt="Gráfico 1 — agressões on-line por UF, Brasil, 2019" loading="lazy"><figcaption><b>Gráfico 1</b>Quantidade de pessoas com 18 anos ou mais que relataram ter sido ameaçadas, ofendidas, xingadas ou ter expostas suas imagens sem o seu consentimento, por UF. Brasil, 2019.</figcaption></figure>
+    <figure class="fig"><img src="img/grafico2.webp" alt="Gráfico 2 — agressões on-line por faixa etária, Brasil, 2019" loading="lazy"><figcaption><b>Gráfico 2</b>Percentual dos relatos de ameaça, ofensa, xingamentos ou exposição de imagens sem o consentimento das pessoas com 18 anos ou mais, por faixa etária. Brasil, 2019.</figcaption></figure>
+    <p class="source">Fonte: Elaboração CGIE/MDHC, a partir de dados da PNS.</p>
+
+    <h4 class="tsub">Crimes de ódio na internet</h4>
+    <p class="par">A internet é um espaço de comunicação, informação, entretenimento e participação social, mas também pode ser um ambiente de violação de direitos humanos, especialmente quando se trata de crimes de ódio.</p>
+    <p class="par">Os crimes de ódio são aqueles motivados por preconceito ou intolerância contra grupos ou indivíduos por sua identidade ou orientação sexual, gênero, raça, etnia, nacionalidade ou religião. Esses crimes podem assumir diversas formas na internet, como ofensas, ameaças, injúrias, difamações, incitações à violência, apologias ao crime, divulgação de imagens ou vídeos humilhantes, entre outras.</p>
+    <p class="par">Entre 2017 e 2022, a Central Nacional de Denúncias de Crimes Cibernéticos, da SaferNet, recebeu um total de 293.289 denúncias desse tipo de crime. O ano de 2022 foi o que registrou o maior número de casos nesta série.</p>
+
+    <figure class="fig"><img src="img/grafico3.webp" alt="Gráfico 3 — crimes de ódio mais denunciados, Brasil, 2017-2022" loading="lazy"><figcaption><b>Gráfico 3</b>Tipos de crimes de ódio mais denunciados na Central Nacional de Denúncias de Crimes Cibernéticos, da SaferNet. Brasil, 2017-2022.</figcaption></figure>
+
+    <p class="par">Além disso, a misoginia foi também o tipo de crime de ódio que mais cresceu entre 2017 e 2022, passando de 961 denúncias em 2017 para 28.679 em 2022, um aumento de quase 30 vezes.</p>
+
+    <figure class="fig"><img src="img/grafico4.webp" alt="Gráfico 4 — denúncias de misoginia, Brasil, 2017-2022" loading="lazy"><figcaption><b>Gráfico 4</b>Crimes de misoginia denunciados na Central Nacional de Denúncias de Crimes Cibernéticos, da SaferNet. Brasil, 2017-2022.</figcaption></figure>
+
+    <h4 class="tsub">Relatório de recomendações para o enfrentamento ao discurso de ódio e ao extremismo no Brasil</h4>
+    <p class="par">O Ministério dos Direitos Humanos e da Cidadania criou, em 2023, um grupo de trabalho para apresentação de estratégias de combate ao discurso de ódio e ao extremismo, e para a proposição de políticas públicas em direitos humanos sobre o tema. Esse grupo contou com a participação de especialistas em direitos humanos, comunicação, educação, segurança pública e justiça. O grupo elaborou um relatório com o objetivo de apresentar um diagnóstico da situação atual do discurso de ódio no país e propor medidas para prevenir, combater e reparar os danos causados por esse fenômeno.</p>
+    <p class="par">O Relatório propõe uma série de recomendações para enfrentar o discurso de ódio no Brasil, divididas em quatro eixos: educação, comunicação, segurança pública e justiça. As recomendações incluem, entre outras, a promoção de uma cultura de paz, respeito e diversidade nas escolas e na sociedade; o fortalecimento da mídia pública, comunitária e independente; a capacitação dos agentes de segurança e de justiça para lidar com casos de discurso de ódio; e a criação de mecanismos de monitoramento, denúncia e responsabilização dos autores e das plataformas digitais que veiculam o discurso de ódio.</p>
+    <p class="source cite">Texto extraído do ObservaDH. Adaptado.<br>Disponível em: <a href="https://observadh.mdh.gov.br/" target="_blank" rel="noopener">https://observadh.mdh.gov.br/</a>. Acesso em: 10 set. 2026.</p>
+
+    <!-- Atividade do Texto I -->
+    <div class="activity-link-box" id="atividade-texto1">
+      <span class="activity-kicker">Atividade · Texto I</span>
+      <h3>Enfrentamento ao discurso de ódio</h3>
+      <p>Atividade interativa com leitura, interpretação de dados e questões sobre violência on-line e Direitos Humanos.</p>
+      <a href="atv/atv1.html" target="_blank" rel="noopener">✎ Fazer atividade</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ TEXTO II ============ -->
+<section class="chapter" id="liberdade-expressao">
+  <div class="ch-head">
+    <div class="ch-num">02</div>
+    <div>
+      <div class="eyebrow">Sociologia · Texto II</div>
+      <h2>A liberdade de expressão como um Direito Humano e seus limites democráticos</h2>
+      <p class="deck">Direitos Humanos · leitura, análise e atividades</p>
+    </div>
+  </div>
+  <div class="body">
+    <p class="par">A liberdade de opinião e de expressão constitui um dos pilares da democracia contemporânea e está resguardada pelos principais tratados internacionais de direitos humanos. Ela assegura que cidadãos possam manifestar suas ideias, criticar governantes, questionar visões de mundo e produzir arte e conhecimento sem medo de censura ou perseguição.</p>
+    <p class="par">Contudo, no debate sociológico e jurídico, estabelece-se que nenhum direito fundamental é absoluto. A liberdade de expressão encontra seu limite ético e legal no momento em que é instrumentalizada para violar os direitos e a dignidade de terceiros. Em sociedades democráticas, a incitação à violência, o discurso de ódio, a calúnia e a disseminação intencional de desinformação não são protegidos pelo direito de expressão, pois atentam contra a integridade de grupos vulneráveis e desestabilizam as garantias coletivas. Exercer a liberdade de expressão exige responsabilidade ética no espaço público.</p>
+    <p class="source cite">Texto extraído do ObservaDH. Adaptado.<br>Disponível em: <a href="https://observadh.mdh.gov.br/" target="_blank" rel="noopener">https://observadh.mdh.gov.br/</a>. Acesso em: 10 set. 2026.</p>
+
+    <div class="callout">
+      <span class="lab">Saiba mais</span>
+      <p>Acesse o <i>Relatório de recomendações para o enfrentamento ao discurso de ódio e ao extremismo no Brasil</i>:<br>
+      <a href="https://www.gov.br/mdh/pt-br/assuntos/noticias/2023/julho/mdhc-entrega-relatorio-com-propostas-para-enfrentar-o-discurso-de-odio-e-o-extremismo-no-brasil/RelatrioGTdioeExtremismosDigital_30.06.23.pdf" target="_blank" rel="noopener" style="overflow-wrap:anywhere;font:13.5px var(--sans)">gov.br/mdh/…/RelatrioGTdioeExtremismosDigital_30.06.23.pdf</a></p>
+    </div>
+
+    <div class="act-title">ATIVIDADES</div>
+
+    <!-- Q1 -->
+    <article class="q" id="q1">
+      <div class="q-head"><span class="q-num">1</span>
+        <div class="stem"><p>Com base na leitura do Texto I, analise o perfil das principais vítimas de agressões on-line no Brasil (quanto a gênero e faixa etária) e explique de que forma o crescimento da misoginia no ambiente digital dialoga com a tese central do Texto II referente aos limites éticos e jurídicos da liberdade de expressão.</p></div>
+      </div>
+      <details class="answer"><summary>Sugestão e expectativa de resposta</summary>
+        <p><b class="k">Perfil das vítimas:</b> o estudante deve indicar que as mulheres são as principais vítimas (quase 53% dos relatos de agressão/exposição) e que jovens de 18 a 29 anos representam a faixa etária mais atingida (31,6%).</p>
+        <p><b class="k">Articulação com o Texto II:</b> espera-se que o aluno articule como o aumento expressivo da misoginia (alta de quase 30 vezes nas denúncias) evidencia o uso distorcido do espaço público e das redes. O aluno deve explicar que esses ataques verbais e simbólicos não constituem exercício legítimo da liberdade de opinião, mas sim uma violação da dignidade humana de um grupo historicamente vulnerabilizado, justificando a imposição de limites éticos e jurídicos previstos no Texto II.</p>
+      </details>
+      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
+    </article>
+
+    <!-- Q2 -->
+    <article class="q" id="q2">
+      <div class="q-head"><span class="q-num">2</span>
+        <div class="stem"><p>A liberdade de expressão é uma das garantias fundamentais das sociedades democráticas, garantindo o direito à opinião e à crítica. No entanto, esse direito não é absoluto e encontra limites éticos e jurídicos legítimos quando:</p></div>
+      </div>
+      <div class="alts">
+        <div class="alt"><span class="l">A</span><span>é instrumentalizado para disseminar desinformação, incitar o ódio e promover a discriminação contra grupos vulneráveis.</span></div>
+        <div class="alt"><span class="l">B</span><span>questiona tradições ou práticas culturais historicamente consolidadas de uma comunidade.</span></div>
+        <div class="alt"><span class="l">C</span><span>é utilizado por cidadãos e movimentos sociais para criticar autoridades governamentais.</span></div>
+        <div class="alt"><span class="l">D</span><span>manifesta opiniões divergentes ou minoritárias em relação ao pensamento da maioria.</span></div>
+        <div class="alt"><span class="l">E</span><span>é exercido publicamente em plataformas digitais por jovens e estudantes.</span></div>
+      </div>
+      <details class="answer"><summary>Gabarito e comentário</summary>
+        <span class="gab">Gabarito: A</span>
+        <p><b class="k">Comentário sobre o item:</b> a liberdade de expressão, embora seja um direito fundamental em uma sociedade democrática, não possui caráter absoluto. Seu exercício encontra limites quando é utilizado para disseminar desinformação, incitar o ódio ou promover práticas discriminatórias que possam violar direitos fundamentais de outras pessoas ou grupos.</p>
+      </details>
+      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
+    </article>
+
+    <!-- Q3 -->
+    <article class="q" id="q3">
+      <div class="q-head"><span class="q-num">3</span>
+        <div class="stem">
+          <p><b>Texto I (excerto)</b></p>
+          <blockquote class="cite"><p>“A internet é um importante meio de inclusão social, cultural e política [...]. No entanto, a internet também é um espaço de conflito, tensão e violência, onde se manifestam diversas formas de discriminação, preconceito e intolerância [...]. O aumento da incidência desses crimes no ambiente virtual está relacionado com a expansão do acesso à internet no país.”</p></blockquote>
+          <p>Ao analisar o processo de expansão do acesso à internet no Brasil e os seus desdobramentos sociais descritos no Texto I, percebe-se que a consolidação da cultura digital no país:</p>
+        </div>
+      </div>
+      <div class="alts">
+        <div class="alt"><span class="l">A</span><span>eliminou as assimetrias e os preconceitos preexistentes ao democratizar o acesso à informação.</span></div>
+        <div class="alt"><span class="l">B</span><span>transformou a rede em um ambiente neutro, isento das contradições e tensões da sociedade off-line.</span></div>
+        <div class="alt"><span class="l">C</span><span>atinge de maneira homogênea todas as faixas etárias e perfis demográficos, sem distinção de vulnerabilidade.</span></div>
+        <div class="alt"><span class="l">D</span><span>revelou uma contradição entre a democratização do acesso e a intensificação de práticas de exclusão e violência.</span></div>
+        <div class="alt"><span class="l">E</span><span>reduziu a necessidade de intervenção do Estado na regulação de crimes contra grupos vulneráveis.</span></div>
+      </div>
+      <details class="answer"><summary>Gabarito e comentário</summary>
+        <span class="gab">Gabarito: D</span>
+        <p><b class="k">Comentário sobre o item:</b> o texto evidencia uma contradição presente na consolidação da cultura digital: ao mesmo tempo em que a expansão do acesso à internet amplia as possibilidades de inclusão social, cultural e política, também pode favorecer a reprodução e a intensificação de preconceitos, discriminações, intolerância e violência já existentes na sociedade.</p>
+      </details>
+      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ TEXTO III ============ -->
+<section class="chapter" id="sistema-prisional">
+  <div class="ch-head">
+    <div class="ch-num">03</div>
+    <div>
+      <div class="eyebrow">Sociologia · Texto III</div>
+      <h2>Brasil caminha para atingir a marca de 1 milhão de pessoas presas em 2027</h2>
+      <p class="deck">Direitos Humanos · leitura, análise e atividades</p>
+    </div>
+  </div>
+  <div class="body">
+    <p class="lead">População carcerária cresceu em ritmo médio de 3,54% por ano na última década, apontam dados do Anuário de Segurança Pública. Aumento agrava superlotação nos presídios do país.</p>
+    <p class="source">Disponível em: <a href="https://abre.ai/sVzU" target="_blank" rel="noopener">https://abre.ai/sVzU</a>. Acesso em: 14 set. 2026.</p>
+
+    <p class="par">O Brasil pode atingir a marca de 1 milhão de pessoas presas em 2027, caso se mantenha o ritmo de crescimento da população carcerária visto nos últimos anos, conforme os dados do Anuário Brasileiro de Segurança Pública, produzido pelo Fórum Brasileiro de Segurança Pública (FBSP).</p>
+    <p class="par">Em 2025, a população prisional chegou a 964.668 pessoas, somados os presos em penitenciárias e em delegacias. O número aumentou 6% em relação ao ano anterior. Na última década, houve um aumento médio de 3,3% por ano.</p>
+    <p class="par">A população carcerária brasileira é uma das maiores do mundo em números absolutos. Apenas Estados Unidos, com 1,76 milhão de presos, e China, com 1,69 milhão, têm mais presidiários, segundo o World Prison Brief, levantamento mundial do Institute for Crime and Justice Research e da Birkbeck University de Londres.</p>
+
+    <h4 class="tsub">96% homens, 48% pardos, 30% sem julgamento: o perfil dos presos no Brasil</h4>
+    <p class="par">Cerca de 48% da população carcerária é composta por pardos e cerca de 15,6% são pretos, enquanto brancos compõem 28%. Amarelos são menos de 1% e indígenas são 0,1%. Para o restante — cerca de 44 mil pessoas —, o sistema não tem informações sobre a raça.</p>
+    <p class="par">Somados, pretos e pardos respondem por 63% das pessoas encarceradas, enquanto compõem 55,5% da população. Essa discrepância, segundo os pesquisadores, expõe o racismo estrutural do país, ou seja, uma discriminação histórica que dificultaria a ascensão social de negros.</p>
+    <blockquote class="cite"><p>“Os números são um retrato de um sistema que atinge desproporcionalmente homens jovens e negros e cuja raiz é histórica”, diz Sampaio.</p></blockquote>
+    <blockquote class="cite"><p>“Temos que lembrar da ausência de políticas públicas para integração da sociedade dos negros depois da escravidão. A legislação penal foi e é usada no Brasil, desde os primeiros códigos penais, para criminalizar a população negra.”</p></blockquote>
+    <p class="par">Existe uma seletividade penal na Justiça brasileira, afirma Sampaio, que faz com que crimes cometidos por pessoas brancas sejam menos punidos.</p>
+    <blockquote class="cite"><p>“Crimes contra a Previdência, corrupção e fraudes no pagamento do fundo de garantia — cuja proporção em termos pecuniários é maior do que um furto — não recebem o mesmo tratamento do Estado”, afirma Sampaio.</p></blockquote>
+    <p class="par">Segundo Hugo Almeida, essa seletividade na criminalização — ou seja, essa escolha do que o Estado decide punir com mais rigor e de onde decide aplicar a lei — também se reflete em outro dado: a grande maioria dos presos tem baixa escolaridade. Cerca de 44% dos presos não completaram o ensino fundamental e outros 6% sequer chegaram a ter qualquer nível de educação formal.</p>
+    <p class="source cite">Disponível em: <a href="https://abre.ai/sVz4" target="_blank" rel="noopener">https://abre.ai/sVz4</a>. Acesso em: 14 set. 2026.<br>Disponível em: <a href="https://abre.ai/sVzZ" target="_blank" rel="noopener">https://abre.ai/sVzZ</a>. Acesso em: 14 set. 2026.</p>
+
+    <h4 class="tsub">Presos sem julgamento</h4>
+    <p class="par">Um dado importante é que boa parte dessas pessoas sequer chegou a ser condenada: quase 30% das pessoas encarceradas no Brasil estão em prisão provisória — são 183 mil aguardando julgamento.</p>
+    <blockquote class="cite"><p>“Isso é uma violação muito grave de direitos”, afirma Gabriel Sampaio, ex-membro do Conselho Nacional de Política Criminal e Penitenciária.</p></blockquote>
+    <p class="par">Pela legislação, as prisões preventivas deveriam acontecer apenas em último caso e deveriam ser avaliadas no máximo a cada três meses, para evitar que pessoas inocentes fiquem presas desnecessariamente. Mas, na prática, isso não acontece.</p>
+    <blockquote class="cite"><p>“Se a pessoa é condenada, esse tempo é retirado da pena dela. Mas se a pessoa é absolvida, ninguém devolve esses meses — e às vezes anos — que ela passou encarcerada sendo inocente”, diz Sampaio, que também é diretor de litigância e incidência da Conectas, entidade de defesa de direitos humanos.</p></blockquote>
+    <p class="source cite">Disponível em: <a href="https://abre.ai/sVz4" target="_blank" rel="noopener">https://abre.ai/sVz4</a>. Acesso em: 14 set. 2026.</p>
+
+    <h4 class="tsub">Mortes no sistema prisional sobem 241% em 10 anos</h4>
+    <p class="par">O estudo também aponta um crescimento expressivo das mortes registradas dentro do sistema prisional. Entre 2016 e 2025, 23.942 pessoas morreram em unidades prisionais brasileiras, considerando todas as causas, um aumento de 241%. Somente em 2025, foram registradas 3.318 mortes, o maior número de toda a série histórica.</p>
+    <p class="par">Mortes por problemas de saúde e causas naturais são as mais recorrentes, o que, segundo o relatório, indica falhas no acesso à atenção básica, à prevenção de doenças e ao atendimento ambulatorial e hospitalar. O relatório também destaca o crescimento das mortes registradas por causas desconhecidas, com alta de 1.422% entre 2016 e 2025, indicando fragilidades na investigação e na identificação das circunstâncias desses óbitos.</p>
+
+    <h4 class="tsub">Trabalho e educação</h4>
+    <p class="par">O fornecimento de educação e a possibilidade de trabalhar na prisão são previstos pela legislação brasileira. Mas somente 18% dos presos hoje têm acesso à educação e somente 23,9% têm acesso ao trabalho, de acordo com dados do Ministério da Justiça.</p>
+    <p class="par">A ampliação de vagas de estudo e trabalho para os presos é apontada há anos como uma necessidade urgente pelo Conselho Nacional de Justiça (CNJ), órgão responsável por fiscalizar o Judiciário. Em 2020, o CNJ assinou uma cooperação com o Ministério Público do Trabalho e com a Confederação Nacional dos Municípios para dar início ao plano de geração de trabalho para pessoas privadas de liberdade e egressas do sistema prisional. Desde então, a porcentagem de presos que trabalham subiu de 13% para 23,9%, mas ainda está muito longe do ideal, diz Gabriel Sampaio.</p>
+    <blockquote class="cite"><p>“Eles são essenciais para a reabilitação de quem cometeu um delito e sua reintegração na sociedade, mas, acima disso, são direitos dos presos”, afirma Sampaio.</p></blockquote>
+
+    <p class="source cite"><b>Referências:</b><br>
+    G1. Reportagem de Nayara Felizardo, G1 – São Paulo. Data: 28/07/2026.<br>
+    Disponível em: <a href="https://g1.globo.com/politica/noticia/2026/07/28/brasil-projecao-pessoas-presas-2027.ghtml" target="_blank" rel="noopener">https://g1.globo.com/politica/noticia/2026/07/28/brasil-projecao-pessoas-presas-2027.ghtml</a><br>
+    BBC. Reportagem de Letícia Morin Role, BBC News Brasil em São Paulo. Data: 17/10/2024.<br>
+    Disponível em: <a href="https://www.bbc.com/portuguese/articles/c0k4nmd3e2xo" target="_blank" rel="noopener">https://www.bbc.com/portuguese/articles/c0k4nmd3e2xo</a></p>
+
+    <div class="act-title">ATIVIDADES</div>
+
+    <!-- Q4 -->
+    <article class="q" id="q4">
+      <div class="q-head"><span class="q-num">4</span>
+        <div class="stem">
+          <p>O Texto III aponta que quase 30% das pessoas encarceradas no Brasil estão em prisão provisória (aguardando julgamento) e que apenas 18% e 23,9% dos presos têm acesso à educação e ao trabalho, respectivamente.</p>
+          <p>A partir da leitura do texto,</p>
+        </div>
+      </div>
+      <div class="parts">
+        <div class="part"><p><span class="pl">a)</span> explique por que a alta taxa de prisões provisórias, aliada ao baixo acesso ao trabalho e à educação, representa uma contradição com o objetivo de ressocialização do sistema carcerário.</p>
+          <details class="answer"><summary>Sugestão e expectativa de resposta</summary>
+            <p>Espera-se que o estudante responda que a função formal da pena, no Estado Democrático de Direito, deve ser a ressocialização do indivíduo. A manutenção prolongada de prisões provisórias (em violação da presunção de inocência), somada à negação dos direitos à educação e ao trabalho, reduz o presídio a um espaço meramente punitivo, a um depósito de pessoas, desrespeitando o princípio da dignidade humana e negando os direitos básicos de cidadania previstos na Lei de Execução Penal.</p>
+          </details>
+        </div>
+        <div class="part"><p><span class="pl">b)</span> identifique como a privação desses direitos fundamentais dentro dos presídios retroalimenta o ciclo da violência e da reincidência criminal.</p>
+          <details class="answer"><summary>Sugestão e expectativa de resposta</summary>
+            <p>Espera-se que o estudante entenda que, sem acesso ao estudo e ao trabalho qualificado durante o cumprimento da pena, a pessoa egressa do sistema prisional enfrenta barreiras ainda maiores de estigmatização no mercado de trabalho formal ao sair, o que, somado à falta de suporte social, aumenta a vulnerabilidade e a probabilidade de reincidência criminal.</p>
+          </details>
+        </div>
+      </div>
+      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
+    </article>
+
+    <!-- Q5 -->
+    <article class="q" id="q5">
+      <div class="q-head"><span class="q-num">5</span>
+        <div class="stem">
+          <p>Ao analisar a formação do sistema penal brasileiro, o pesquisador citado no texto afirma: “A legislação penal foi e é usada no Brasil, desde os primeiros códigos penais, para criminalizar a população negra.”</p>
+          <p>Com base no conceito de Racismo Estrutural,</p>
+        </div>
+      </div>
+      <div class="parts">
+        <div class="part"><p><span class="pl">a)</span> analise a relação entre o processo histórico pós-abolição no Brasil e a construção do perfil demográfico atual do sistema carcerário (composto, em sua maioria, por homens jovens, negros e de baixa escolaridade).</p>
+          <details class="answer"><summary>Sugestão e expectativa de resposta</summary>
+            <p>O estudante deve articular que a abolição desassistida, em 1888, empurrou a população recém-liberta para as periferias e para a informalidade. Historicamente, dispositivos legais (como as leis contra a vadiagem e a capoeiragem no Código Penal de 1890) foram formulados para manter o controle social sobre corpos negros. Essa herança se reflete hoje no perfil prisional (63% negros, 44% sem ensino fundamental completo), demonstrando como as instituições perpetuam a desigualdade de raça e classe.</p>
+          </details>
+        </div>
+        <div class="part"><p><span class="pl">b)</span> proponha uma medida no âmbito das políticas públicas (nos eixos de educação, trabalho ou justiça) que contribua para mitigar essa disparidade racial no sistema de punição.</p>
+          <details class="answer"><summary>Sugestão e expectativa de resposta</summary>
+            <p>O aluno deve sugerir ações concretas, tais como:</p>
+            <p><b class="k">Eixo Justiça:</b> aplicação rigorosa das audiências de custódia e de alternativas penais para crimes sem violência, reduzindo a prisão provisória desproporcional de jovens negros.</p>
+            <p><b class="k">Eixo Educação/Trabalho:</b> expansão de cotas, cursos profissionalizantes e EJA dentro do sistema prisional e programas de incentivo fiscal para empresas que contratem egressos do sistema carcerário.</p>
+          </details>
+        </div>
+      </div>
+      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
+    </article>
+
+    <!-- Q6 -->
+    <article class="q" id="q6">
+      <div class="q-head"><span class="q-num">6</span>
+        <div class="stem">
+          <blockquote class="cite"><p>“Crimes contra a Previdência, corrupção e fraudes no fundo de garantia [...] não recebem o mesmo tratamento do Estado. Essa seletividade na criminalização reflete no fato de que a grande maioria dos presos tem baixa escolaridade.”</p><span class="attr">Anuário Brasileiro de Segurança Pública</span></blockquote>
+          <blockquote class="cite"><p>“Todos são iguais perante a lei e têm direito, sem qualquer distinção, a igual proteção da lei.”</p><span class="attr">Declaração Universal dos Direitos Humanos, Art. 7º</span></blockquote>
+          <p>O confronto entre a seletividade penal no Brasil e o Artigo 7º da Declaração Universal dos Direitos Humanos evidencia uma contradição, pois a atuação do Estado</p>
+        </div>
+      </div>
+      <div class="alts">
+        <div class="alt"><span class="l">A</span><span>cumpre a igualdade formal ao punir com o mesmo rigor furtos e fraudes corporativas.</span></div>
+        <div class="alt"><span class="l">B</span><span>garante a neutralidade do Judiciário ao focar no dano financeiro causado pelos crimes.</span></div>
+        <div class="alt"><span class="l">C</span><span>respeita a isonomia ao aplicar penas mais leves a infrações de grande impacto financeiro.</span></div>
+        <div class="alt"><span class="l">D</span><span>viabiliza os direitos humanos ao concentrar a segurança em áreas de alta vulnerabilidade.</span></div>
+        <div class="alt"><span class="l">E</span><span>viola a universalidade dos direitos humanos ao punir com base em critérios de classe e raça.</span></div>
+      </div>
+      <details class="answer"><summary>Gabarito e comentário</summary>
+        <span class="gab">Gabarito: E</span>
+        <p><b class="k">Comentário sobre o item:</b> o confronto entre os textos evidencia uma tensão entre o princípio da igualdade perante a lei, previsto no Artigo 7º da Declaração Universal dos Direitos Humanos, e a seletividade penal apontada no contexto brasileiro. Quando a atuação do sistema de justiça criminal é influenciada por fatores relacionados à classe social e à raça, produz-se um tratamento desigual entre diferentes grupos, contrariando a ideia de proteção universal dos direitos.</p>
+      </details>
+      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ TEXTO IV ============ -->
+<section class="chapter" id="violencia-racial">
+  <div class="ch-head">
+    <div class="ch-num">04</div>
+    <div>
+      <div class="eyebrow">Sociologia · Texto IV</div>
+      <h2>Atlas da Violência 2026 — Violência contra pessoas negras</h2>
+      <p class="deck">Direitos Humanos · leitura, análise e atividades</p>
+    </div>
+  </div>
+  <div class="body">
+    <p class="par">A análise da criminalidade no Brasil exige a compreensão das desigualdades estruturais que perpassam a sociedade, visto que a violência letal no país carrega um forte e persistente componente racial. Dados do Atlas da Violência 2026, referentes ao período de 2014 a 2024, evidenciam que os homicídios atingem a população negra de forma profundamente desproporcional. Apenas no ano de 2024, registraram-se 32.820 homicídios de pessoas negras, o que corresponde a 77% do total de assassinatos no país. Esse número equivale a uma taxa de 27,3 mortes para cada grupo de 100 mil habitantes negros, ou cerca de 89,9 pessoas negras mortas diariamente.</p>
+    <p class="par">Em contrapartida, no mesmo ano, registraram-se 9.234 homicídios de pessoas não negras (categoria que reúne brancos, amarelos e indígenas), resultando em uma taxa de 10,1 mortes por 100 mil habitantes. Na prática, a taxa de mortalidade por homicídio entre negros no Brasil é 170,3% superior à registrada entre não negros.</p>
+    <p class="source">Disponível em: <a href="https://abre.ai/sVHY" target="_blank" rel="noopener">https://abre.ai/sVHY</a>. Acesso em: 14 set. 2026.</p>
+
+    <p class="par">Os dados trazem um paradoxo incontornável: embora se observe uma tendência de redução das mortes por homicídio no Brasil — o que, em princípio, representa um avanço na proteção do direito à vida —, persiste de forma consistente um padrão de desigualdade racial no qual ser negro implica maior exposição ao risco de violência letal. Esse descompasso inviabiliza qualquer celebração plena dos avanços observados, pois revela que a diminuição da violência não se traduz em proteção equitativa. Em outras palavras, seguimos convivendo com um cenário em que a vida, na prática, permanece hierarquizada.</p>
+    <p class="par">É fundamental não perder de vista que, por trás desses números, estão trajetórias de vida interrompidas de forma prematura, atravessadas por dinâmicas históricas de subordinação racial. O direito à vida não se restringe à preservação da integridade física; ele pressupõe condições materiais e simbólicas de existência digna, o que inclui a não discriminação e a proteção igualitária por parte do Estado. Ao analisarmos os dados de violência contra pessoas negras, estamos diante não apenas de uma desigualdade de resultados, mas de uma estrutura persistente que produz e reproduz assimetrias de valor social entre negros e não negros.</p>
+    <p class="par">Reconhecer essa realidade é condição indispensável para a formulação de respostas públicas efetivamente comprometidas com a equidade racial — respostas que não apenas reduzam a violência em termos agregados, mas que enfrentem, de maneira explícita, os mecanismos que sustentam sua distribuição desigual.</p>
+    <p class="source">Disponível em: <a href="https://abre.ai/sVH3" target="_blank" rel="noopener">https://abre.ai/sVH3</a>. Acesso em: 14 set. 2026.</p>
+    <p class="source cite"><b>Referências:</b><br>
+    CERQUEIRA, Daniel; BUENO, Samira (coord.) et al. <i>Atlas da violência</i> [livro eletrônico]. São Paulo: IPEA; FBSP, 2026. Disponível em: <a href="https://repositorio.ipea.gov.br/server/api/core/bitstreams/6e855a6f-1a5d-494d-90aa-753862e10369/content" target="_blank" rel="noopener">https://repositorio.ipea.gov.br/server/api/core/bitstreams/6e855a6f-1a5d-494d-90aa-753862e10369/content</a></p>
+
+    <div class="act-title">ATIVIDADES</div>
+
+    <!-- Q7 -->
+    <article class="q" id="q7">
+      <div class="q-head"><span class="q-num">7</span>
+        <div class="stem">
+          <p>Os dados populacionais mostram que a probabilidade de um jovem negro ser vítima de homicídio no Brasil é significativamente superior à de um jovem não negro. Sociólogos apontam que o medo e a sensação de insegurança não se distribuem de forma uniforme entre os grupos sociais, dependendo de fatores como cor, renda e território de moradia.</p>
+          <p>Analisando a relação entre a garantia de Direitos Humanos e a realidade social brasileira, conclui-se que</p>
+        </div>
+      </div>
+      <div class="alts">
+        <div class="alt"><span class="l">A</span><span>as violações ao direito à vida decorrem de escolhas individuais de comportamento, desvinculadas da estrutura social.</span></div>
+        <div class="alt"><span class="l">B</span><span>a preocupação com a violência urbana deve limitar-se à atuação das forças de segurança, sem relação com a promoção da cidadania.</span></div>
+        <div class="alt"><span class="l">C</span><span>os Direitos Humanos aplicam-se plenamente em todas as regiões do país, garantindo proteção idêntica independentemente de raça ou classe.</span></div>
+        <div class="alt"><span class="l">D</span><span>a universalidade formal dos direitos previstos na lei nem sempre se traduz em igualdade real de proteção no cotidiano dos cidadãos.</span></div>
+        <div class="alt"><span class="l">E</span><span>a desigualdade racial deixou de influenciar a efetivação dos direitos fundamentais após a promulgação da Constituição de 1988.</span></div>
+      </div>
+      <details class="answer"><summary>Gabarito e comentário</summary>
+        <span class="gab">Gabarito: D</span>
+        <p><b class="k">Comentário sobre o item:</b> o texto evidencia a diferença entre a universalidade formal dos direitos humanos, segundo a qual todas as pessoas possuem os mesmos direitos, e a igualdade real, que depende das condições concretas em que esses direitos são efetivados. Embora o direito à vida e à segurança seja garantido a todos, os dados apresentados indicam que jovens negros estão mais expostos à violência letal, demonstrando que fatores como raça, renda e território podem influenciar o acesso efetivo à proteção e à cidadania.</p>
+      </details>
+      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
+    </article>
+
+    <!-- Q8 -->
+    <article class="q" id="q8">
+      <div class="q-head"><span class="q-num">8</span>
+        <div class="stem"><p>Explique o conceito de racismo estrutural e demonstre como ele se manifesta nos dados de segurança pública apresentados no Texto IV.</p></div>
+      </div>
+      <details class="answer"><summary>Sugestão e expectativa de resposta</summary>
+        <p>Espera-se que o estudante compreenda que o racismo estrutural é a discriminação enraizada nas instituições, na economia e na cultura, produzindo desvantagens históricas contínuas para a população negra. A alta disparidade nos homicídios (77% das vítimas são negras, e o risco é 170,3% maior de morte violenta) reflete essa estrutura por meio da precarização de serviços públicos nas periferias, da vulnerabilidade socioeconômica e da maior exposição da juventude negra à violência letal.</p>
+      </details>
+      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
+    </article>
+
+    <!-- Q9 -->
+    <article class="q" id="q9">
+      <div class="q-head"><span class="q-num">9</span>
+        <div class="stem"><p>Avalie como a distribuição desigual da violência letal no território brasileiro compromete o princípio da universalidade dos Direitos Humanos e a efetivação da cidadania.</p></div>
+      </div>
+      <details class="answer"><summary>Sugestão e expectativa de resposta</summary>
+        <p>O direito à vida deve valer para todos; quando a cor da pele ou o território determinam a probabilidade de morrer, o princípio da universalidade fica restrito ao texto da lei e é violado na prática. A violência desproporcional gera uma cidadania incompleta, na qual jovens negros têm a sua liberdade de circulação e a sua integridade física constantemente ameaçadas, impedindo o pleno exercício dos seus direitos.</p>
+      </details>
+      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ TEXTO V ============ -->
+<section class="chapter" id="refugiados">
+  <div class="ch-head">
+    <div class="ch-num">05</div>
+    <div>
+      <div class="eyebrow">Sociologia · Texto V</div>
+      <h2>O direito a ter direitos e a questão dos refugiados</h2>
+      <p class="deck">Direitos Humanos · leitura, análise e atividades</p>
+    </div>
+  </div>
+  <div class="body">
+    <p class="par">O “direito a ter direitos” é uma famosa formulação da filósofa política Hannah Arendt, apresentada em sua obra <i>As Origens do Totalitarismo</i> (1951), que significa a exigência básica de que todo ser humano pertença a uma comunidade política organizada capaz de garantir e proteger sua dignidade.</p>
+    <p class="par">A expressão nasceu da observação trágica dos milhões de refugiados, exilados e apátridas criados pelas guerras e pelos regimes totalitários na Europa da primeira metade do século XX. A própria Hannah Arendt viveu na pele a experiência de ser refugiada e apátrida por 18 anos após fugir da Alemanha nazista.</p>
+    <p class="par">Arendt percebeu que os chamados “direitos naturais” ou “direitos humanos universais”, teoricamente inerentes a qualquer pessoa, revelaram-se totalmente inúteis na prática quando o indivíduo perdia sua nacionalidade e o vínculo com um Estado-nação. Para Arendt, não basta que os direitos existam no papel ou em declarações universais abstratas; é preciso pertencer a uma comunidade política (um Estado, uma pátria ou um espaço público) que reconheça e assegure esses direitos.</p>
+
+    <h4 class="tsub">O fundamento de todos os outros direitos</h4>
+    <p class="par">Sem o direito inicial de pertencer a uma coletividade que escute e julgue o indivíduo por suas ações, todas as outras garantias legais perdem o sustento e deixam de existir na realidade. Em suma, o conceito demonstra que a cidadania e o reconhecimento institucional são pré-requisitos fundamentais para que a própria condição humana seja respeitada na prática.</p>
+    <p class="source cite"><b>Referências:</b><br>Texto elaborado com base na obra: ARENDT, Hannah. <i>Origens do Totalitarismo</i>. São Paulo: Companhia das Letras, 2000. Tradução de Roberto Raposo.</p>
+
+    <div class="act-title">ATIVIDADES</div>
+
+    <!-- Q10 -->
+    <article class="q" id="q10">
+      <div class="q-head"><span class="q-num">10</span>
+        <div class="stem"><p>Ao analisar a situação de apátridas e refugiados, Hannah Arendt cunhou a expressão “o direito a ter direitos”. Aplicado à crise contemporânea de deslocamentos forçados, esse conceito indica que</p></div>
+      </div>
+      <div class="alts">
+        <div class="alt"><span class="l">A</span><span>os direitos humanos universais garantem proteção jurídica plena ao indivíduo, independentemente de seu vínculo estatal.</span></div>
+        <div class="alt"><span class="l">B</span><span>a solução para a crise dos refugiados reside na expansão da ajuda humanitária e das ações globais de caridade.</span></div>
+        <div class="alt"><span class="l">C</span><span>a perda da cidadania formal não compromete a capacidade do indivíduo de exercer sua voz e agência no espaço público.</span></div>
+        <div class="alt"><span class="l">D</span><span>o “direito a ter direitos” consiste na prerrogativa de pertencer a uma comunidade política que reconheça o indivíduo como sujeito legal.</span></div>
+        <div class="alt"><span class="l">E</span><span>a governança de ONGs e organismos internacionais substitui plenamente o papel do Estado na garantia de direitos fundamentais.</span></div>
+      </div>
+      <details class="answer"><summary>Gabarito e comentário</summary>
+        <span class="gab">Gabarito: D</span>
+        <p><b class="k">Comentário sobre o item:</b> a expressão “direito a ter direitos”, formulada por Hannah Arendt ao analisar a condição dos apátridas e dos refugiados, evidencia que a existência de direitos humanos universais não garante, por si só, sua efetivação concreta. Para que os direitos sejam reconhecidos e exercidos, é fundamental que o indivíduo pertença a uma comunidade política na qual seja reconhecido como sujeito de direitos e possa participar da esfera pública.</p>
+      </details>
+      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
+    </article>
+
+    <!-- Q11 -->
+    <article class="q" id="q11">
+      <div class="q-head"><span class="q-num">11</span>
+        <div class="stem"><p>Em sua obra <i>As Origens do Totalitarismo</i> (1951), Hannah Arendt formula o conceito do “direito a ter direitos”. Explique o paradoxo apontado pela autora entre a existência dos direitos humanos universais abstratos e a situação prática dos indivíduos que perderam seu Estado-nação (apátridas e refugiados).</p></div>
+      </div>
+      <details class="answer"><summary>Sugestão e expectativa de resposta</summary>
+        <p>Os direitos humanos universais pressupõem que todo ser humano nasce com direitos natos e inalienáveis. Contudo, o paradoxo reside no fato de que, assim que um indivíduo perde seu Estado-nação (tornando-se refugiado ou apátrida), esses direitos abstratos tornam-se inaplicáveis. Na prática, os direitos humanos só se aplicam se houver um governo nacional para garanti-los; logo, o ser humano perde seus direitos fundamentais justamente quando passa a depender unicamente de sua condição humana.</p>
+      </details>
+      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ MATERIAIS ============ -->
+<section class="chapter" id="materiais">
+  <div class="ch-head">
+    <div class="ch-num">+</div>
+    <div>
+      <div class="eyebrow">Sociologia · Professor</div>
+      <h2>Materiais de apoio ao professor</h2>
+      <p class="deck">Para subsidiar a abordagem do conteúdo do bimestre em sala de aula</p>
+    </div>
+  </div>
+  <div class="body">
+    <p class="par">Prezado(a) Professor(a), seguem materiais para subsidiar a abordagem do conteúdo do bimestre em sala de aula.</p>
+    <ul class="mat">
+      <li><b>Cartilha “Direitos humanos em sala de aula”</b>Guia prático do ObservaDH para professoras e professores do ensino médio.<br>
+        <a href="https://campanha.itaipuparquetec.org.br/wp-content/uploads/2025/10/Cartilha-ObservaDH-Direitos-Humanos-em-sala-de-aula.pdf" target="_blank" rel="noopener">https://campanha.itaipuparquetec.org.br/wp-content/uploads/2025/10/Cartilha-ObservaDH-Direitos-Humanos-em-sala-de-aula.pdf</a></li>
+      <li><b>Atlas da Violência 2026 — IPEA</b><a href="https://repositorio.ipea.gov.br/server/api/core/bitstreams/6e855a6f-1a5d-494d-90aa-753862e10369/content" target="_blank" rel="noopener">https://repositorio.ipea.gov.br/server/api/core/bitstreams/6e855a6f-1a5d-494d-90aa-753862e10369/content</a></li>
+      <li><b>Direito à verdade e à memória</b>Comissão Especial sobre Mortos e Desaparecidos Políticos.<br>
+        <a href="https://www.dhnet.org.br/dados/livros/a_pdf/livro_memoria1_direito_verdade.pdf" target="_blank" rel="noopener">https://www.dhnet.org.br/dados/livros/a_pdf/livro_memoria1_direito_verdade.pdf</a></li>
+      <li><b>IMDH — Cartilhas de Direitos Humanos</b><a href="https://imdh.ufsc.br/educacao/cartilhas-direitos-humanos/" target="_blank" rel="noopener">https://imdh.ufsc.br/educacao/cartilhas-direitos-humanos/</a></li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<div class="footer">Conteúdo organizado exclusivamente a partir da seção de Sociologia do material Revisa Goiás — CHSA — 3ª Série — 4º Bimestre.</div>
+
+<script>
+(function(){
+  var p=document.getElementById('progress');
+  addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-innerHeight;p.style.width=(h?scrollY/h*100:0)+'%'},{passive:true});
+
+  var tab=document.getElementById('tocTab'),dr=document.getElementById('tocDrawer'),ov=document.getElementById('tocOv'),cl=document.getElementById('tocClose');
+  function openT(){dr.classList.add('open');ov.classList.add('open');tab.setAttribute('aria-expanded','true')}
+  function closeT(){dr.classList.remove('open');ov.classList.remove('open');tab.setAttribute('aria-expanded','false')}
+  tab.onclick=openT;cl.onclick=closeT;ov.onclick=closeT;
+  document.querySelectorAll('.dr-link').forEach(function(a){a.onclick=closeT});
+  addEventListener('keydown',function(e){if(e.key==='Escape')closeT()});
+
+  var links=[].slice.call(document.querySelectorAll('#nav a'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){a.classList.remove('on')});
+          var a=map[e.target.id];
+          if(a){a.classList.add('on');var n=document.getElementById('nav');n.scrollTo({left:a.offsetLeft-n.clientWidth/2+a.clientWidth/2,behavior:'smooth'})}
+        }
+      });
+    },{rootMargin:'-30% 0px -60% 0px'});
+    document.querySelectorAll('section.chapter').forEach(function(s){io.observe(s)});
+  }
+})();
+</script>
+
+</body>
+</html>

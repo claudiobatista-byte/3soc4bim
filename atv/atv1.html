@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enfrentamento ao Discurso de Ódio | CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f8edf2;
+    --bg-alt:#f3dde7;
+    --paper:#fffafd;
+    --ink:#33252b;
+    --ink-soft:#755d67;
+    --verde:#7b2148;
+    --verde-dark:#4a1230;
+    --verde-2:#2f7d55;
+    --gold:#d94f87;
+    --gold-light:#f7b6cf;
+    --line:#edc9d8;
+    --shadow:0 10px 30px rgba(123,33,72,.16);
+    --radius:14px;
+    --font-title:'Playfair Display', serif;
+    --font-body:'Source Serif 4', serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
+  .selecionavel, main{user-select:text;}
+  .campo-resposta{user-select:text;}
+
+  /* ===== CAPA / GATE ===== */
+  #capa{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(to bottom, #4a1230, #7b2148, #d94f87);
+    padding:24px;
+  }
+  #capa .grade-centralizada{
+    position:absolute;
+    top:0; bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:896px;
+    pointer-events:none;
+    z-index:0;
+    opacity:.08;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px);
+    background-size:40px 40px;
+  }
+  .capa-card{
+    position:relative;
+    z-index:1;
+    background:var(--paper);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    max-width:480px;
+    width:100%;
+    padding:36px 32px;
+    text-align:center;
+  }
+  .capa-card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.7rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--verde-dark);
+    background:rgba(123,33,72,.1); padding:5px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  .capa-card h1{font-family:var(--font-title); font-size:1.6rem; margin:0 0 10px; color:var(--verde-dark);}
+  .capa-card p.desc{color:var(--ink-soft); font-size:.94rem; margin:0 0 22px;}
+  .capa-card input{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:1rem; margin-bottom:14px;
+  }
+  .capa-card button{
+    width:100%; padding:13px; border:none; border-radius:8px;
+    background:var(--verde); color:#fff; font-weight:600; font-size:1rem; cursor:pointer;
+    font-family:var(--font-body); transition:filter .15s ease;
+  }
+  .capa-card button:hover{filter:brightness(1.08);}
+  .capa-aviso{font-size:.78rem; color:#a33; margin-top:8px; display:none;}
+
+  /* ===== APP ===== */
+  #app{display:none;}
+  .sticky-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--verde-dark); color:#fbe9f1;
+    padding:12px 20px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:8px;
+    font-family:var(--font-mono); font-size:.82rem;
+  }
+  .sticky-header .aluno{font-family:var(--font-body); font-weight:600; font-size:.92rem;}
+  .barra-progresso-trilho{
+    flex:1; min-width:120px; height:8px; background:rgba(255,255,255,.2); border-radius:6px; overflow:hidden; margin:0 14px;
+  }
+  .barra-progresso-fill{height:100%; background:var(--gold-light); width:0%; transition:width .3s ease;}
+
+  .wrap{max-width:800px; margin:0 auto; padding:32px 24px 60px;}
+
+  header.topo{margin-bottom:28px;}
+  header.topo .hero-tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.72rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--verde-dark);
+    background:rgba(123,33,72,.1); padding:5px 12px; border-radius:999px; margin-bottom:12px;
+  }
+  header.topo h1{font-family:var(--font-title); font-size:clamp(1.5rem,4vw,2rem); margin:0 0 8px; color:var(--ink);}
+  header.topo p.sub{color:var(--ink-soft); margin:0; font-size:.98rem;}
+  .descritor-bar{
+    font-family:var(--font-mono); font-size:.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px;
+    padding:8px 14px; margin-bottom:14px; display:inline-block;
+  }
+  .ficha-id{
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 16px; margin-top:12px; font-family:var(--font-mono); font-size:.84rem; color:var(--ink);
+  }
+  .ficha-id span b{color:var(--verde-dark);}
+
+  /* ===== TEXTO DE APOIO ===== */
+  .texto-apoio{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:28px 30px; margin-bottom:30px;
+  }
+  .texto-apoio h2{font-family:var(--font-title); font-size:1.25rem; color:var(--verde-dark); margin:0 0 4px;}
+  .texto-apoio .fonte-tag{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-bottom:16px; display:block;}
+  .texto-apoio p{margin:0 0 14px; color:var(--ink);}
+  .texto-apoio p:last-of-type{margin-bottom:0;}
+  .texto-apoio blockquote{
+    margin:14px 0; padding:14px 18px; background:var(--bg-alt);
+    border-left:4px solid var(--gold); border-radius:0 8px 8px 0; font-style:italic;
+  }
+
+  .referencia-box{
+    margin-top:20px; padding:14px 16px;
+    background:var(--bg-alt); border-left:3px solid var(--gold); border-radius:0 8px 8px 0;
+  }
+  .referencia-box .rot{
+    font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--verde-dark); display:block; margin-bottom:6px;
+  }
+  .referencia-box p{margin:0 0 6px; font-size:.86rem; color:var(--ink-soft); font-family:var(--font-mono); line-height:1.6;}
+  .referencia-box p:last-child{margin-bottom:0;}
+
+  /* ===== IMAGEM / RECURSO VISUAL ===== */
+  .box-imagem-questao{
+    margin:14px 0 18px;
+    background:var(--bg-alt);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:12px;
+    text-align:center;
+  }
+  .box-imagem-questao img{
+    max-width:100%;
+    height:auto;
+    border-radius:6px;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+    display:block;
+    margin:0 auto;
+    background:#fff;
+    cursor:zoom-in;
+  }
+  .box-imagem-questao .legenda-img{
+    font-family:var(--font-mono);
+    font-size:.75rem;
+    color:var(--ink-soft);
+    margin-top:8px;
+    line-height:1.4;
+  }
+
+  .tipo-q{font-family:var(--font-mono); font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; color:var(--verde); background:var(--bg-alt); border:1px solid var(--line); border-radius:999px; padding:1px 9px; margin-left:8px; font-weight:700; white-space:nowrap; vertical-align:middle;}
+  .rotulo-recurso{font-family:var(--font-mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--verde-dark); margin:26px 0 6px;}
+  /* ===== SUBITENS ===== */
+  .subitem{margin-top:18px;}
+  .subitem:first-of-type{margin-top:16px;}
+  .subitem-label{display:block; font-weight:600; color:var(--ink); margin-bottom:8px; font-size:.94rem;}
+
+  /* ===== QUESTOES ===== */
+  .questoes-titulo{
+    font-family:var(--font-title); font-size:1.2rem; color:var(--verde-dark);
+    margin:0 0 18px; display:flex; align-items:center; gap:10px;
+  }
+  .questao{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:20px 22px; margin-bottom:18px;
+  }
+  .questao .num-q{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:var(--verde);
+    color:#fff; font-family:var(--font-mono); font-size:.78rem; margin-right:8px; flex-shrink:0;
+  }
+  .questao .enunciado{font-weight:600; color:var(--ink); margin-bottom:12px; display:flex; align-items:flex-start;}
+  .questao textarea{
+    width:100%; min-height:130px; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:.96rem; resize:vertical; color:var(--ink);
+  }
+  .questao textarea:focus{outline:2px solid var(--gold); outline-offset:1px;}
+  .contador-chars{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-top:6px; text-align:right;}
+
+  /* ===== OPCOES (OBJETIVAS) ===== */
+  .opcao{
+    display:flex; gap:12px; align-items:flex-start;
+    padding:12px 14px; border:1.5px solid var(--line); border-radius:8px;
+    margin-bottom:8px; cursor:pointer; transition:all .15s ease; background:var(--paper);
+  }
+  .opcao:hover{border-color:var(--gold); background:var(--bg-alt);}
+  .opcao.sel{border-color:var(--gold); background:var(--bg-alt);}
+  .opcao.correta{border-color:var(--verde-2); background:#e9f5ee;}
+  .opcao.errada{border-color:#c0392b; background:#fdeeee;}
+  .opcao.travada{cursor:default;}
+  .opcao-letra{
+    flex:0 0 auto; width:26px; height:26px; border-radius:50%;
+    background:var(--bg-alt); color:var(--verde);
+    font-family:var(--font-mono); font-weight:700; font-size:.78rem;
+    display:flex; align-items:center; justify-content:center; transition:all .15s ease;
+  }
+  .opcao.sel .opcao-letra{background:var(--gold); color:#fff;}
+  .opcao.correta .opcao-letra{background:var(--verde-2); color:#fff;}
+  .opcao.errada .opcao-letra{background:#c0392b; color:#fff;}
+  .opcao-txt{font-size:.94rem; color:var(--ink); line-height:1.6; padding-top:2px;}
+  .opcao-marca{margin-left:auto; font-size:1rem; align-self:center; display:none; flex:0 0 auto;}
+  .gabarito-info{
+    display:none; margin-top:12px; padding:12px 16px;
+    background:#fff0f6; border:1px solid var(--gold-light); border-radius:8px;
+    font-size:.88rem; color:#5b1a38;
+  }
+  .gabarito-info.show{display:block;}
+  .gabarito-info b{color:var(--verde);}
+  .questao .badge-resultado{
+    display:none; font-family:var(--font-mono); font-size:.68rem; font-weight:700;
+    padding:2px 10px; border-radius:20px; margin-left:8px; color:#fff;
+  }
+  .questao .badge-resultado.ok{display:inline-block; background:var(--verde-2);}
+  .questao .badge-resultado.no{display:inline-block; background:#c0392b;}
+
+  .comentario-prof{
+    display:none; margin-top:14px; padding:14px 16px;
+    background:#fff0f6; border:1px solid var(--gold-light); border-radius:8px; font-size:.9rem; color:#5b1a38;
+  }
+  .comentario-prof.show{display:block;}
+  .comentario-prof b{display:block; margin-bottom:4px; font-family:var(--font-title); font-size:.92rem; color:var(--verde);}
+
+  /* ===== ALERTA / FINALIZAR ===== */
+  .alerta-incompleto{
+    display:none; background:#fbeed9; border:1px solid #e3c58a; color:#8a5a1a;
+    padding:12px 16px; border-radius:8px; font-size:.9rem; margin-bottom:16px;
+  }
+  .alerta-incompleto.show{display:block;}
+
+  .acoes-finais{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;}
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:.94rem; padding:12px 22px;
+    border-radius:8px; border:none; cursor:pointer; transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn-primario{background:var(--verde); color:#fff;}
+  .btn-secundario{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-pdf{background:var(--gold); color:#fff;}
+  .btn[disabled]{opacity:.5; cursor:not-allowed;}
+
+  /* ===== POPUP / ZOOM ===== */
+  .popup-overlay{
+    display:none; position:fixed; inset:0; background:rgba(40,12,26,.6);
+    align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .popup-overlay.show{display:flex;}
+  .popup-card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    max-width:420px; width:100%; padding:32px 28px; text-align:center;
+  }
+  .popup-card .emoji{font-size:2.4rem; margin-bottom:10px;}
+  .popup-card h3{font-family:var(--font-title); margin:0 0 8px; color:var(--verde-dark);}
+  .popup-card p{color:var(--ink-soft); font-size:.94rem; margin:0 0 20px;}
+
+  .zoom{position:fixed; inset:0; background:rgba(33,11,22,.92); z-index:300; display:none; align-items:center; justify-content:center; padding:25px;}
+  .zoom.show{display:flex;}
+  .zoom img{max-width:96vw; max-height:92vh; object-fit:contain; background:#fff; border-radius:6px;}
+  .zoom button{position:absolute; top:18px; right:22px; width:42px; height:42px; border:0; border-radius:50%; font-size:24px; cursor:pointer;}
+
+  footer.rodape{text-align:center; padding:24px; color:var(--ink-soft); font-family:var(--font-mono); font-size:.8rem;}
+
+  @media (max-width:600px){
+    .wrap{padding:24px 16px 50px;}
+    .texto-apoio, .questao{padding:18px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<div id="capa">
+  <div class="grade-centralizada"></div>
+  <div class="capa-card">
+    <span class="tag">Outubro Rosa · Sociologia · 3ª Série EM · CERO</span>
+    <h1>Enfrentamento ao Discurso de Ódio</h1>
+    <p class="desc">Leitura de texto e de gráficos sobre violência on-line: 6 questões dissertativas e 4 questões objetivas. Preencha os dados para começar.</p>
+    <input type="text" id="nome-aluno" placeholder="Seu nome completo">
+    <input type="text" id="turma-aluno" placeholder="Turma (ex.: 3ª A)">
+    <button onclick="iniciarAtividade()">Iniciar atividade</button>
+    <div class="capa-aviso" id="capa-aviso">Por favor, digite seu nome para continuar.</div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <div class="sticky-header">
+    <span class="aluno" id="header-nome"></span>
+    <div class="barra-progresso-trilho"><div class="barra-progresso-fill" id="barra-fill"></div></div>
+    <span id="contador-geral">Respondidas: 0/15</span>
+  </div>
+
+  <div class="wrap" id="capture">
+    <header class="topo selecionavel">
+      <span class="descritor-bar">Sociologia / 3ª Série do Ensino Médio &nbsp;|&nbsp; Direitos Humanos, violência e discurso de ódio</span>
+      <span class="hero-tag" style="display:block; margin-top:10px;">Leitura e Interpretação de Texto e de Dados</span>
+      <h1>Enfrentamento ao discurso de ódio</h1>
+      <p class="sub">Leia o texto e observe os gráficos. Em seguida, responda às 6 questões dissertativas e às 4 questões objetivas.</p>
+      <div class="ficha-id" id="ficha-id">
+        <span><b>NOME:</b> <span id="ficha-nome"></span></span>
+        <span><b>DATA:</b> <span id="ficha-data"></span></span>
+        <span><b>TURMA:</b> <span id="ficha-turma"></span></span>
+      </div>
+    </header>
+
+    <main>
+      <h2 class="questoes-titulo">✍️ Leitura e Questões</h2>
+
+      <section class="texto-apoio selecionavel">
+        <h2>Enfrentamento ao discurso de ódio</h2>
+        <span class="fonte-tag">Observatório Nacional dos Direitos Humanos (ObservaDH) · MDHC</span>
+        <blockquote>“Toda forma de expressão que incita, promove ou justifica o ódio, a discriminação ou a violência contra um indivíduo ou um grupo, em razão de sua origem, etnia, raça, cor, religião, gênero, orientação sexual, identidade de gênero, idade, deficiência, condição social ou política.”</blockquote>
+        <p>O texto destaca a internet como meio de inclusão social, cultural e política, mas também como espaço de conflito, discriminação, preconceito e intolerância. A Pesquisa Nacional de Saúde (PNS) de 2019 registrou 1.623.333 pessoas adultas que relataram agressão on-line; as mulheres corresponderam a quase 53% dos relatos. Entre 2017 e 2022, a Central Nacional de Denúncias de Crimes Cibernéticos da SaferNet recebeu 293.289 denúncias de crimes de ódio. O relatório do Ministério dos Direitos Humanos e da Cidadania (MDHC) propõe respostas articuladas nos eixos de educação, comunicação, segurança pública e justiça.</p>
+        <div class="referencia-box">
+          <span class="rot">Fonte</span>
+          <p>ObservaDH/MDHC. Enfrentamento ao discurso de ódio (texto adaptado). Dados: PNS 2019 e SaferNet, com elaboração da CGIE/MDHC. Material Revisa Goiás.</p>
+        </div>
+      </section>
+
+      <div class="questao" data-questao="1" data-rot="1">
+        <div class="enunciado"><span class="num-q">1</span> <span>A partir do texto, explique o que caracteriza o discurso de ódio e por que ele não pode ser confundido com a simples manifestação de uma opinião divergente nem com o exercício legítimo da liberdade de expressão. <span class="tipo-q">Dissertativa</span></span></div>
+        <textarea id="resp-1" class="campo-resposta dissertativa" data-min="100" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 100)</div>
+        <div class="comentario-prof"><b>Comentário do professor</b>Espera-se que o aluno identifique os elementos da definição: (1) trata-se de uma forma de expressão; (2) que incita, promove ou justifica ódio, discriminação ou violência; (3) dirigida a um indivíduo ou grupo; (4) em razão de um atributo identitário (origem, etnia, raça, cor, religião, gênero, orientação sexual, identidade de gênero, idade, deficiência, condição social ou política). A divergência de opinião critica ideias, políticas ou condutas e admite o debate; o discurso de ódio nega a dignidade e o direito de existir de pessoas por aquilo que elas são. Como os direitos humanos valem para todos, a liberdade de expressão encontra limite quando seu exercício serve para violar direitos de outros.</div>
+      </div>
+
+      <div class="questao" data-questao="2" data-rot="2">
+        <div class="enunciado"><span class="num-q">2</span> <span>O texto apresenta a internet como meio de inclusão social, cultural e política e, ao mesmo tempo, como espaço de conflito, discriminação, preconceito e intolerância. Explique essa ambivalência e interprete, à luz dos dados da PNS 2019 citados no texto (1.623.333 adultos que relataram agressão on-line; mulheres com quase 53% dos relatos), por que a violência digital pode reproduzir desigualdades que já existem fora da rede. <span class="tipo-q">Dissertativa</span></span></div>
+        <textarea id="resp-2" class="campo-resposta dissertativa" data-min="100" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 100)</div>
+        <div class="comentario-prof"><b>Comentário do professor</b>Espera-se que o aluno explique que a mesma tecnologia que amplia voz, acesso à informação e mobilização também amplia o alcance, a velocidade e a permanência das agressões, com baixa mediação e possibilidade de anonimato. Como a rede é parte da vida social, ela reproduz hierarquias de gênero, raça, classe e outras. Sobre o dado: mulheres são pouco mais da metade da população adulta, de modo que os 53% dos relatos, isolados, não provam sobre-representação; mas, somado ao fato de a misoginia ser a segunda categoria mais denunciada, o dado reforça a leitura de que a violência digital tem recorte de gênero. Valoriza-se a resposta que mostre essa cautela na leitura do número.</div>
+      </div>
+
+      <div class="rotulo-recurso">Recursos visuais — mapa por UF e relatos por faixa etária, 2019</div>
+      <div class="box-imagem-questao"><img src="../img/grafico1.webp" alt="Mapa — quantidade de pessoas com 18 anos ou mais que relataram ter sido ameaçadas, ofendidas, xingadas ou ter imagens expostas sem consentimento, por UF, Brasil, 2019. Fonte: Elaboração CGIE/MDHC, a partir de dados da PNS." onclick="abrirZoom(this)"><div class="legenda-img">Mapa — quantidade de pessoas com 18 anos ou mais que relataram ter sido ameaçadas, ofendidas, xingadas ou ter imagens expostas sem consentimento, por UF, Brasil, 2019. Fonte: Elaboração CGIE/MDHC, a partir de dados da PNS. Clique na imagem para ampliar.</div></div>
+      <div class="box-imagem-questao"><img src="../img/grafico2.webp" alt="Gráfico — percentual dos relatos de agressão on-line por faixa etária, Brasil, 2019. Fonte: Elaboração CGIE/MDHC, a partir de dados da PNS." onclick="abrirZoom(this)"><div class="legenda-img">Gráfico — percentual dos relatos de agressão on-line por faixa etária, Brasil, 2019. Fonte: Elaboração CGIE/MDHC, a partir de dados da PNS. Clique na imagem para ampliar.</div></div>
+
+      <div class="questao" data-questao="3" data-rot="3">
+        <div class="enunciado"><span class="num-q">3</span> <span>Observe o mapa e o gráfico por faixa etária. Explique por que ambos devem ser lidos como retratos de quantos relatos há em cada grupo, e não como medida direta do risco que cada pessoa corre. Em seguida, indique que indicador seria necessário para comparar adequadamente os estados e as faixas etárias e relacione a maior concentração entre 18 e 29 anos ao modo como as gerações se inserem na sociabilidade digital. <span class="tipo-q">Dissertativa</span></span></div>
+        <textarea id="resp-3" class="campo-resposta dissertativa" data-min="120" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 120)</div>
+        <div class="comentario-prof"><b>Comentário do professor</b>Espera-se que o aluno perceba que o mapa usa valores absolutos por UF (as maiores contagens aparecem em estados populosos, como São Paulo, Minas Gerais e Bahia) e que o gráfico mostra a participação de cada faixa etária no total de relatos (soma ≈ 100%), e não a porcentagem de pessoas agredidas dentro de cada faixa. Para comparar risco seria necessária uma taxa: relatos por mil habitantes (ou por mil usuários de internet) em cada UF e em cada faixa etária. Sobre a faixa de 18 a 29 anos (31,6%): jovens usam mais as redes, por mais tempo e em mais plataformas, tornando-se mais expostos e também mais propensos a nomear e relatar a agressão; ainda assim, o gráfico sozinho não prova causa. Adultos de 18 a 39 anos somam cerca de 59% dos relatos.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-1" data-rot="4" data-correta="3">
+        <div class="enunciado"><span class="num-q">4</span> <span>O mapa classifica as unidades federativas pelo número absoluto de adultos que relataram agressões on-line em 2019: São Paulo, Minas Gerais e Bahia aparecem na faixa mais escura (acima de 140.625), enquanto vários estados do Norte aparecem na mais clara (abaixo de 2.246). Um analista conclui que “a violência on-line é muito mais grave nos estados da faixa mais escura”. Do ponto de vista do rigor na leitura de dados sociais, essa conclusão é: <span class="tipo-q">Objetiva</span> <span class="badge-resultado" id="badge-obj-1"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(1,0)"><div class="opcao-letra">A</div><div class="opcao-txt">procedente, pois a divisão em faixas de valores já neutraliza o efeito do tamanho da população de cada unidade federativa.</div><div class="opcao-marca" id="marca-1-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(1,1)"><div class="opcao-letra">B</div><div class="opcao-txt">procedente, desde que se aceite que a internet gera violência onde há mais usuários, o que estabelece uma relação causal comprovada.</div><div class="opcao-marca" id="marca-1-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(1,2)"><div class="opcao-letra">C</div><div class="opcao-txt">improcedente, porque o mapa trata apenas da desigualdade no acesso à internet entre as regiões, e não de agressões sofridas por adultos.</div><div class="opcao-marca" id="marca-1-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(1,3)"><div class="opcao-letra">D</div><div class="opcao-txt">precipitada, porque contagens absolutas refletem também o tamanho da população, a conectividade e a propensão a relatar; só taxas por habitante permitiriam comparar a gravidade entre os estados.</div><div class="opcao-marca" id="marca-1-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(1,4)"><div class="opcao-letra">E</div><div class="opcao-txt">precipitada, porque mapas por unidade federativa são inadequados para dados sociais, que só poderiam ser interpretados na escala individual.</div><div class="opcao-marca" id="marca-1-4"></div></div>
+        <div class="gabarito-info" id="gab-1"><b>Gabarito: D.</b> O mapa trabalha com valores absolutos. Estados muito populosos tendem a ter mais relatos mesmo que o risco individual seja igual ou menor; além disso, conectividade e hábito de relatar variam entre as regiões. Para comparar gravidade seria preciso calcular taxas (relatos por mil habitantes ou por mil usuários). A alternativa A erra ao supor que as faixas corrigem o efeito populacional; B transforma associação em causalidade; C contraria o próprio título do mapa; E nega, sem justificativa, a utilidade da análise territorial.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-2" data-rot="5" data-correta="0">
+        <div class="enunciado"><span class="num-q">5</span> <span>O gráfico mostra a distribuição dos relatos de agressão on-line por faixa etária: 31,6% entre 18 e 29 anos, 27,3% entre 30 e 39 anos e 0,1% entre pessoas com 80 anos ou mais. Considerando que o gráfico apresenta a participação de cada faixa no conjunto dos relatos — e não a proporção de pessoas agredidas dentro de cada faixa —, a leitura mais adequada é: <span class="tipo-q">Objetiva</span> <span class="badge-resultado" id="badge-obj-2"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(2,0)"><div class="opcao-letra">A</div><div class="opcao-txt">adultos de 18 a 39 anos respondem por cerca de 59% dos relatos, o que indica concentração nessa faixa, sem permitir afirmar que ela corra o maior risco individual, pois o peso de cada faixa na população adulta também influencia os percentuais.</div><div class="opcao-marca" id="marca-2-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(2,1)"><div class="opcao-letra">B</div><div class="opcao-txt">a soma dos percentuais ultrapassa 100%, o que revela falha metodológica na pesquisa e invalida qualquer conclusão sobre a distribuição por idade.</div><div class="opcao-marca" id="marca-2-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(2,2)"><div class="opcao-letra">C</div><div class="opcao-txt">o valor de 31,6% significa que quase um terço de todos os jovens brasileiros sofreu agressão on-line em 2019, enquanto os idosos praticamente não sofrem esse tipo de violência.</div><div class="opcao-marca" id="marca-2-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(2,3)"><div class="opcao-letra">D</div><div class="opcao-txt">a queda dos percentuais com o aumento da idade comprova que a vulnerabilidade à violência digital é uma característica psicológica da juventude e não depende do uso das redes.</div><div class="opcao-marca" id="marca-2-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(2,4)"><div class="opcao-letra">E</div><div class="opcao-txt">como pessoas com 60 anos ou mais somam menos de 7% dos relatos, as ações de proteção e de orientação digital para esse público são desnecessárias.</div><div class="opcao-marca" id="marca-2-4"></div></div>
+        <div class="gabarito-info" id="gab-2"><b>Gabarito: A.</b> Somando 31,6% e 27,3%, obtém-se 58,9% dos relatos, ou seja, cerca de 59% — o que sustenta A. Como o gráfico mostra participação nos relatos, ele não informa o risco de cada faixa: isso dependeria do tamanho de cada faixa na população e do tempo de uso das redes. A alternativa B confunde arredondamento (os valores somam 100,1%) com erro metodológico; C interpreta os percentuais como prevalência dentro de cada faixa; D atribui a diferença a uma causa psicológica que os dados não mostram; E tira uma conclusão normativa indevida: poucos relatos não tornam desnecessária a proteção, até porque podem refletir menor propensão a denunciar.</div>
+      </div>
+
+      <div class="rotulo-recurso">Recurso visual — tipos de crimes de ódio denunciados, 2017–2022</div>
+      <div class="box-imagem-questao"><img src="../img/grafico3.webp" alt="Gráfico — tipos de crimes de ódio mais denunciados à SaferNet, Brasil, 2017–2022. Fonte: Elaboração CGIE/MDHC, a partir de dados da SaferNet." onclick="abrirZoom(this)"><div class="legenda-img">Gráfico — tipos de crimes de ódio mais denunciados à SaferNet, Brasil, 2017–2022. Fonte: Elaboração CGIE/MDHC, a partir de dados da SaferNet. Clique na imagem para ampliar.</div></div>
+
+      <div class="questao" data-questao="6" data-rot="6">
+        <div class="enunciado"><span class="num-q">6</span> <span>Observe o gráfico e releia o texto, que informa 293.289 denúncias de crimes de ódio à SaferNet entre 2017 e 2022. Responda aos itens a seguir. <span class="tipo-q">Dissertativa</span></span></div>
+        <div class="subitem">
+          <span class="subitem-label">a) Calcule, de forma aproximada, que parcela do total de 293.289 denúncias corresponde à soma das denúncias de apologia a crimes contra a vida e de misoginia.</span>
+          <textarea id="resp-6a" class="campo-resposta dissertativa" data-min="80" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="contador-chars">0 caracteres (mínimo 80)</div>
+        </div>
+        <div class="subitem">
+          <span class="subitem-label">b) Explique por que a existência de sete categorias distintas de crimes de ódio reforça a necessidade de políticas multidimensionais de enfrentamento.</span>
+          <textarea id="resp-6b" class="campo-resposta dissertativa" data-min="80" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="contador-chars">0 caracteres (mínimo 80)</div>
+        </div>
+        <div class="subitem">
+          <span class="subitem-label">c) Explique por que o menor número de denúncias de intolerância religiosa não autoriza concluir que ela seja um problema menos relevante.</span>
+          <textarea id="resp-6c" class="campo-resposta dissertativa" data-min="80" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="contador-chars">0 caracteres (mínimo 80)</div>
+        </div>
+        <div class="comentario-prof"><b>Comentário do professor</b>a) <strong>Cálculo:</strong> 76.132 + 74.341 = 150.473; 150.473 ÷ 293.289 ≈ 0,51, ou seja, cerca de 51% (pouco mais da metade). Observação para o professor: a soma das sete categorias do gráfico é exatamente 293.289, de modo que o gráfico detalha todo o total citado no texto.<br>b) <strong>Políticas multidimensionais:</strong> categorias distintas (racismo, LGBTfobia, xenofobia, neonazismo, intolerância religiosa, misoginia, apologia a crimes contra a vida) têm públicos-alvo, contextos e motivações diferentes, o que exige combinar ações de educação, comunicação, segurança pública e justiça, conforme os eixos do relatório.<br>c) <strong>Denúncia não mede gravidade:</strong> o número de denúncias depende de a vítima reconhecer a violência, conhecer o canal, confiar nele e se dispor a denunciar. Grupos menores ou mais estigmatizados podem denunciar menos. Violência não deixa de ser relevante por ser menos registrada.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-3" data-rot="7" data-correta="4">
+        <div class="enunciado"><span class="num-q">7</span> <span>As categorias do gráfico são: apologia a crimes contra a vida (76.132), misoginia (74.341), racismo (45.643), neonazismo (32.628), LGBTfobia (28.364), xenofobia (25.925) e intolerância religiosa (10.256). Relacionando esses valores ao total de 293.289 denúncias de crimes de ódio citado no texto, é correto afirmar que: <span class="tipo-q">Objetiva</span> <span class="badge-resultado" id="badge-obj-3"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(3,0)"><div class="opcao-letra">A</div><div class="opcao-txt">o racismo responde por quase metade das denúncias, o que o torna a forma de intolerância mais frequente no ambiente digital brasileiro.</div><div class="opcao-marca" id="marca-3-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(3,1)"><div class="opcao-letra">B</div><div class="opcao-txt">a intolerância religiosa, por ser a categoria menos denunciada, pode ser tratada como secundária, pois baixa denúncia equivale a baixa gravidade.</div><div class="opcao-marca" id="marca-3-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(3,2)"><div class="opcao-letra">C</div><div class="opcao-txt">a apologia a crimes contra a vida e a misoginia, somadas, representam menos de um terço das denúncias, o que indica distribuição equilibrada entre as sete categorias.</div><div class="opcao-marca" id="marca-3-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(3,3)"><div class="opcao-letra">D</div><div class="opcao-txt">a misoginia é a categoria mais denunciada, o que comprova que a maioria dos crimes de ódio no período teve mulheres como alvo.</div><div class="opcao-marca" id="marca-3-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(3,4)"><div class="opcao-letra">E</div><div class="opcao-txt">as sete categorias somam exatamente o total do texto, e as duas maiores concentram pouco mais da metade das denúncias (cerca de 51%), o que indica concentração, mas não exclusividade, dessas formas de ódio.</div><div class="opcao-marca" id="marca-3-4"></div></div>
+        <div class="gabarito-info" id="gab-3"><b>Gabarito: E.</b> A soma das sete categorias é 293.289, idêntica ao total do texto. As duas maiores (76.132 + 74.341 = 150.473) correspondem a cerca de 51% do total, o que confirma E. A alternativa A é falsa (45.643 ÷ 293.289 ≈ 16%); B confunde volume de denúncias com gravidade — grupos menores ou mais estigmatizados podem denunciar menos; C está numericamente errada, pois as duas categorias somam mais da metade; D erra duas vezes: a categoria mais denunciada é a apologia a crimes contra a vida, e a misoginia representa cerca de 25% do total, o que não sustenta a ideia de “maioria”.</div>
+      </div>
+
+      <div class="rotulo-recurso">Recurso visual — denúncias de misoginia por ano, 2017–2022</div>
+      <div class="box-imagem-questao"><img src="../img/grafico4.webp" alt="Gráfico — denúncias de misoginia à SaferNet, Brasil, 2017–2022. Fonte: Elaboração CGIE/MDHC, a partir de dados da SaferNet." onclick="abrirZoom(this)"><div class="legenda-img">Gráfico — denúncias de misoginia à SaferNet, Brasil, 2017–2022. Fonte: Elaboração CGIE/MDHC, a partir de dados da SaferNet. Clique na imagem para ampliar.</div></div>
+
+      <div class="questao" data-questao="8" data-rot="8">
+        <div class="enunciado"><span class="num-q">8</span> <span>O gráfico mostra as denúncias de misoginia recebidas pela SaferNet a cada ano. Responda aos itens a seguir. <span class="tipo-q">Dissertativa</span></span></div>
+        <div class="subitem">
+          <span class="subitem-label">a) Descreva a trajetória da série entre 2017 e 2022, indicando quantas vezes, aproximadamente, o valor de 2022 supera o de 2017.</span>
+          <textarea id="resp-8a" class="campo-resposta dissertativa" data-min="80" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="contador-chars">0 caracteres (mínimo 80)</div>
+        </div>
+        <div class="subitem">
+          <span class="subitem-label">b) Formule duas hipóteses plausíveis para explicar a elevação de 2022: uma ligada ao aumento real do fenômeno e outra ligada à forma como os casos são notificados.</span>
+          <textarea id="resp-8b" class="campo-resposta dissertativa" data-min="80" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="contador-chars">0 caracteres (mínimo 80)</div>
+        </div>
+        <div class="subitem">
+          <span class="subitem-label">c) Indique que informação adicional seria necessária para testar essas hipóteses e justifique sua escolha.</span>
+          <textarea id="resp-8c" class="campo-resposta dissertativa" data-min="80" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="contador-chars">0 caracteres (mínimo 80)</div>
+        </div>
+        <div class="comentario-prof"><b>Comentário do professor</b>a) <strong>Trajetória:</strong> a série cresce, mas com oscilações: 961 (2017), salto para 16.717 (2018), queda para 7.112 (2019), alta para 12.698 (2020), nova queda para 8.174 (2021) e o maior valor, 28.679, em 2022. Como 28.679 ÷ 961 ≈ 30, o valor de 2022 é cerca de 30 vezes o de 2017; só 2022 concentra cerca de 39% de todas as denúncias do período (28.679 ÷ 74.341).<br>b) <strong>Hipóteses:</strong> aumento real — intensificação de ataques a mulheres nas redes, maior circulação de discursos misóginos, polarização, mais pessoas conectadas. Mudança na notificação — maior conhecimento do canal de denúncia, campanhas, facilidade de denunciar, mais confiança na resposta das autoridades, melhoria do registro.<br>c) <strong>Informação adicional:</strong> séries mais longas, número de usuários de internet por ano, taxa de denúncias por habitante ou por usuário, dados de boletins de ocorrência e das plataformas, mudanças nos procedimentos de registro da SaferNet. Valoriza-se a distinção entre denúncia registrada e ocorrência real.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-4" data-rot="9" data-correta="1">
+        <div class="enunciado"><span class="num-q">9</span> <span>O gráfico apresenta as denúncias de misoginia a cada ano: 961 (2017), 16.717 (2018), 7.112 (2019), 12.698 (2020), 8.174 (2021) e 28.679 (2022). A soma da série é 74.341, valor idêntico ao da categoria misoginia no gráfico anterior. Sobre essa série, é correto afirmar que: <span class="tipo-q">Objetiva</span> <span class="badge-resultado" id="badge-obj-4"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(4,0)"><div class="opcao-letra">A</div><div class="opcao-txt">as quedas de 2019 e de 2021 mostram que a misoginia diminuiu nesses anos, já que o número de denúncias é uma medida direta da incidência real do fenômeno.</div><div class="opcao-marca" id="marca-4-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(4,1)"><div class="opcao-letra">B</div><div class="opcao-txt">o ano de 2022 concentra cerca de 39% de todas as denúncias do período, o que destaca a alta recente, mas exige cautela, pois os dados não distinguem aumento real de maior notificação.</div><div class="opcao-marca" id="marca-4-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(4,2)"><div class="opcao-letra">C</div><div class="opcao-txt">a média anual do período, cerca de 12 mil denúncias, mostra que 2022 foi um ano típico, sem ruptura em relação ao comportamento da série.</div><div class="opcao-marca" id="marca-4-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(4,3)"><div class="opcao-letra">D</div><div class="opcao-txt">as oscilações entre 2018 e 2021 decorrem de uma única causa identificável, como a mudança de governo, o que dispensa outras explicações.</div><div class="opcao-marca" id="marca-4-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(4,4)"><div class="opcao-letra">E</div><div class="opcao-txt">a variação de 961 para 28.679 deve ser descartada, pois 2017 é um ano atípico e, por isso, nenhuma tendência pode ser identificada na série.</div><div class="opcao-marca" id="marca-4-4"></div></div>
+        <div class="gabarito-info" id="gab-4"><b>Gabarito: B.</b> 28.679 ÷ 74.341 ≈ 0,39, ou seja, 2022 concentra cerca de 39% das denúncias de todo o período. Como se trata de denúncias registradas, uma alta pode refletir aumento real do fenômeno, maior conhecimento do canal ou maior confiança em denunciar — daí a cautela de B. A alternativa A trata denúncia como medida direta de incidência; C usa uma média correta (74.341 ÷ 6 ≈ 12.390) para uma conclusão falsa, pois 2022 é mais que o dobro dela; D atribui causa única sem evidência; E descarta uma série que, apesar das oscilações, mostra tendência de alta (2022 é cerca de 30 vezes 2017).</div>
+      </div>
+
+      <div class="rotulo-recurso">Proposta de enfrentamento</div>
+
+      <div class="questao" data-questao="10" data-rot="10">
+        <div class="enunciado"><span class="num-q">10</span> <span>O relatório do MDHC propõe respostas articuladas em quatro eixos: educação, comunicação, segurança pública e justiça. A partir dessa proposta, responda aos itens a seguir. <span class="tipo-q">Dissertativa</span></span></div>
+        <div class="subitem">
+          <span class="subitem-label">a) Escolha um dos eixos e proponha uma ação concreta de enfrentamento ao discurso de ódio, indicando quem a executaria, a quem se destinaria e que problema, entre os apresentados nos gráficos, ela buscaria reduzir.</span>
+          <textarea id="resp-10a" class="campo-resposta dissertativa" data-min="80" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="contador-chars">0 caracteres (mínimo 80)</div>
+        </div>
+        <div class="subitem">
+          <span class="subitem-label">b) Explique por que o enfrentamento isolado em um único eixo seria insuficiente e de que modo a ação proposta poderia ser combinada com outro eixo, sem restringir a liberdade de expressão legítima.</span>
+          <textarea id="resp-10b" class="campo-resposta dissertativa" data-min="80" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="contador-chars">0 caracteres (mínimo 80)</div>
+        </div>
+        <div class="comentario-prof"><b>Comentário do professor</b>a) <strong>Ação concreta:</strong> o aluno deve indicar o eixo, o executor (escola, plataforma, órgão de segurança, Ministério Público, veículo de comunicação etc.), o público e o problema visado, relacionando-o a um dado (por exemplo, a concentração de relatos entre jovens de 18 a 29 anos, ou o grande número de denúncias de apologia a crimes contra a vida e de misoginia). Exemplo: oficinas de educação midiática e direitos humanos na escola para reconhecer e denunciar agressões on-line.<br>b) <strong>Articulação:</strong> espera-se que o aluno explique que o ódio é um fenômeno social, cultural e jurídico ao mesmo tempo: educar sem responsabilizar deixa a violência impune; punir sem educar não altera as mentalidades; comunicação sem canais de denúncia e justiça não protege as vítimas. A combinação deve preservar o debate de ideias, distinguindo crítica e divergência de incitação ao ódio e à violência contra pessoas e grupos.</div>
+      </div>
+
+
+      <div class="alerta-incompleto" id="alerta-incompleto">
+        ⚠️ Ainda há questões incompletas (dissertativas com o mínimo de caracteres e todas as 4 objetivas marcadas). Revise antes de finalizar.
+      </div>
+
+      <div class="acoes-finais">
+        <button class="btn btn-primario" onclick="finalizarAtividade()">Finalizar e corrigir</button>
+        <button class="btn btn-secundario" onclick="refazerAtividade()">Refazer</button>
+        <button class="btn btn-pdf" onclick="exportarPDF()">Exportar em PDF</button>
+      </div>
+    </main>
+  </div>
+
+  <footer class="rodape">Colégio Estadual Rodolfo de Oliveira · CERO · 2026</footer>
+</div>
+
+<!-- ===== POPUP ===== -->
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-card">
+    <div class="emoji">🎉</div>
+    <h3>Atividade concluída!</h3>
+    <p id="popup-nota" style="font-family:var(--font-mono); font-weight:700; color:var(--verde-dark); font-size:1rem; margin:0 0 12px;"></p>
+    <p>Suas respostas foram registradas. Os comentários do professor e o gabarito comentado já estão disponíveis abaixo de cada questão para você comparar com o que escreveu.</p>
+    <button class="btn btn-primario" onclick="fecharPopup()">Continuar</button>
+  </div>
+</div>
+
+<!-- ===== ZOOM DE IMAGEM ===== -->
+<div class="zoom" id="zoom" onclick="fecharZoom(event)">
+  <button onclick="document.getElementById('zoom').classList.remove('show')" aria-label="Fechar">×</button>
+  <img id="zimg" alt="">
+</div>
+
+<script>
+/* ===== GATE DE NOME ===== */
+function iniciarAtividade(){
+  const nome = document.getElementById('nome-aluno').value.trim();
+  const turma = document.getElementById('turma-aluno').value.trim();
+  const aviso = document.getElementById('capa-aviso');
+  if(!nome){
+    aviso.style.display = 'block';
+    return;
+  }
+  aviso.style.display = 'none';
+  const hoje = new Date();
+  const dataFormatada = String(hoje.getDate()).padStart(2,'0') + '/' + String(hoje.getMonth()+1).padStart(2,'0') + '/' + hoje.getFullYear();
+  document.getElementById('header-nome').textContent = nome;
+  document.getElementById('ficha-nome').textContent = nome;
+  document.getElementById('ficha-data').textContent = dataFormatada;
+  document.getElementById('ficha-turma').textContent = turma || '—';
+  document.getElementById('capa').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+/* ===== ZOOM ===== */
+function abrirZoom(img){
+  document.getElementById('zimg').src = img.src;
+  document.getElementById('zimg').alt = img.alt;
+  document.getElementById('zoom').classList.add('show');
+}
+function fecharZoom(e){
+  if(e.target.id === 'zoom') document.getElementById('zoom').classList.remove('show');
+}
+
+/* ===== CONTADOR DE CARACTERES E PROGRESSO ===== */
+const textareas = document.querySelectorAll('textarea.dissertativa');
+const TOTAL_OBJ = 4;
+let respMC = {};
+let corrigido = false;
+
+function marcarOpcao(num, idx){
+  if (corrigido) return;
+  respMC[num] = idx;
+  const questaoEl = document.querySelector('.questao[data-questao="obj-' + num + '"]');
+  questaoEl.querySelectorAll('.opcao').forEach(function(op){
+    op.classList.toggle('sel', parseInt(op.dataset.idx,10) === idx);
+  });
+  atualizarProgresso();
+}
+
+function atualizarProgresso(){
+  let respondidas = 0;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length >= min) respondidas++;
+  });
+  respondidas += Object.keys(respMC).length;
+  const total = textareas.length + TOTAL_OBJ;
+  document.getElementById('contador-geral').textContent = 'Respondidas: ' + respondidas + '/' + total;
+  document.getElementById('barra-fill').style.width = (respondidas / total * 100) + '%';
+}
+
+textareas.forEach(function(t){
+  const contadorEl = t.parentElement.querySelector('.contador-chars');
+  const min = parseInt(t.dataset.min, 10);
+  t.addEventListener('input', function(){
+    contadorEl.textContent = t.value.length + ' caracteres (mínimo ' + min + ')';
+    atualizarProgresso();
+  });
+});
+
+/* ===== FINALIZAR ===== */
+function finalizarAtividade(){
+  let completo = true;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length < min) completo = false;
+  });
+  for(let n=1; n<=TOTAL_OBJ; n++){
+    if(respMC[n] === undefined) completo = false;
+  }
+
+  const alerta = document.getElementById('alerta-incompleto');
+  if(!completo){
+    alerta.classList.add('show');
+    alerta.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  alerta.classList.remove('show');
+
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.add('show');
+  });
+
+  corrigido = true;
+  let acertos = 0;
+  document.querySelectorAll('.questao.objetiva').forEach(function(qEl){
+    const num = qEl.dataset.questao.replace('obj-','');
+    const correta = parseInt(qEl.dataset.correta, 10);
+    const escolha = respMC[num];
+    const acertou = escolha === correta;
+    if(acertou) acertos++;
+    qEl.querySelectorAll('.opcao').forEach(function(op){
+      const idx = parseInt(op.dataset.idx, 10);
+      op.classList.add('travada');
+      if(idx === correta){ op.classList.add('correta'); document.getElementById('marca-'+num+'-'+idx).textContent='✓'; document.getElementById('marca-'+num+'-'+idx).style.display='block'; }
+      if(idx === escolha && !acertou){ op.classList.add('errada'); document.getElementById('marca-'+num+'-'+idx).textContent='✗'; document.getElementById('marca-'+num+'-'+idx).style.display='block'; }
+    });
+    document.getElementById('gab-'+num).classList.add('show');
+    const badge = document.getElementById('badge-obj-'+num);
+    badge.textContent = acertou ? '✓ Acertou' : '✗ Errou';
+    badge.className = 'badge-resultado ' + (acertou ? 'ok' : 'no');
+  });
+  window.__acertos = acertos;
+
+  const pct = Math.round(acertos/TOTAL_OBJ*100);
+  document.getElementById('popup-nota').textContent = acertos + '/' + TOTAL_OBJ + ' nas objetivas (' + pct + '%)';
+  document.getElementById('popup-overlay').classList.add('show');
+}
+
+function fecharPopup(){
+  document.getElementById('popup-overlay').classList.remove('show');
+}
+
+function refazerAtividade(){
+  textareas.forEach(function(t){
+    t.value = '';
+    t.parentElement.querySelector('.contador-chars').textContent = '0 caracteres (mínimo ' + t.dataset.min + ')';
+  });
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.remove('show');
+  });
+  document.querySelectorAll('.opcao').forEach(function(op){
+    op.classList.remove('sel','correta','errada','travada');
+  });
+  document.querySelectorAll('.opcao-marca').forEach(function(m){ m.style.display='none'; m.textContent=''; });
+  document.querySelectorAll('.gabarito-info').forEach(function(g){ g.classList.remove('show'); });
+  document.querySelectorAll('.badge-resultado').forEach(function(b){ b.textContent=''; b.className='badge-resultado'; });
+  respMC = {};
+  corrigido = false;
+  window.__acertos = undefined;
+  document.getElementById('alerta-incompleto').classList.remove('show');
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+/* ===== EXPORTAR PDF ===== */
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML.replace(/\n/g, '<br>');
+}
+
+const QUESTOES = [
+ {
+  "num": "1",
+  "enunc": "A partir do texto, explique o que caracteriza o discurso de ódio e por que ele não pode ser confundido com a simples manifestação de uma opinião divergente nem com o exercício legítimo da liberdade de expressão.",
+  "id": "resp-1",
+  "coment": "Espera-se que o aluno identifique os elementos da definição: (1) trata-se de uma forma de expressão; (2) que incita, promove ou justifica ódio, discriminação ou violência; (3) dirigida a um indivíduo ou grupo; (4) em razão de um atributo identitário (origem, etnia, raça, cor, religião, gênero, orientação sexual, identidade de gênero, idade, deficiência, condição social ou política). A divergência de opinião critica ideias, políticas ou condutas e admite o debate; o discurso de ódio nega a dignidade e o direito de existir de pessoas por aquilo que elas são. Como os direitos humanos valem para todos, a liberdade de expressão encontra limite quando seu exercício serve para violar direitos de outros."
+ },
+ {
+  "num": "2",
+  "enunc": "O texto apresenta a internet como meio de inclusão social, cultural e política e, ao mesmo tempo, como espaço de conflito, discriminação, preconceito e intolerância. Explique essa ambivalência e interprete, à luz dos dados da PNS 2019 citados no texto (1.623.333 adultos que relataram agressão on-line; mulheres com quase 53% dos relatos), por que a violência digital pode reproduzir desigualdades que já existem fora da rede.",
+  "id": "resp-2",
+  "coment": "Espera-se que o aluno explique que a mesma tecnologia que amplia voz, acesso à informação e mobilização também amplia o alcance, a velocidade e a permanência das agressões, com baixa mediação e possibilidade de anonimato. Como a rede é parte da vida social, ela reproduz hierarquias de gênero, raça, classe e outras. Sobre o dado: mulheres são pouco mais da metade da população adulta, de modo que os 53% dos relatos, isolados, não provam sobre-representação; mas, somado ao fato de a misoginia ser a segunda categoria mais denunciada, o dado reforça a leitura de que a violência digital tem recorte de gênero. Valoriza-se a resposta que mostre essa cautela na leitura do número."
+ },
+ {
+  "num": "3",
+  "enunc": "Observe o mapa e o gráfico por faixa etária. Explique por que ambos devem ser lidos como retratos de quantos relatos há em cada grupo, e não como medida direta do risco que cada pessoa corre. Em seguida, indique que indicador seria necessário para comparar adequadamente os estados e as faixas etárias e relacione a maior concentração entre 18 e 29 anos ao modo como as gerações se inserem na sociabilidade digital.",
+  "id": "resp-3",
+  "coment": "Espera-se que o aluno perceba que o mapa usa valores absolutos por UF (as maiores contagens aparecem em estados populosos, como São Paulo, Minas Gerais e Bahia) e que o gráfico mostra a participação de cada faixa etária no total de relatos (soma ≈ 100%), e não a porcentagem de pessoas agredidas dentro de cada faixa. Para comparar risco seria necessária uma taxa: relatos por mil habitantes (ou por mil usuários de internet) em cada UF e em cada faixa etária. Sobre a faixa de 18 a 29 anos (31,6%): jovens usam mais as redes, por mais tempo e em mais plataformas, tornando-se mais expostos e também mais propensos a nomear e relatar a agressão; ainda assim, o gráfico sozinho não prova causa. Adultos de 18 a 39 anos somam cerca de 59% dos relatos."
+ },
+ {
+  "num": "6a",
+  "enunc": "a) Calcule, de forma aproximada, que parcela do total de 293.289 denúncias corresponde à soma das denúncias de apologia a crimes contra a vida e de misoginia.",
+  "id": "resp-6a",
+  "coment": "Cálculo: 76.132 + 74.341 = 150.473; 150.473 ÷ 293.289 ≈ 0,51, ou seja, cerca de 51% (pouco mais da metade). Observação para o professor: a soma das sete categorias do gráfico é exatamente 293.289, de modo que o gráfico detalha todo o total citado no texto."
+ },
+ {
+  "num": "6b",
+  "enunc": "b) Explique por que a existência de sete categorias distintas de crimes de ódio reforça a necessidade de políticas multidimensionais de enfrentamento.",
+  "id": "resp-6b",
+  "coment": "Políticas multidimensionais: categorias distintas (racismo, LGBTfobia, xenofobia, neonazismo, intolerância religiosa, misoginia, apologia a crimes contra a vida) têm públicos-alvo, contextos e motivações diferentes, o que exige combinar ações de educação, comunicação, segurança pública e justiça, conforme os eixos do relatório."
+ },
+ {
+  "num": "6c",
+  "enunc": "c) Explique por que o menor número de denúncias de intolerância religiosa não autoriza concluir que ela seja um problema menos relevante.",
+  "id": "resp-6c",
+  "coment": "Denúncia não mede gravidade: o número de denúncias depende de a vítima reconhecer a violência, conhecer o canal, confiar nele e se dispor a denunciar. Grupos menores ou mais estigmatizados podem denunciar menos. Violência não deixa de ser relevante por ser menos registrada."
+ },
+ {
+  "num": "8a",
+  "enunc": "a) Descreva a trajetória da série entre 2017 e 2022, indicando quantas vezes, aproximadamente, o valor de 2022 supera o de 2017.",
+  "id": "resp-8a",
+  "coment": "Trajetória: a série cresce, mas com oscilações: 961 (2017), salto para 16.717 (2018), queda para 7.112 (2019), alta para 12.698 (2020), nova queda para 8.174 (2021) e o maior valor, 28.679, em 2022. Como 28.679 ÷ 961 ≈ 30, o valor de 2022 é cerca de 30 vezes o de 2017; só 2022 concentra cerca de 39% de todas as denúncias do período (28.679 ÷ 74.341)."
+ },
+ {
+  "num": "8b",
+  "enunc": "b) Formule duas hipóteses plausíveis para explicar a elevação de 2022: uma ligada ao aumento real do fenômeno e outra ligada à forma como os casos são notificados.",
+  "id": "resp-8b",
+  "coment": "Hipóteses: aumento real — intensificação de ataques a mulheres nas redes, maior circulação de discursos misóginos, polarização, mais pessoas conectadas. Mudança na notificação — maior conhecimento do canal de denúncia, campanhas, facilidade de denunciar, mais confiança na resposta das autoridades, melhoria do registro."
+ },
+ {
+  "num": "8c",
+  "enunc": "c) Indique que informação adicional seria necessária para testar essas hipóteses e justifique sua escolha.",
+  "id": "resp-8c",
+  "coment": "Informação adicional: séries mais longas, número de usuários de internet por ano, taxa de denúncias por habitante ou por usuário, dados de boletins de ocorrência e das plataformas, mudanças nos procedimentos de registro da SaferNet. Valoriza-se a distinção entre denúncia registrada e ocorrência real."
+ },
+ {
+  "num": "10a",
+  "enunc": "a) Escolha um dos eixos e proponha uma ação concreta de enfrentamento ao discurso de ódio, indicando quem a executaria, a quem se destinaria e que problema, entre os apresentados nos gráficos, ela buscaria reduzir.",
+  "id": "resp-10a",
+  "coment": "Ação concreta: o aluno deve indicar o eixo, o executor (escola, plataforma, órgão de segurança, Ministério Público, veículo de comunicação etc.), o público e o problema visado, relacionando-o a um dado (por exemplo, a concentração de relatos entre jovens de 18 a 29 anos, ou o grande número de denúncias de apologia a crimes contra a vida e de misoginia). Exemplo: oficinas de educação midiática e direitos humanos na escola para reconhecer e denunciar agressões on-line."
+ },
+ {
+  "num": "10b",
+  "enunc": "b) Explique por que o enfrentamento isolado em um único eixo seria insuficiente e de que modo a ação proposta poderia ser combinada com outro eixo, sem restringir a liberdade de expressão legítima.",
+  "id": "resp-10b",
+  "coment": "Articulação: espera-se que o aluno explique que o ódio é um fenômeno social, cultural e jurídico ao mesmo tempo: educar sem responsabilizar deixa a violência impune; punir sem educar não altera as mentalidades; comunicação sem canais de denúncia e justiça não protege as vítimas. A combinação deve preservar o debate de ideias, distinguindo crítica e divergência de incitação ao ódio e à violência contra pessoas e grupos."
+ }
+];
+
+async function exportarPDF(){
+  /* Bloqueia a exportação enquanto houver questões sem resposta */
+  let pendentes = [];
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length < min){
+      const q = t.closest('.questao');
+      pendentes.push(q ? q.dataset.questao : t.id);
+    }
+  });
+  for(let i = 1; i <= TOTAL_OBJ; i++){
+    if(respMC[i] === undefined) pendentes.push('obj-' + i);
+  }
+  if(pendentes.length){
+    const rotulo = pendentes.filter(function(v,i,a){ return a.indexOf(v) === i; })
+      .map(function(v){ const el = document.querySelector('.questao[data-questao="' + v + '"]'); return 'Questão ' + (el && el.dataset.rot ? el.dataset.rot : v); }).join(', ');
+    alert('Responda todas as questões antes de exportar o PDF.\nPendentes: ' + rotulo + '.');
+    const primeira = document.querySelector('.questao[data-questao="' + pendentes[0] + '"]');
+    if(primeira) primeira.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  const overlay = document.createElement('div');
+  overlay.id = 'pdf-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(40,12,26,.6);display:flex;align-items:center;justify-content:center;z-index:999;';
+  overlay.innerHTML =
+    '<div style="background:#fff;border-radius:14px;padding:32px 36px;text-align:center;max-width:300px;box-shadow:0 10px 30px rgba(74,18,48,.3);font-family:\'Source Serif 4\',serif;">' +
+      '<div style="font-size:2rem;margin-bottom:8px;">📄</div>' +
+      '<h4 style="margin:0 0 4px;color:#4a1230;font-family:\'Playfair Display\',serif;">Gerando PDF…</h4>' +
+      '<p style="margin:0 0 14px;color:#755d67;font-size:.86rem;">Aguarde alguns instantes.</p>' +
+      '<div style="background:#f3dde7;border-radius:6px;overflow:hidden;height:8px;">' +
+        '<div id="pdf-prog" style="height:100%;width:0%;background:#7b2148;transition:width .2s ease;"></div>' +
+      '</div>' +
+      '<div id="pdf-prog-txt" style="margin-top:8px;font-family:\'JetBrains Mono\',monospace;font-size:.74rem;color:#755d67;">0%</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  await sleep(80);
+  function setP(pct, msg){
+    const pp = document.getElementById('pdf-prog'), pt = document.getElementById('pdf-prog-txt');
+    if(pp) pp.style.width = pct + '%';
+    if(pt) pt.textContent = msg || (pct + '%');
+  }
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'portrait', unit:'px', format:'a4', hotfixes:['px_scaling']});
+    const PW = pdf.internal.pageSize.getWidth(), PH = pdf.internal.pageSize.getHeight();
+    const ML = 28, CW = PW - ML*2;
+    let y = ML;
+
+    async function addImg(el){
+      const canvas = await html2canvas(el, {scale:2, useCORS:true, logging:false, backgroundColor:'#ffffff', scrollX:0, scrollY:0, windowWidth:860});
+      const imgW = CW, imgH = (canvas.height / canvas.width) * imgW;
+      const dataUrl = canvas.toDataURL('image/jpeg', .92), avail = PH - ML*2;
+      if(imgH <= avail){
+        if(y + imgH > PH - ML){ pdf.addPage(); y = ML; }
+        pdf.addImage(dataUrl, 'JPEG', ML, y, imgW, imgH);
+        y += imgH + 8;
+      } else {
+        if(y > ML + 4){ pdf.addPage(); y = ML; }
+        const pxPerPdfPt = canvas.width / imgW;
+        const cx = canvas.getContext('2d');
+        const x0 = Math.round(canvas.width * 0.04), wRow = canvas.width - 2*x0;
+        function linhaVazia(row){
+          const d = cx.getImageData(x0, row, wRow, 1).data; let mn = 255, mx = 0;
+          for(let i=0; i<d.length; i+=4){ const l = (d[i]+d[i+1]+d[i+2])/3; if(l<mn) mn=l; if(l>mx) mx=l; }
+          return (mx - mn) < 14;
+        }
+        let srcY = 0;
+        while(srcY < canvas.height){
+          const availPt = PH - y - ML;
+          let sliceH_px = Math.min(Math.round(availPt * pxPerPdfPt), canvas.height - srcY);
+          if(srcY + sliceH_px < canvas.height){
+            let cut = srcY + sliceH_px; const lim = Math.max(srcY + 40, cut - 200);
+            for(let r = cut; r > lim; r--){ if(linhaVazia(r)){ cut = r; break; } }
+            sliceH_px = cut - srcY;
+          }
+          const actualH_px = sliceH_px;
+          const tmp = document.createElement('canvas');
+          tmp.width = canvas.width; tmp.height = actualH_px;
+          tmp.getContext('2d').drawImage(canvas, 0, srcY, canvas.width, actualH_px, 0, 0, canvas.width, actualH_px);
+          const sliceUrl = tmp.toDataURL('image/jpeg', .92), slicePt = (actualH_px / canvas.width) * imgW;
+          pdf.addImage(sliceUrl, 'JPEG', ML, y, imgW, slicePt);
+          srcY += actualH_px; y += slicePt;
+          if(srcY < canvas.height){ pdf.addPage(); y = ML; }
+        }
+        y += 8;
+      }
+    }
+
+    async function band(tag, txt){
+      if(y > PH - ML - 300){ pdf.addPage(); y = ML; }
+      const b = document.createElement('div');
+      b.style.cssText = 'width:860px;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      b.innerHTML = '<div style="background:linear-gradient(90deg,#7b2148,#4a1230);border-radius:8px;padding:12px 22px;display:flex;align-items:center;gap:12px">' +
+        '<span style="background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;border-radius:20px;padding:3px 12px">' + tag + '</span>' +
+        '<span style="color:#fff;font-size:15px;font-weight:700">' + txt + '</span></div>';
+      document.body.appendChild(b);
+      await sleep(20);
+      await addImg(b);
+      document.body.removeChild(b);
+    }
+
+    const nome = document.getElementById('header-nome').textContent || 'Aluno(a)';
+    const turma = document.getElementById('ficha-turma').textContent || '—';
+    const acertos = window.__acertos !== undefined ? window.__acertos : '—';
+    const pct = window.__acertos !== undefined ? Math.round(window.__acertos/TOTAL_OBJ*100)+'%' : '—';
+    const now = new Date();
+    const dtStr = now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+    setP(5, 'Preparando capa…'); await sleep(40);
+    const coverEl = document.createElement('div');
+    coverEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;overflow:hidden;position:absolute;left:-9999px;top:0';
+    coverEl.innerHTML =
+      '<div style="background:linear-gradient(135deg,#4a1230 0%,#7b2148 60%,#d94f87 100%);padding:32px 48px 28px;color:white">' +
+        '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.75;font-weight:700;margin-bottom:6px">Sociologia · 3ª Série do Ensino Médio · Outubro Rosa</div>' +
+        '<div style="font-size:26px;font-weight:900;line-height:1.2;margin-bottom:5px">Enfrentamento ao Discurso de Ódio</div>' +
+        '<div style="font-size:13px;opacity:.85;font-style:italic">Violência on-line, direitos humanos e leitura de dados · 6 dissertativas + 4 objetivas</div>' +
+      '</div>' +
+      '<div style="background:#f8edf2;padding:22px 48px 26px;border-bottom:3px solid #f7b6cf">' +
+        '<div style="font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#7b2148;font-weight:700;margin-bottom:5px">Aluno(a)</div>' +
+        '<div style="font-size:20px;font-weight:700;color:#33252b;border-bottom:2.5px solid #7b2148;padding-bottom:6px;display:inline-block;margin-bottom:16px">' + esc(nome) + '</div>' +
+        '<div style="display:flex;gap:12px;flex-wrap:wrap">' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#7b2148">' + esc(turma) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Turma</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#d94f87">6</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Dissertativas</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#7b2148">' + acertos + '/4</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Objetivas (' + pct + ')</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:140px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + dtStr + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Gerado em</div></div>' +
+        '</div>' +
+        '<div style="font-size:9px;color:#bbb;margin-top:14px">Colégio Estadual Rodolfo de Oliveira · Goiás · 2026</div>' +
+      '</div>';
+    document.body.appendChild(coverEl); await sleep(60); await addImg(coverEl); document.body.removeChild(coverEl);
+
+    // QUESTÕES DISSERTATIVAS
+    setP(15, 'Preparando questões…'); await sleep(20);
+    await band('DISSERTATIVAS', 'Questões Dissertativas — Respostas e Orientações');
+
+    for(let i=0; i<QUESTOES.length; i++){
+      const q = QUESTOES[i];
+      setP(15 + Math.round(i/QUESTOES.length*38), 'Dissertativa ' + q.num + '…'); await sleep(10);
+
+      const valor = document.getElementById(q.id) ? document.getElementById(q.id).value : '';
+      const respostaHTML =
+        '<div style="background:#fbeef4;border:1.5px solid #ecc6d8;border-radius:8px;padding:12px 15px;min-height:40px;box-sizing:border-box;max-width:100%;overflow:hidden">' +
+          '<div style="font-size:12px;color:#33252b;line-height:1.75;white-space:normal;word-break:break-word;overflow-wrap:anywhere">' + (esc(valor) || '<span style="color:#aaa">(sem resposta)</span>') + '</div>' +
+        '</div>';
+
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #edc9d8;border-radius:10px;position:absolute;left:-9999px;top:0;box-sizing:border-box;word-break:break-word;overflow-wrap:anywhere;';
+      qEl.innerHTML =
+        '<div style="background:linear-gradient(90deg,#7b2148,#4a1230);padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + q.num + '</span>' +
+          '<span style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:11px;padding:3px 12px;border-radius:20px;font-weight:600">Dissertativa</span></div>' +
+        '<div style="padding:18px 24px 16px;background:#fffafd">' +
+          '<div style="font-size:13px;font-weight:700;color:#33252b;line-height:1.6;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #eee">' + esc(q.enunc) + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+            '<div style="width:4px;height:15px;background:#7b2148;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#7b2148;text-transform:uppercase;letter-spacing:1.5px">Resposta do Aluno(a)</div></div>' +
+          respostaHTML +
+          '<div style="display:flex;align-items:center;gap:8px;margin:12px 0 7px">' +
+            '<div style="width:4px;height:15px;background:#d94f87;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#a1325f;text-transform:uppercase;letter-spacing:1.5px">Comentário do Professor</div></div>' +
+          '<div style="background:#fff0f6;border:1.5px solid #f7b6cf;border-radius:8px;padding:13px 16px">' +
+            '<div style="font-size:12px;color:#5b1a38;line-height:1.8">' + esc(q.coment) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+    }
+
+    // QUESTÕES OBJETIVAS
+    setP(55, 'Preparando objetivas…'); await sleep(20);
+    await band('OBJETIVAS', 'Questões Objetivas — Gabarito Comentado');
+
+    const LETRAS_PDF = ['A','B','C','D','E'];
+    const objetivasEls = document.querySelectorAll('.questao.objetiva');
+    let oi = 0;
+    for(const qEl0 of objetivasEls){
+      const num = qEl0.dataset.questao.replace('obj-','');
+      const rot = qEl0.dataset.rot || num;
+      const correta = parseInt(qEl0.dataset.correta, 10);
+      const escolha = respMC[num];
+      const acertou = escolha === correta;
+      const enuncClone = qEl0.querySelector('.enunciado').cloneNode(true);
+      const badgeInClone = enuncClone.querySelector('.badge-resultado');
+      if(badgeInClone) badgeInClone.remove();
+      const numQInClone = enuncClone.querySelector('.num-q');
+      if(numQInClone) numQInClone.remove();
+      const tipoInClone = enuncClone.querySelector('.tipo-q');
+      if(tipoInClone) tipoInClone.remove();
+      const enunc = enuncClone.textContent.trim();
+      setP(55 + Math.round(oi/objetivasEls.length*35), 'Objetiva ' + rot + '…'); await sleep(10);
+
+      let altsHTML = '';
+      qEl0.querySelectorAll('.opcao').forEach(function(op){
+        const idx = parseInt(op.dataset.idx, 10);
+        const txt = op.querySelector('.opcao-txt').textContent;
+        let bg='#fffafd', bd='#edc9d8', cor='#33252b', tag='';
+        if(idx===correta){ bg='#e9f5ee'; bd='#9fc7ac'; cor='#16301f'; tag='<span style="color:#2f7d55;font-weight:700"> ✓ correta</span>'; }
+        if(idx===escolha && !acertou){ bg='#fdeeee'; bd='#e3a3a3'; cor='#7a1f1f'; tag='<span style="color:#a83232;font-weight:700"> ✗ sua resposta</span>'; }
+        else if(idx===escolha && acertou){ tag='<span style="color:#2f7d55;font-weight:700"> ← sua resposta</span>'; }
+        altsHTML += '<div style="display:flex;gap:9px;align-items:flex-start;background:'+bg+';border:1px solid '+bd+';border-radius:6px;padding:8px 12px;margin-bottom:6px"><div style="flex:0 0 auto;font-weight:700;color:#7b2148;font-size:12px">'+LETRAS_PDF[idx]+')</div><div style="min-width:0;font-size:12px;color:'+cor+';line-height:1.55">'+esc(txt)+tag+'</div></div>';
+      });
+
+      const headBg = acertou ? 'linear-gradient(90deg,#2f7d55,#1f5238)' : 'linear-gradient(90deg,#a83232,#7a1f1f)';
+      const gabTxt = qEl0.querySelector('.gabarito-info').textContent.trim();
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #edc9d8;border-radius:10px;position:absolute;left:-9999px;top:0;box-sizing:border-box;word-break:break-word;overflow-wrap:anywhere;';
+      qEl.innerHTML =
+        '<div style="background:'+headBg+';padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + rot + '</span>' +
+          '<span style="background:rgba(255,255,255,.2);color:white;font-size:11px;padding:3px 12px;border-radius:20px;font-weight:700">' + (acertou?'ACERTOU':'ERROU') + '</span></div>' +
+        '<div style="padding:16px 24px 14px;background:#fffafd">' +
+          '<div style="font-size:13px;font-weight:700;color:#33252b;line-height:1.6;margin-bottom:12px">' + esc(enunc) + '</div>' +
+          altsHTML +
+          '<div style="margin-top:10px;background:#fff0f6;border:1px solid #f7b6cf;border-radius:6px;padding:10px 14px">' +
+            '<div style="font-size:12px;color:#5b1a38;line-height:1.6">' + esc(gabTxt) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+      oi++;
+    }
+
+    // RODAPÉ EM TODAS AS PÁGINAS
+    setP(92, 'Finalizando…'); await sleep(30);
+    const totalPages = pdf.getNumberOfPages();
+    for(let p=1; p<=totalPages; p++){
+      pdf.setPage(p);
+      const fEl = document.createElement('div');
+      fEl.style.cssText = 'width:' + Math.round(CW) + 'px;height:22px;background:#f8edf2;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:10px;color:#888;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      fEl.innerHTML = '<span>Enfrentamento ao Discurso de Ódio · ' + esc(nome) + ' · Objetivas: ' + acertos + '/' + TOTAL_OBJ + '</span><span>Página ' + p + ' de ' + totalPages + '</span>';
+      document.body.appendChild(fEl);
+      const fc = await html2canvas(fEl, {scale:2, logging:false, backgroundColor:'#f8edf2'});
+      document.body.removeChild(fEl);
+      const fUrl = fc.toDataURL('image/jpeg', .9), fH = (fc.height / fc.width) * CW;
+      pdf.setFillColor(248,237,242); pdf.rect(ML, PH-fH, CW, fH, 'F');
+      pdf.addImage(fUrl, 'JPEG', ML, PH-fH, CW, fH);
+    }
+
+    setP(100, 'Salvando…'); await sleep(200);
+    const safeName = nome.replace(/[^a-zA-Z0-9_\-]/g, '_');
+    pdf.save('Discurso_de_Odio_' + safeName + '.pdf');
+
+  } catch(err){
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message);
+  } finally {
+    const ov = document.getElementById('pdf-overlay');
+    if(ov) document.body.removeChild(ov);
+  }
+}
+
+/* ===== PROTEÇÃO ANTI-COLA ===== */
+(function () {
+  const CAMPOS_PROTEGIDOS = document.querySelectorAll('textarea.dissertativa, .campo-resposta');
+  const LIMITE_BLOCO = 25;
+
+  function bloquear(e) {
+    e.preventDefault();
+    mostrarToast('Colar não permitido nesta atividade.');
+  }
+
+  CAMPOS_PROTEGIDOS.forEach(function (campo) {
+    ['paste', 'copy', 'cut', 'drop', 'dragover', 'contextmenu'].forEach(function (evt) {
+      campo.addEventListener(evt, bloquear);
+    });
+
+    campo.addEventListener('beforeinput', function (e) {
+      if (e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop') {
+        e.preventDefault();
+        mostrarToast('Colar não permitido nesta atividade.');
+      }
+    });
+
+    let valorAnterior = campo.value;
+    campo.addEventListener('input', function (e) {
+      const diferenca = campo.value.length - valorAnterior.length;
+      if (diferenca >= LIMITE_BLOCO && e.inputType !== 'insertReplacementText') {
+        campo.value = valorAnterior;
+        mostrarToast('Colar não permitido nesta atividade.');
+      } else {
+        valorAnterior = campo.value;
+      }
+    });
+  });
+
+  function mostrarToast(mensagem) {
+    let toast = document.getElementById('anti-cola-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'anti-cola-toast';
+      toast.style.cssText =
+        'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+        'background:#333;color:#fff;padding:10px 20px;border-radius:8px;' +
+        'font-size:14px;z-index:9999;opacity:0;transition:opacity .3s;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = mensagem;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function () {
+      toast.style.opacity = '0';
+    }, 2500);
+  }
+})();
+</script>
+
+</body>
+</html>
