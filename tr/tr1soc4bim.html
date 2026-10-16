@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sociologia · 3ª Série · Campanha #RespeitoNasRedes</title>
+<style>
+:root{--navy:#12304a;--teal:#167b80;--gold:#b8842b;--bg:#f1f3f6;--ink:#203244;--line:#dce4eb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 'Segoe UI',Arial,sans-serif}
+header{background:linear-gradient(120deg,#12304a,#176e79);color:#fff;padding:52px 20px;text-align:center}
+header .tag{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#ffe3a4}
+h1{font-size:clamp(29px,5vw,48px);line-height:1.15;margin:15px auto;max-width:900px}
+header p{max-width:720px;margin:auto}
+main{max-width:1050px;margin:25px auto;padding:0 18px 60px}
+.card{background:#fff;border-radius:17px;padding:26px;margin:20px 0;box-shadow:0 6px 24px #132e4a12}
+h2{color:var(--navy);margin-top:0;font-size:24px}
+h3{margin:0 0 6px;font-size:17px;color:var(--navy)}
+.highlight{background:#e9f6f5;border-left:5px solid var(--teal);padding:18px;border-radius:9px}
+.notice{background:#fff7e5;padding:14px;border-radius:10px;border-left:4px solid var(--gold)}
+.muted{font-size:14px;color:#536879}
+
+/* resumo */
+.resumo{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 0}
+.resumo div{background:#f5f8fa;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
+.resumo b{display:block;color:var(--teal);font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+
+/* posts */
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.post{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.post-art{aspect-ratio:2/1;background:linear-gradient(140deg,#17496b,#27a1a2);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:#fff;padding:18px}
+.post:nth-child(2) .post-art{background:linear-gradient(140deg,#70487f,#d16b92)}
+.post:nth-child(3) .post-art{background:linear-gradient(140deg,#24714e,#9ac66e)}
+.post-art .num{width:46px;height:46px;border-radius:50%;background:#ffffff2b;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;margin-bottom:8px}
+.post-art strong{font-size:20px;line-height:1.2;letter-spacing:1px}
+.post-body{padding:14px 16px 16px;font-size:15px}
+.cartaz-box{flex-direction:row;margin-top:15px}.cartaz-box .post-art{aspect-ratio:auto;flex:0 0 220px;background:linear-gradient(140deg,#8a6212,#d9a93f)}.cartaz-box .post-body{flex:1}
+@media(max-width:820px){.cartaz-box{flex-direction:column}.cartaz-box .post-art{flex:none;aspect-ratio:2/1}}
+.post-body p{margin:0 0 8px}
+.post-body ul{margin:6px 0 0;padding-left:20px}
+.post-body li{margin:3px 0}
+
+/* passo a passo */
+.passos{counter-reset:p;list-style:none;margin:0;padding:0}
+.passos li{counter-increment:p;position:relative;padding:4px 0 14px 52px;margin:0}
+.passos li::before{content:counter(p);position:absolute;left:0;top:2px;width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.passos li:not(:last-child)::after{content:"";position:absolute;left:17px;top:40px;bottom:2px;width:2px;background:var(--line)}
+
+/* formulário */
+label{display:block;font-weight:700;margin:15px 0 4px}
+label small{display:block;font-weight:400;color:#536879;font-size:14px}
+input,textarea,select{width:100%;border:1px solid #b9cbd4;border-radius:9px;padding:12px;font:inherit;background:#fbfdff}
+textarea{min-height:92px;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:3px solid #7ad2d255;border-color:#167b80}
+.grupo{border-left:4px solid var(--line);padding-left:16px;margin-top:20px}
+.grupo.gv{border-color:var(--gold);margin-bottom:6px}.grupo.gv label{margin-top:12px}.grupo.g1{border-color:#27a1a2}.grupo.g2{border-color:#d16b92}.grupo.g3{border-color:#6fa956}
+
+/* botões */
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;align-items:center}
+button{background:var(--navy);border:0;border-radius:9px;color:#fff;padding:13px 19px;font-weight:700;cursor:pointer;font-size:15px}
+button.secondary{background:var(--teal)}
+button:hover{filter:brightness(1.1)}
+button:focus-visible{outline:3px solid #7ad2d2;outline-offset:2px}
+
+/* prompt */
+.prompt-box{width:100%;min-height:360px;font:14px/1.5 Consolas,'Courier New',monospace;background:#0f2233;color:#e6eef5;border:0;border-radius:12px;padding:18px;resize:vertical}
+.prompt-box:focus{outline:3px solid #7ad2d255}
+.estado{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:20px;background:#fff7e5;color:#8a6212}
+.estado.ok{background:#e1f4ea;color:#1d6b45}
+details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:14px;background:#fafcfd}
+summary{cursor:pointer;font-weight:700;color:var(--navy)}
+
+.prompt-item{border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:18px;background:#fbfdfe}
+.prompt-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.prompt-head h3{margin:0;display:flex;align-items:center;gap:10px}
+.num-s{width:30px;height:30px;border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:16px;background:#27a1a2}
+.num-s.n2{background:#c0577f}.num-s.n3{background:#4a9a4d}.num-s.n4{background:#b8842b}
+/* checklist */
+.checklist label{font-weight:500;display:flex;gap:10px;align-items:flex-start;margin:10px 0}
+.checklist input{width:auto;margin-top:6px}
+.progress{height:12px;background:#e2e9ed;border-radius:20px;overflow:hidden}
+.progress>div{height:100%;width:0;background:var(--teal);transition:width .2s}
+footer{text-align:center;color:#536879;font-size:13px;margin-top:25px}
+
+@media(max-width:820px){.posts{grid-template-columns:1fr}.resumo{grid-template-columns:1fr 1fr}.card{padding:19px}header{padding:40px 16px}}
+</style></head><body>
+
+<header><div class="tag">Sociologia · 3ª Série do Ensino Médio</div>
+<h1>#RespeitoNasRedes<br>O ódio não pode viralizar!</h1>
+<p>Missão: criar uma campanha de conscientização sobre o enfrentamento ao discurso de ódio, com três publicações para o Instagram e um cartaz A4 para divulgação na escola.</p></header>
+
+<main>
+<section class="card"><h2>01 · Entenda o desafio</h2>
+<p>As redes sociais são espaços de convivência e liberdade de expressão, mas também podem ser utilizadas para espalhar preconceitos, discriminação, ameaças e discursos de ódio.</p>
+<p>O texto <strong>“Enfrentamento ao discurso de ódio — ObservaDH”</strong> mostra que mulheres e jovens estão entre as principais vítimas de agressões on-line e apresenta o crescimento das denúncias de misoginia na internet.</p>
+<p class="highlight"><strong>Pergunta que orienta sua campanha:</strong> como usar o Instagram para combater o discurso de ódio e promover o respeito aos Direitos Humanos?</p>
+<div class="resumo">
+<div><b>Entrega</b>3 posts + 1 cartaz A4</div>
+<div><b>Tamanho</b>1080 × 1350 px (4:5)</div>
+<div><b>Trabalho</b>em dupla</div>
+<div><b>Fonte obrigatória</b>ObservaDH</div>
+</div></section>
+
+<section class="card"><h2>02 · Sua missão: o que cada post precisa ter</h2>
+<p>Esta campanha é feita <strong>em dupla</strong>. Ela deve <strong>informar, conscientizar e mobilizar</strong> os usuários do Instagram. Cada publicação cumpre um papel diferente. Além dos três posts, a dupla cria um <strong>cartaz em A4</strong> para divulgar a campanha na escola:</p>
+<div class="posts">
+<div class="post"><div class="post-art"><span class="num">1</span><strong>INFORMAR</strong></div><div class="post-body"><p><strong>O que é discurso de ódio?</strong></p><ul><li>Explique o conceito com suas palavras.</li><li>Dê um exemplo fictício, sem reproduzir ofensas.</li><li>Inclua a hashtag da campanha e a assinatura discreta da 3ª B no rodapé.</li></ul></div></div>
+<div class="post"><div class="post-art"><span class="num">2</span><strong>CONSCIENTIZAR</strong></div><div class="post-body"><p><strong>Quem são as vítimas?</strong></p><ul><li>Use um dado estatístico do ObservaDH.</li><li>Explique em uma frase o que o dado revela.</li><li>Escreva a fonte na própria arte e mantenha a assinatura discreta da 3ª B no rodapé.</li></ul></div></div>
+<div class="post"><div class="post-art"><span class="num">3</span><strong>MOBILIZAR</strong></div><div class="post-body"><p><strong>O que podemos fazer?</strong></p><ul><li>Proponha três atitudes concretas.</li><li>Use verbos de ação (apoiar, denunciar, refletir).</li><li>Assine como <strong>campanha dos estudantes da turma</strong> e termine com um convite ao público.</li><li>No rodapé, em letras pequenas, coloque os <strong>nomes da dupla, a turma e a escola</strong>.</li></ul></div></div>
+</div>
+<div class="post cartaz-box"><div class="post-art"><span class="num">A4</span><strong>CARTAZ</strong></div><div class="post-body"><p><strong>Divulgação na escola</strong></p><ul><li>Papel A4 na vertical, para imprimir e fixar em corredor, pátio ou mural.</li><li>Frase de chamada grande, o dado do ObservaDH, as três atitudes e como participar.</li><li>Mesma identidade visual dos posts, rodapé com a dupla, a turma e a escola e espaço de 4 × 4 cm para um QR code.</li></ul></div></div></section>
+
+<section class="card"><h2>03 · Como produzir: passo a passo</h2>
+<ol class="passos">
+<li><h3>Leia o texto-base</h3>Leia o texto do ObservaDH e escolha <strong>um dado</strong> para o Post 2.</li>
+<li><h3>Planeje</h3>Combine com sua dupla e preencha o planejamento da seção 04: autoria (nomes, turma e escola), nome, público, hashtag, <strong>identidade visual</strong> e a mensagem de cada post.</li>
+<li><h3>Crie cada post com IA</h3>Na seção 05, há um prompt completo para cada post. Copie o do Post 1, depois o do Post 2 e o do Post 3, e cole na ferramenta de IA. Todos usam a mesma identidade visual do seu planejamento.</li>
+<li><h3>Monte e revise no Canva ou PowerPoint</h3>Crie três publicações <strong>em formato retrato 4:5 (1080 × 1350 px)</strong>, com imagens, frases curtas, legenda e hashtag, e o cartaz em <strong>A4 vertical</strong>. Confira o texto e o dado: a IA pode errar.</li>
+<li><h3>Faça o cartaz</h3>Por último, use o prompt do Cartaz A4 para criar o material de divulgação que será impresso e fixado na escola.</li>
+<li><h3>Entregue</h3>Marque a lista da seção 06 e entregue os três posts e o cartaz conforme orientação do professor.</li>
+</ol>
+<p class="notice"><strong>Atenção:</strong> indique a fonte dos dados utilizados. Não exponha nomes, imagens ou relatos que identifiquem vítimas. A publicação em um perfil real e a afixação do cartaz na escola dependem de autorização e orientação do professor; você pode entregar os arquivos sem publicá-los.</p></section>
+
+<section class="card"><h2>04 · Planeje sua campanha</h2>
+<p>Preencha os campos. Seu planejamento fica salvo neste navegador enquanto você trabalha, e é ele que alimenta o prompt da seção 05.</p>
+<label for="nome">Nome da campanha</label><input id="nome" placeholder="Ex.: Respeito é tendência">
+<label for="publico">Quem você deseja conscientizar?</label><input id="publico" placeholder="Ex.: estudantes e jovens que usam redes sociais">
+<label for="hashtag">Hashtag principal</label><input id="hashtag" placeholder="#RespeitoNasRedes">
+
+<div class="grupo gv"><h3>Autoria da campanha (dupla)</h3><p class="muted" style="margin:0 0 4px">Estas informações aparecem, pequenas e discretas, no rodapé do Post 3.</p>
+<label for="aluno1">Nome do(a) estudante 1</label><input id="aluno1" placeholder="Nome e sobrenome">
+<label for="aluno2">Nome do(a) estudante 2</label><input id="aluno2" placeholder="Nome e sobrenome">
+<label for="turma">Turma</label><input id="turma" value="3ª B" placeholder="Ex.: 3ª B">
+<label for="escola">Escola</label><input id="escola" value="Colégio Estadual Rodolfo de Oliveira" placeholder="Nome da escola">
+</div>
+
+<div class="grupo gv"><h3>Identidade visual da campanha</h3><p class="muted" style="margin:0 0 4px">Define como os três posts vão parecer uma única campanha. Será usada em todos os prompts.</p>
+<label for="paleta">Paleta de cores<small>Escolha de 3 a 4 cores e diga onde usar cada uma (fundo, destaque, texto).</small></label><input id="paleta" placeholder="Ex.: azul-marinho (fundo), amarelo (destaques), branco (texto)">
+<label for="fontes">Fontes<small>Uma para títulos e outra para textos. Use fontes legíveis, como as do Canva.</small></label><input id="fontes" placeholder="Ex.: Montserrat Bold nos títulos e Open Sans nos textos">
+<label for="tipoimg">Tipo de imagem<small>Escolha como as imagens dos posts serão criadas pela IA.</small></label><select id="tipoimg"><option value="ilustracao">Ilustração (desenho, formas, símbolos)</option><option value="realista">Imagens realísticas de situações do cotidiano (aparência de fotografia, geradas por IA)</option></select>
+<label for="estilo">Detalhes do estilo das imagens<small>Ilustração: estilo do desenho. Realística: luz, enquadramento e ambiente. Não use rostos de pessoas reais.</small></label><input id="estilo" placeholder="Ex.: ilustração plana com formas geométricas; ou: fotografia realista, luz natural, ambiente escolar">
+<label for="clima">Sensação que a campanha deve passar</label><input id="clima" placeholder="Ex.: acolhedora, jovem e firme, sem passar medo">
+<label for="elemento">Elemento que se repete nos três posts<small>Um selo, moldura, símbolo, numeração (1/3, 2/3, 3/3) ou rodapé com a hashtag.</small></label><input id="elemento" placeholder="Ex.: balão de conversa no canto superior e hashtag no rodapé">
+</div>
+
+<div class="grupo g1"><label for="post1">Post 1 · Informar: qual será a mensagem principal?<small>Defina discurso de ódio e pense em um exemplo fictício, sem ofensas.</small></label><textarea id="post1" placeholder="Explique o que é discurso de ódio..."></textarea><label for="cena1">Cena da imagem do Post 1 (opcional)<small>Descreva uma situação real do cotidiano que a imagem vai mostrar, sem expor ninguém.</small></label><input id="cena1" placeholder="Ex.: adolescente sozinho no corredor da escola olhando o celular, com expressão de desconforto"></div>
+<div class="grupo g2"><label for="post2">Post 2 · Conscientizar: que dado do ObservaDH você utilizará?<small>Escreva o dado, o que ele significa e a fonte (com a data da consulta).</small></label><textarea id="post2" placeholder="Escreva o dado, o que ele significa e a fonte..."></textarea><label for="cena2">Cena da imagem do Post 2 (opcional)<small>Descreva uma situação real do cotidiano que a imagem vai mostrar, sem expor ninguém.</small></label><input id="cena2" placeholder="Ex.: jovem mulher em casa, rosto iluminado pela tela do celular, ar cansado"></div>
+<div class="grupo g3"><label for="post3">Post 3 · Mobilizar: quais três atitudes você vai propor?<small>Atitudes que qualquer pessoa consegue fazer no dia a dia. Este post leva a assinatura da 3ª B do Colégio Estadual Rodolfo de Oliveira, então pense também em um compromisso coletivo da turma.</small></label><textarea id="post3" placeholder="Ex.: não compartilhar ataques; apoiar vítimas; denunciar conteúdos..."></textarea><label for="cena3">Cena da imagem do Post 3 (opcional)<small>Descreva uma situação real do cotidiano que a imagem vai mostrar, sem expor ninguém.</small></label><input id="cena3" placeholder="Ex.: grupo de estudantes sorrindo juntos, um deles mostrando o celular aos colegas"></div>
+
+<div class="grupo gv"><h3>Cartaz de divulgação (A4)</h3><p class="muted" style="margin:0 0 4px">Cartaz impresso para fixar na escola e divulgar a campanha. Os campos são opcionais: se ficarem em branco, a IA propõe.</p>
+<label for="cartazchamada">Frase de chamada do cartaz<small>Uma frase curta e forte, que se leia de longe.</small></label><input id="cartazchamada" placeholder="Ex.: O ódio não pode viralizar. Respeito começa em você.">
+<label for="cartazonde">Como o público pode participar<small>Perfil do Instagram, QR code, mural da escola, roda de conversa...</small></label><input id="cartazonde" placeholder="Ex.: Siga @perfil-da-campanha e use #RespeitoNasRedes">
+<label for="cena4">Cena ou imagem principal do cartaz</label><input id="cena4" placeholder="Ex.: estudantes de costas olhando para uma tela com um coração, em ambiente escolar">
+</div>
+
+<label for="reflexao">Reflexão final: uma publicação pode transformar comportamentos? Como? Quais são seus limites?</label><textarea id="reflexao" placeholder="Escreva sua reflexão..."></textarea>
+<div class="actions"><button type="button" onclick="copiarPlano()">Copiar planejamento</button><span id="feedback" class="muted" role="status" aria-live="polite"></span></div>
+</section>
+
+<section class="card"><h2>05 · Prompts prontos: crie os 3 posts e o cartaz com IA</h2>
+<p>Cada post tem um prompt completo e independente. Crie na ordem <strong>Post 1, Post 2, Post 3 e, por último, o Cartaz A4</strong>, copiando um de cada vez e colando na ferramenta de IA (ChatGPT, Gemini, Copilot ou Canva com IA). Os três usam a mesma identidade visual do seu planejamento, para formar uma só campanha.</p>
+<p class="muted">Os trechos entre [colchetes] são campos do planejamento (seção 04) que ainda estão em branco. Complete-os antes de colar na IA.</p>
+
+<div class="prompt-item"><div class="prompt-head"><h3><span class="num-s n1">1</span> Prompt do Post 1 · Informar</h3><span class="estado" id="estado1"></span></div>
+<textarea class="prompt-box" id="prompt1" readonly aria-label="Prompt do Post 1"></textarea>
+<div class="actions"><button type="button" class="secondary" onclick="copiarPrompt(1)">Copiar prompt do Post 1</button><span id="fb1" class="muted" role="status" aria-live="polite"></span></div></div>
+
+<div class="prompt-item"><div class="prompt-head"><h3><span class="num-s n2">2</span> Prompt do Post 2 · Conscientizar</h3><span class="estado" id="estado2"></span></div>
+<textarea class="prompt-box" id="prompt2" readonly aria-label="Prompt do Post 2"></textarea>
+<div class="actions"><button type="button" class="secondary" onclick="copiarPrompt(2)">Copiar prompt do Post 2</button><span id="fb2" class="muted" role="status" aria-live="polite"></span></div></div>
+
+<div class="prompt-item"><div class="prompt-head"><h3><span class="num-s n3">3</span> Prompt do Post 3 · Mobilizar</h3><span class="estado" id="estado3"></span></div>
+<textarea class="prompt-box" id="prompt3" readonly aria-label="Prompt do Post 3"></textarea>
+<div class="actions"><button type="button" class="secondary" onclick="copiarPrompt(3)">Copiar prompt do Post 3</button><span id="fb3" class="muted" role="status" aria-live="polite"></span></div></div>
+
+<div class="prompt-item"><div class="prompt-head"><h3><span class="num-s n4">4</span> Prompt do Cartaz · Divulgação na escola (A4)</h3><span class="estado" id="estado4"></span></div>
+<textarea class="prompt-box" id="prompt4" readonly aria-label="Prompt do cartaz A4"></textarea>
+<div class="actions"><button type="button" class="secondary" onclick="copiarPrompt(4)">Copiar prompt do Cartaz</button><span id="fb4" class="muted" role="status" aria-live="polite"></span></div></div>
+
+<details><summary>Dicas para usar a IA com qualidade</summary>
+<ul>
+<li><strong>Imagens realísticas:</strong> peça sempre pessoas fictícias e cenas respeitosas. Confira se a imagem não lembra uma pessoa real nem mostra mensagens ofensivas legíveis; se mostrar, peça outra versão.</li>
+<li><strong>Texto na imagem:</strong> alguns geradores erram letras. Os prompts já pedem que, nesse caso, a IA entregue a arte sem texto e o texto separado, para você aplicar no Canva ou PowerPoint.</li>
+<li><strong>Mantenha a mesma conversa:</strong> se possível, crie os três posts no mesmo chat, para a IA repetir o estilo. Se abrir um chat novo, a identidade visual já vai dentro de cada prompt.</li>
+<li><strong>Confira o dado:</strong> abra o site do ObservaDH e confirme o número. A IA pode errar ou inventar estatísticas.</li>
+<li><strong>Refine:</strong> peça ajustes (“deixe o texto mais curto”, “use cores mais suaves”) até ficar com a sua cara.</li>
+<li><strong>A autoria é sua:</strong> a IA dá a primeira versão. As escolhas, a revisão e a reflexão final são suas.</li>
+</ul></details>
+</section>
+
+<section class="card"><h2>06 · Confira antes de entregar</h2>
+<div class="progress"><div id="barra"></div></div>
+<p class="muted" id="contagem">0 de 11 etapas concluídas</p>
+<div class="checklist" id="checklist">
+<label><input type="checkbox"> Criei um nome e uma hashtag para a campanha.</label>
+<label><input type="checkbox"> Defini a identidade visual (cores, fontes, estilo) e usei a mesma nos três posts.</label>
+<label><input type="checkbox"> Preparei três publicações em formato retrato 4:5 (1080 × 1350 px).</label>
+<label><input type="checkbox"> Expliquei o conceito de discurso de ódio, com exemplo fictício.</label>
+<label><input type="checkbox"> Usei um dado do ObservaDH e indiquei a fonte na arte.</label>
+<label><input type="checkbox"> Apresentei três atitudes concretas de mobilização.</label>
+<label><input type="checkbox"> Conferi no site do ObservaDH o dado sugerido pela IA.</label>
+<label><input type="checkbox"> Coloquei, pequenos e discretos no rodapé do Post 3, os nomes da dupla, a turma e a escola.</label>
+<label><input type="checkbox"> Preparei o cartaz A4 para impressão, com margens de segurança e espaço para o QR code.</label>
+<label><input type="checkbox"> Revisei ortografia e linguagem: sem ofensas e sem identificar pessoas.</label>
+<label><input type="checkbox"> Escrevi a reflexão final com minhas palavras.</label>
+</div></section>
+
+<footer>Sociologia · 3ª Série do Ensino Médio · Direitos Humanos · GO-EMCHS605D<br>Texto-base: Enfrentamento ao discurso de ódio — ObservaDH · <a href="https://observadh.mdh.gov.br/" target="_blank" rel="noopener">ObservaDH</a></footer>
+</main>
+
+<script>
+const ids=['cartazchamada','cartazonde','cena4','tipoimg','cena1','cena2','cena3','aluno1','aluno2','turma','escola','nome','publico','hashtag','paleta','fontes','estilo','clima','elemento','post1','post2','post3','reflexao'];
+const boxes=[...document.querySelectorAll('#checklist input')];
+const key='campanha-respeito-3serie-v6';
+const $=id=>document.getElementById(id);
+
+function salvar(){try{localStorage.setItem(key,JSON.stringify({campos:Object.fromEntries(ids.map(id=>[id,$(id).value])),checks:boxes.map(b=>b.checked)}))}catch(e){}}
+function carregar(){try{const d=JSON.parse(localStorage.getItem(key)||'{}');ids.forEach(id=>{const x=d.campos?.[id];$(id).value=(x===undefined||x===null)?($(id).defaultValue||$(id).options?.[0]?.value||''):x});boxes.forEach((b,i)=>b.checked=!!d.checks?.[i])}catch(e){}atualizar();montarPrompt()}
+function atualizar(){const n=boxes.filter(b=>b.checked).length;$('barra').style.width=(n/boxes.length*100)+'%';$('contagem').textContent=`${n} de ${boxes.length} etapas concluídas`}
+ids.forEach(id=>['input','change'].forEach(ev=>$(id).addEventListener(ev,()=>{salvar();montarPrompt()})));
+boxes.forEach(b=>b.addEventListener('change',()=>{atualizar();salvar()}));
+
+function texto(){const labels={cartazchamada:'Cartaz — frase de chamada',cartazonde:'Cartaz — como participar',cena4:'Cartaz — imagem principal',tipoimg:'Tipo de imagem',cena1:'Cena do Post 1',cena2:'Cena do Post 2',cena3:'Cena do Post 3',aluno1:'Estudante 1',aluno2:'Estudante 2',turma:'Turma',escola:'Escola',nome:'Nome da campanha',publico:'Público-alvo',hashtag:'Hashtag',paleta:'Paleta de cores',fontes:'Fontes',estilo:'Estilo das imagens',clima:'Sensação da campanha',elemento:'Elemento que se repete',post1:'Post 1 — Informar',post2:'Post 2 — Conscientizar',post3:'Post 3 — Mobilizar',reflexao:'Reflexão final'};
+return 'SOCIOLOGIA — 3ª SÉRIE DO ENSINO MÉDIO\nCAMPANHA #RESPEITONASREDES\n\n'+ids.map(id=>labels[id]+':\n'+$(id).value).join('\n\n')}
+
+function montarPrompt(){
+  const falt={};
+  const v=(id,ph,k)=>{const t=$(id).value.trim();if(t)return t;(falt[k]=falt[k]||new Set()).add(id);return '['+ph+']'};
+  const real=$('tipoimg').value==='realista';
+  const cenaTxt=k=>{const t=$('cena'+k).value.trim();return t?`Cena da imagem: ${t}`:(real?'Cena da imagem: proponha você uma situação realista do cotidiano que combine com a mensagem deste post.':'Cena da imagem: proponha você uma ilustração que combine com a mensagem deste post.')};
+  const base=k=>`Você é um designer gráfico e redator especialista em comunicação educativa para redes sociais, com foco em Direitos Humanos. Estou criando uma campanha de conscientização para o Instagram, em uma atividade de Sociologia da 3ª série do Ensino Médio. A campanha tem 3 publicações; vou pedir uma de cada vez. Agora quero a PUBLICAÇÃO ${k} de 3.
+
+CONTEXTO DA CAMPANHA
+- Tema: enfrentamento ao discurso de ódio nas redes sociais.
+- Texto-base: "Enfrentamento ao discurso de ódio", do ObservaDH (https://observadh.mdh.gov.br/). Ele mostra que mulheres e jovens estão entre as principais vítimas de agressões on-line e que as denúncias de misoginia na internet cresceram.
+- Pergunta da campanha: como usar o Instagram para combater o discurso de ódio e promover o respeito aos Direitos Humanos?
+- Nome da campanha: ${v('nome','nome da campanha',k)}
+- Hashtag: ${v('hashtag','#hashtag',k)}
+- Público a conscientizar: ${v('publico','público-alvo',k)}
+
+IDENTIDADE VISUAL (deve ser a mesma nas 3 publicações)
+- Paleta de cores: ${v('paleta','paleta de cores',k)}
+- Fontes: ${v('fontes','fontes',k)}
+- Tipo de imagem: ${real?'IMAGEM REALÍSTICA, com aparência de fotografia, mostrando uma situação do cotidiano':'ILUSTRAÇÃO'}
+- Detalhes do estilo: ${v('estilo','detalhes do estilo das imagens',k)}
+- Sensação a transmitir: ${v('clima','sensação da campanha',k)}
+- Elemento que se repete em todos os posts: ${v('elemento','elemento que se repete',k)}
+
+FORMATO
+- Imagem em formato retrato 4:5, de 1080 x 1350 pixels, para o feed do Instagram.
+- Mantenha o texto e os elementos importantes na área central, longe das bordas, porque a grade do perfil pode cortar as laterais.
+- Texto curto na arte (no máximo 25 palavras), em português correto, com letras grandes e bom contraste.
+- Linguagem respeitosa e adequada a adolescentes e jovens.
+
+IMAGEM DESTE POST
+${cenaTxt(k)}`;
+  const regras=`REGRAS OBRIGATÓRIAS
+- Não escreva nem reproduza xingamentos, ofensas ou discursos de ódio. Use apenas exemplos fictícios e neutros.
+${real?`- Gere pessoas FICTÍCIAS, que não se pareçam com nenhuma pessoa real, celebridade ou vítima real. Sem nomes, relatos ou casos reais.
+- A situação deve ser realista, mas mostrada com respeito: sem violência, sem agressão física, sem cenas humilhantes e sem expor alguém ao constrangimento. Mostre o impacto pela postura, pela expressão e pelo ambiente.
+- Telas de celular e computador devem aparecer desfocadas ou com conteúdo ilegível. Sem logotipos de redes sociais ou de marcas e sem mensagens ofensivas legíveis.
+- Se houver jovens ou estudantes, mostre-os com roupas comuns e adequadas, em situações do dia a dia, sem qualquer conotação sexual.`:'- Não identifique pessoas reais: sem nomes, relatos ou rostos de vítimas. Use ilustrações, formas e símbolos.'}
+- Não invente estatísticas. Use somente o dado que informei.
+- Tom positivo e propositivo, sem cenas de violência.`;
+  const entrega=`O QUE VOCÊ DEVE ENTREGAR
+1. A IMAGEM FINAL do post, em retrato 4:5 (1080 x 1350 px), já com o texto aplicado e seguindo a identidade visual acima. Se a ferramenta não conseguir escrever o texto sem erros, gere a arte SEM texto, com espaço livre para ele, e me entregue o texto separado para eu aplicar no Canva ou PowerPoint.
+2. O TEXTO EXATO que aparece na arte (título e frases).
+3. A LEGENDA DO INSTAGRAM: até 80 palavras, terminando com a hashtag da campanha.
+4. Uma pergunta de revisão para eu conferir se o post cumpre a proposta.`;
+  const P={};
+  P[1]=base(1)+`
+
+PUBLICAÇÃO 1 — INFORMAR: "O que é discurso de ódio?"
+Ideia principal que quero comunicar: ${v('post1','mensagem principal do Post 1',1)}
+O post deve explicar o conceito de discurso de ódio de forma simples e trazer um exemplo FICTÍCIO e neutro (sem reproduzir nenhuma ofensa). Deve ser a abertura da campanha: apresente o nome e a hashtag. Inclua, no rodapé e de forma discreta, a assinatura "Campanha ${v('turma','turma',1)} · ${v('escola','escola',1)}".
+
+`+regras+`
+
+`+entrega;
+  P[2]=base(2)+`
+
+PUBLICAÇÃO 2 — CONSCIENTIZAR: "Quem são as vítimas?"
+Dado do ObservaDH, o que ele significa e a fonte: ${v('post2','dado do ObservaDH, o que ele significa e a fonte',2)}
+O post deve colocar o dado em DESTAQUE (número grande), explicar em uma frase o que ele revela sobre quem sofre agressões on-line e escrever a fonte na própria arte, em letras pequenas e legíveis (ObservaDH). Inclua, no rodapé e de forma discreta, a assinatura "Campanha ${v('turma','turma',2)} · ${v('escola','escola',2)}".
+
+`+regras+`
+
+`+entrega;
+  P[3]=base(3)+`
+
+PUBLICAÇÃO 3 — MOBILIZAR: "O que podemos fazer?"
+Três atitudes concretas que quero propor: ${v('post3','três atitudes',3)}
+O post deve apresentar as três atitudes em lista curta, cada uma começando com um verbo de ação.
+Este post também deve mostrar que a campanha é feita por estudantes. Inclua um compromisso coletivo, como "Nós, da ${v('turma','turma',3)}, nos comprometemos a…", e uma faixa ou selo com a assinatura "Campanha dos estudantes da ${v('turma','turma',3)} — ${v('escola','escola',3)}" (sem fotos de pessoas reais).
+No rodapé, em letras PEQUENAS e DISCRETAS (menores que o texto principal, sem competir com ele), coloque os créditos: "Criado por ${v('aluno1','estudante 1',3)} e ${v('aluno2','estudante 2',3)} · ${v('turma','turma',3)} · ${v('escola','escola',3)}". Escreva os nomes exatamente como informei.
+Termine com um convite ao público para participar da campanha usando a hashtag. Deve ser o fechamento da campanha.
+
+`+regras+`
+
+`+entrega;
+  P[4]=`Você é um designer gráfico especialista em cartazes educativos e comunicação escolar, com foco em Direitos Humanos. Preciso de um CARTAZ para impressão em papel A4, para divulgar uma campanha de conscientização dentro da escola. O cartaz resume a campanha que criamos para o Instagram.
+
+CONTEXTO DA CAMPANHA
+- Tema: enfrentamento ao discurso de ódio nas redes sociais.
+- Texto-base: "Enfrentamento ao discurso de ódio", do ObservaDH (https://observadh.mdh.gov.br/). Ele mostra que mulheres e jovens estão entre as principais vítimas de agressões on-line e que as denúncias de misoginia na internet cresceram.
+- Nome da campanha: ${v('nome','nome da campanha',4)}
+- Hashtag: ${v('hashtag','#hashtag',4)}
+- Público: estudantes, professores e funcionários da escola. Principal público a conscientizar: ${v('publico','público-alvo',4)}
+
+IDENTIDADE VISUAL (a mesma dos posts do Instagram, para o cartaz parecer parte da campanha)
+- Paleta de cores: ${v('paleta','paleta de cores',4)}
+- Fontes: ${v('fontes','fontes',4)}
+- Tipo de imagem: ${real?'IMAGEM REALÍSTICA, com aparência de fotografia, mostrando uma situação do cotidiano':'ILUSTRAÇÃO'}
+- Detalhes do estilo: ${v('estilo','detalhes do estilo das imagens',4)}
+- Sensação a transmitir: ${v('clima','sensação da campanha',4)}
+- Elemento que se repete na campanha: ${v('elemento','elemento que se repete',4)}
+
+FORMATO PARA IMPRESSÃO
+- Papel A4 na vertical (210 x 297 mm), proporção 1:1,414. Resolução ideal: 2480 x 3508 pixels (300 dpi).
+- Deixe margem de segurança de pelo menos 10 mm em todos os lados, sem texto ou elementos importantes nas bordas.
+- Deve ser lido de longe, no corredor: título muito grande, poucas palavras, letras grandes e alto contraste entre texto e fundo.
+- Pense na impressão: evite fundos totalmente escuros e muito extensos, que gastam tinta, e evite detalhes muito finos.
+- Reserve um espaço livre quadrado de cerca de 4 x 4 cm no canto inferior para eu colocar depois um QR code, com o texto "Participe" ao lado.
+
+CONTEÚDO DO CARTAZ (de cima para baixo)
+1. FRASE DE CHAMADA em destaque: ${$('cartazchamada').value.trim()||'proponha você uma frase curta e forte, no máximo 8 palavras, ligada ao tema da campanha.'}
+2. IMAGEM PRINCIPAL. ${cenaTxt(4)}
+3. DADO EM DESTAQUE do ObservaDH: ${v('post2','dado do ObservaDH, o que ele significa e a fonte',4)}. Mostre o número grande, uma frase curta sobre o que ele revela e a fonte escrita em letras pequenas e legíveis.
+4. TRÊS ATITUDES em lista curta, cada uma começando com um verbo de ação: ${v('post3','três atitudes',4)}
+5. COMO PARTICIPAR: ${$('cartazonde').value.trim()||'convide o público a seguir a campanha e usar a hashtag.'}
+6. RODAPÉ, em letras pequenas e discretas: "Campanha dos estudantes da ${v('turma','turma',4)} — ${v('escola','escola',4)} · Criado por ${v('aluno1','estudante 1',4)} e ${v('aluno2','estudante 2',4)}". Escreva os nomes exatamente como informei.
+
+`+regras+`
+
+O QUE VOCÊ DEVE ENTREGAR
+1. A IMAGEM FINAL do cartaz em formato A4 vertical, com o texto aplicado e seguindo a identidade visual acima. Se a ferramenta não conseguir escrever o texto sem erros ou não gerar o formato A4, gere a arte SEM texto e na proporção mais próxima possível, e me entregue o texto separado e organizado para eu montar o cartaz em tamanho A4 no Canva ou PowerPoint.
+2. O TEXTO EXATO que aparece no cartaz, na ordem acima.
+3. Uma sugestão de onde fixar o cartaz na escola (por exemplo, corredor, pátio, mural) e uma pergunta de revisão para eu conferir se o cartaz está claro à distância.`;
+  [1,2,3,4].forEach(k=>{
+    $('prompt'+k).value=P[k];
+    const n=(falt[k]||new Set()).size,e=$('estado'+k);
+    if(n){e.textContent=n+(n===1?' campo em branco':' campos em branco');e.className='estado'}
+    else{e.textContent='Prompt completo';e.className='estado ok'}
+  });
+}
+
+async function copiarTexto(t,el,okMsg,areaFallback){
+  try{await navigator.clipboard.writeText(t);el.textContent=okMsg}
+  catch(err){
+    try{if(areaFallback){areaFallback.focus();areaFallback.select();document.execCommand('copy');el.textContent=okMsg;return}}catch(e2){}
+    el.textContent='Não foi possível copiar automaticamente. Selecione o texto e use Ctrl+C.'
+  }
+}
+function copiarPlano(){copiarTexto(texto(),$('feedback'),'Planejamento copiado!')}
+function copiarPrompt(k){copiarTexto($('prompt'+k).value,$('fb'+k),'Prompt do Post '+k+' copiado! Cole na ferramenta de IA.',$('prompt'+k))}
+
+carregar();
+</script></body></html>
