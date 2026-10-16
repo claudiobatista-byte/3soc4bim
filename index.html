@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script>if(/[?&]v=texto/.test(location.search)){document.documentElement.classList.add("view-texto");document.addEventListener("DOMContentLoaded",function(){document.title="Sociologia · Texto II · Texto didático"})}</script>
 <title>Sociologia · Revisa Goiás · 3ª Série · 4º Bimestre</title>
 <style>
 :root{
@@ -188,6 +189,27 @@ figure.fig img{cursor:zoom-in}
   .activity-link-box,.work-link-box{padding:18px}
   .activity-link-box a,.work-link-box a{display:flex;justify-content:center;padding:14px 17px}
 }
+/* texto didático */
+.body ul.lst{margin:6px 0 16px;padding-left:1.4em}
+.body ul.lst li{margin:0 0 .6em;text-align:justify}
+.body ul.lst li::marker{color:var(--gold)}
+.body ul.lst.tight li{margin-bottom:.45em}
+table.gloss{width:100%;border-collapse:collapse;margin:8px 0 6px;font:16px/1.5 var(--serif)}
+table.gloss th,table.gloss td{border:1px solid var(--line);padding:10px 14px;vertical-align:top;text-align:left}
+table.gloss th{width:28%;background:var(--navy);color:#fff;font:700 14px var(--sans);letter-spacing:.04em}
+table.gloss tr:nth-child(even) td{background:#f4f1e8}
+table.gloss td:first-child{font-weight:700;color:var(--navy);width:28%}
+.refs p{margin:0 0 .7em!important;text-indent:0!important;text-align:left!important;font:14px/1.55 var(--sans);color:var(--muted);padding-left:1.6em;text-indent:-1.6em!important}
+@media(max-width:700px){table.gloss th,table.gloss td{padding:8px 10px;font-size:15px}table.gloss td:first-child,table.gloss th{width:36%}.body ul.lst li{text-align:left}}
+
+/* modo "texto didático": mesma página, abre em nova aba só com este capítulo */
+section#texto-didatico{display:none}
+.tx-only{display:none!important}
+html.view-texto section#texto-didatico{display:block}
+html.view-texto .cover,html.view-texto main>section.chapter:not(#texto-didatico){display:none}
+html.view-texto .nav a:not(.tx-only),html.view-texto .dr-link:not(.tx-only){display:none}
+html.view-texto .nav a.tx-only{display:inline-block!important}
+html.view-texto .dr-link.tx-only{display:flex!important}
 </style>
 </head>
 <body>
@@ -206,10 +228,20 @@ figure.fig img{cursor:zoom-in}
     <a class="dr-link" href="#matriz"><b>◆</b><span>Matriz e objeto de conhecimento</span></a>
     <a class="dr-link" href="#discurso-odio"><b>01</b><span>Enfrentamento ao discurso de ódio — ObservaDH</span></a>
     <a class="dr-link" href="#liberdade-expressao"><b>02</b><span>A liberdade de expressão como um Direito Humano e seus limites democráticos</span></a>
+    <a class="dr-link" href="#reflexao"><b>↺</b><span>Atividade de reflexão: tópicos 1 e 2</span></a>
     <a class="dr-link" href="#sistema-prisional"><b>03</b><span>Brasil caminha para atingir a marca de 1 milhão de pessoas presas em 2027</span></a>
     <a class="dr-link" href="#violencia-racial"><b>04</b><span>Atlas da Violência 2026 — Violência contra pessoas negras</span></a>
     <a class="dr-link" href="#refugiados"><b>05</b><span>O direito a ter direitos e a questão dos refugiados</span></a>
     <a class="dr-link" href="#materiais"><b>◆</b><span>Materiais de apoio ao professor</span></a>
+    <a class="dr-link tx-only" href="#t-inicio"><b>◆</b><span>Para começar a conversa</span></a>
+    <a class="dr-link tx-only" href="#t-origem"><b>01</b><span>De onde vem a liberdade de expressão</span></a>
+    <a class="dr-link tx-only" href="#t-democracia"><b>02</b><span>Por que a democracia precisa dela</span></a>
+    <a class="dr-link tx-only" href="#t-censura"><b>03</b><span>Quando é o Estado que cala: a censura</span></a>
+    <a class="dr-link tx-only" href="#t-limites"><b>04</b><span>Nenhum direito é absoluto</span></a>
+    <a class="dr-link tx-only" href="#t-internet"><b>05</b><span>A nova praça pública: internet, fake news e regulação</span></a>
+    <a class="dr-link tx-only" href="#t-olhar"><b>06</b><span>Um olhar crítico: quem controla o que circula?</span></a>
+    <a class="dr-link tx-only" href="#t-resumo"><b>◆</b><span>Em resumo</span></a>
+    <a class="dr-link tx-only" href="#t-glossario"><b>+</b><span>Glossário e referências</span></a>
   </div>
 </aside>
 
@@ -217,10 +249,20 @@ figure.fig img{cursor:zoom-in}
   <a href="#matriz">Matriz</a>
   <a href="#discurso-odio">1 · Discurso de ódio</a>
   <a href="#liberdade-expressao">2 · Liberdade de expressão</a>
+  <a href="#reflexao">↺ Reflexão</a>
   <a href="#sistema-prisional">3 · Sistema prisional</a>
   <a href="#violencia-racial">4 · Violência racial</a>
   <a href="#refugiados">5 · Refugiados</a>
   <a href="#materiais">Materiais</a>
+  <a class="tx-only" href="#t-inicio">Para começar</a>
+  <a class="tx-only" href="#t-origem">1 · Origem</a>
+  <a class="tx-only" href="#t-democracia">2 · Democracia</a>
+  <a class="tx-only" href="#t-censura">3 · Censura</a>
+  <a class="tx-only" href="#t-limites">4 · Limites</a>
+  <a class="tx-only" href="#t-internet">5 · Internet</a>
+  <a class="tx-only" href="#t-olhar">6 · Olhar crítico</a>
+  <a class="tx-only" href="#t-resumo">Resumo</a>
+  <a class="tx-only" href="#t-glossario">Glossário</a>
 </nav>
 
 <main>
@@ -325,10 +367,17 @@ figure.fig img{cursor:zoom-in}
 <section class="chapter" id="liberdade-expressao">
   <div class="ch-head">
     <div class="ch-num">02</div>
-    <div>
-      <div class="eyebrow">Sociologia · Texto II</div>
-      <h2>A liberdade de expressão como um Direito Humano e seus limites democráticos</h2>
-      <p class="deck">Direitos Humanos · leitura, análise e atividades</p>
+    <div class="topic-title-row">
+      <div class="topic-title-copy">
+        <div class="eyebrow">Sociologia · Texto II</div>
+        <h2>A liberdade de expressão como um Direito Humano e seus limites democráticos</h2>
+        <p class="deck">Direitos Humanos · leitura e análise</p>
+      </div>
+      <div class="topic-tools" aria-label="Materiais do tópico 2">
+        <a class="topic-tool" href="img/ge2.webp" target="_blank" rel="noopener" title="Abrir guia de estudo em nova aba" aria-label="Abrir guia de estudo em nova aba">↗</a>
+        <a class="topic-tool" href="https://drive.google.com/file/d/1jPMimYYjvTYuI1QQp8VdhFw7yxiLD8ij/view?usp=sharing" target="_blank" rel="noopener" title="Abrir material no Google Drive em nova aba" aria-label="Abrir material no Google Drive em nova aba"><span class="square-icon" aria-hidden="true"></span></a>
+        <a class="topic-tool" href="?v=texto#texto-didatico" target="_blank" rel="noopener" title="Abrir texto didático em nova aba" aria-label="Abrir texto didático em nova aba">≡</a>
+      </div>
     </div>
   </div>
   <div class="body">
@@ -336,67 +385,125 @@ figure.fig img{cursor:zoom-in}
     <p class="par">Contudo, no debate sociológico e jurídico, estabelece-se que nenhum direito fundamental é absoluto. A liberdade de expressão encontra seu limite ético e legal no momento em que é instrumentalizada para violar os direitos e a dignidade de terceiros. Em sociedades democráticas, a incitação à violência, o discurso de ódio, a calúnia e a disseminação intencional de desinformação não são protegidos pelo direito de expressão, pois atentam contra a integridade de grupos vulneráveis e desestabilizam as garantias coletivas. Exercer a liberdade de expressão exige responsabilidade ética no espaço público.</p>
     <p class="source cite">Texto extraído do ObservaDH. Adaptado.<br>Disponível em: <a href="https://observadh.mdh.gov.br/" target="_blank" rel="noopener">https://observadh.mdh.gov.br/</a>. Acesso em: 10 set. 2026.</p>
 
-    <div class="callout">
-      <span class="lab">Saiba mais</span>
-      <p>Acesse o <i>Relatório de recomendações para o enfrentamento ao discurso de ódio e ao extremismo no Brasil</i>:<br>
-      <a href="https://www.gov.br/mdh/pt-br/assuntos/noticias/2023/julho/mdhc-entrega-relatorio-com-propostas-para-enfrentar-o-discurso-de-odio-e-o-extremismo-no-brasil/RelatrioGTdioeExtremismosDigital_30.06.23.pdf" target="_blank" rel="noopener" style="overflow-wrap:anywhere;font:13.5px var(--sans)">gov.br/mdh/…/RelatrioGTdioeExtremismosDigital_30.06.23.pdf</a></p>
+
+    <!-- Atividade do Texto II -->
+    <div class="activity-link-box" id="atividade-texto2">
+      <span class="activity-kicker">Atividade · Texto II</span>
+      <h3>Liberdade de expressão e democracia</h3>
+      <p>Simulado no estilo do Enem, com 20 questões de Ciências Humanas e Sociais Aplicadas sobre liberdade de expressão, limites democráticos, censura e redes digitais, com gabarito comentado e referências.</p>
+      <a href="atv/atvenem1.html" target="_blank" rel="noopener">✎ Fazer atividade</a>
     </div>
 
-    <div class="act-title">ATIVIDADES</div>
+  </div>
+</section>
 
-    <!-- Q1 -->
-    <article class="q" id="q1">
-      <div class="q-head"><span class="q-num">1</span>
-        <div class="stem"><p>Com base na leitura do Texto I, analise o perfil das principais vítimas de agressões on-line no Brasil (quanto a gênero e faixa etária) e explique de que forma o crescimento da misoginia no ambiente digital dialoga com a tese central do Texto II referente aos limites éticos e jurídicos da liberdade de expressão.</p></div>
-      </div>
-      <details class="answer"><summary>Sugestão e expectativa de resposta</summary>
-        <p><b class="k">Perfil das vítimas:</b> o estudante deve indicar que as mulheres são as principais vítimas (quase 53% dos relatos de agressão/exposição) e que jovens de 18 a 29 anos representam a faixa etária mais atingida (31,6%).</p>
-        <p><b class="k">Articulação com o Texto II:</b> espera-se que o aluno articule como o aumento expressivo da misoginia (alta de quase 30 vezes nas denúncias) evidencia o uso distorcido do espaço público e das redes. O aluno deve explicar que esses ataques verbais e simbólicos não constituem exercício legítimo da liberdade de opinião, mas sim uma violação da dignidade humana de um grupo historicamente vulnerabilizado, justificando a imposição de limites éticos e jurídicos previstos no Texto II.</p>
-      </details>
-      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
-    </article>
+<!-- ============ ATIVIDADE DE REFLEXÃO · TÓPICOS 1 E 2 ============ -->
+<section class="chapter" id="reflexao">
+  <div class="ch-head">
+    <div class="ch-num">↺</div>
+    <div>
+      <div class="eyebrow">Sociologia · Atividade de reflexão</div>
+      <h2>Onde estou no que estudei até aqui?</h2>
+      <p class="deck">Pausa para refletir sobre os tópicos 1 e 2: discurso de ódio, liberdade de expressão e seus limites democráticos</p>
+    </div>
+  </div>
+  <div class="body">
+    <div class="activity-link-box" id="atividade-reflexao">
+      <span class="activity-kicker">Atividade · Reflexão sobre a temática</span>
+      <h3>Perfil de posicionamento: discurso de ódio e liberdade de expressão na escola</h3>
+      <p>Antes de seguir para o texto didático, pare e reflita sobre o que você estudou nos tópicos 1 e 2. São quinze situações de sala de aula e do dia a dia da escola: você escolhe como reagiria, vê o que a Constituição e a lei dizem sobre cada caso e, no final, recebe um gráfico de barras com cinco medidas: liberdade de expressão, proteção de pessoas e grupos, diálogo e educação, procedimento justo e coincidência com a lei. Não vale nota. Use o resultado para conversar com a turma sobre o que mudou ou permaneceu no seu modo de pensar.</p>
+      <a href="atv/atvmapa1.html" target="_blank" rel="noopener">✎ Fazer a reflexão</a>
+    </div>
+  </div>
+</section>
 
-    <!-- Q2 -->
-    <article class="q" id="q2">
-      <div class="q-head"><span class="q-num">2</span>
-        <div class="stem"><p>A liberdade de expressão é uma das garantias fundamentais das sociedades democráticas, garantindo o direito à opinião e à crítica. No entanto, esse direito não é absoluto e encontra limites éticos e jurídicos legítimos quando:</p></div>
-      </div>
-      <div class="alts">
-        <div class="alt"><span class="l">A</span><span>é instrumentalizado para disseminar desinformação, incitar o ódio e promover a discriminação contra grupos vulneráveis.</span></div>
-        <div class="alt"><span class="l">B</span><span>questiona tradições ou práticas culturais historicamente consolidadas de uma comunidade.</span></div>
-        <div class="alt"><span class="l">C</span><span>é utilizado por cidadãos e movimentos sociais para criticar autoridades governamentais.</span></div>
-        <div class="alt"><span class="l">D</span><span>manifesta opiniões divergentes ou minoritárias em relação ao pensamento da maioria.</span></div>
-        <div class="alt"><span class="l">E</span><span>é exercido publicamente em plataformas digitais por jovens e estudantes.</span></div>
-      </div>
-      <details class="answer"><summary>Gabarito e comentário</summary>
-        <span class="gab">Gabarito: A</span>
-        <p><b class="k">Comentário sobre o item:</b> a liberdade de expressão, embora seja um direito fundamental em uma sociedade democrática, não possui caráter absoluto. Seu exercício encontra limites quando é utilizado para disseminar desinformação, incitar o ódio ou promover práticas discriminatórias que possam violar direitos fundamentais de outras pessoas ou grupos.</p>
-      </details>
-      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
-    </article>
-
-    <!-- Q3 -->
-    <article class="q" id="q3">
-      <div class="q-head"><span class="q-num">3</span>
-        <div class="stem">
-          <p><b>Texto I (excerto)</b></p>
-          <blockquote class="cite"><p>“A internet é um importante meio de inclusão social, cultural e política [...]. No entanto, a internet também é um espaço de conflito, tensão e violência, onde se manifestam diversas formas de discriminação, preconceito e intolerância [...]. O aumento da incidência desses crimes no ambiente virtual está relacionado com a expansão do acesso à internet no país.”</p></blockquote>
-          <p>Ao analisar o processo de expansão do acesso à internet no Brasil e os seus desdobramentos sociais descritos no Texto I, percebe-se que a consolidação da cultura digital no país:</p>
-        </div>
-      </div>
-      <div class="alts">
-        <div class="alt"><span class="l">A</span><span>eliminou as assimetrias e os preconceitos preexistentes ao democratizar o acesso à informação.</span></div>
-        <div class="alt"><span class="l">B</span><span>transformou a rede em um ambiente neutro, isento das contradições e tensões da sociedade off-line.</span></div>
-        <div class="alt"><span class="l">C</span><span>atinge de maneira homogênea todas as faixas etárias e perfis demográficos, sem distinção de vulnerabilidade.</span></div>
-        <div class="alt"><span class="l">D</span><span>revelou uma contradição entre a democratização do acesso e a intensificação de práticas de exclusão e violência.</span></div>
-        <div class="alt"><span class="l">E</span><span>reduziu a necessidade de intervenção do Estado na regulação de crimes contra grupos vulneráveis.</span></div>
-      </div>
-      <details class="answer"><summary>Gabarito e comentário</summary>
-        <span class="gab">Gabarito: D</span>
-        <p><b class="k">Comentário sobre o item:</b> o texto evidencia uma contradição presente na consolidação da cultura digital: ao mesmo tempo em que a expansão do acesso à internet amplia as possibilidades de inclusão social, cultural e política, também pode favorecer a reprodução e a intensificação de preconceitos, discriminações, intolerância e violência já existentes na sociedade.</p>
-      </details>
-      <p class="skill q-foot"><b>C1</b> Avaliar as situações de violação dos direitos humanos em diferentes contextos e territórios.</p>
-    </article>
+<!-- ============ TEXTO II · TEXTO DIDÁTICO ============ -->
+<section class="chapter" id="texto-didatico">
+  <div class="ch-head">
+    <div class="ch-num">02</div>
+    <div>
+      <div class="eyebrow">Sociologia · Texto II · Texto didático</div>
+      <h2>Liberdade de expressão: um direito de todos, com limites que protegem todos</h2>
+      <p class="deck">Direitos humanos, democracia e os desafios do mundo digital · leitura para a 3ª série do Ensino Médio</p>
+    </div>
+  </div>
+  <div class="body">
+    <div class="theme"><small>OBJETO DE CONHECIMENTO</small>A liberdade de expressão como um Direito Humano e seus limites democráticos</div>
+    <h3 class="tsub" id="t-inicio">Para começar a conversa</h3>
+    <p class="par">Você acorda, pega o celular e, em poucos minutos, já leu, comentou, compartilhou e talvez até publicou algo. Opinar parece a coisa mais natural do mundo. Mas nem sempre foi assim, e ainda hoje em muitos lugares não é. Durante a ditadura militar brasileira (1964-1985), músicas, novelas, jornais e peças de teatro eram censurados, e quem criticava o governo podia ser perseguido.</p>
+    <p class="par">Ao mesmo tempo, você já deve ter visto alguém dizer coisas muito ofensivas na internet e se defender com a frase: “É liberdade de expressão!”. Será que é mesmo? Até onde vai esse direito? Quem decide onde ele termina? Neste texto, você vai entender por que a liberdade de expressão é um dos pilares da democracia, por que ela tem limites e por que esses limites, quando bem definidos, existem para proteger a liberdade de todos.</p>
+    <h3 class="tsub" id="t-origem">De onde vem a liberdade de expressão</h3>
+    <p class="par">A ideia de que as pessoas têm direito de pensar e manifestar o que pensam ganhou força com o <b>liberalismo político</b>, movimento que combateu o poder absoluto dos reis e da Igreja. O filósofo inglês John Locke (1632-1704) defendia que a organização política deveria preservar a liberdade individual dentro dos chamados direitos naturais: vida, liberdade e propriedade. Dessa liberdade decorriam outras, como a de pensamento, a religiosa e a de revolta. Repare que, já em Locke, aparece um limite: a liberdade de uma pessoa termina quando passa a ameaçar a liberdade de outra.</p>
+    <p class="par">Com o tempo, esse princípio foi parar nas Constituições. Nas democracias liberais, o poder dos governantes eleitos é limitado por uma Constituição que protege a igualdade e as liberdades individuais, como a liberdade de expressão e a de religião. A Constituição dos Estados Unidos (1787), com suas emendas, é um exemplo: garantiu direitos civis importantes, embora tenha convivido com a escravidão, abolida ali apenas em 1865. Isso mostra que um direito escrito no papel nem sempre vale para todos.</p>
+    <p class="par">Depois da Segunda Guerra Mundial, a liberdade de pensamento passou a ser reconhecida como um direito humano universal. A Declaração Universal dos Direitos Humanos (ONU, 1948) afirma, em seu artigo XVIII, que toda pessoa tem direito à liberdade de pensamento, consciência e religião, e que isso inclui manifestar suas crenças em público ou em particular. No Brasil, a Constituição de 1988 garante a liberdade de manifestação do pensamento, mas veda o anonimato: quem se expressa deve poder ser identificado e responsabilizado.</p>
+    <div class="callout">
+      <span class="lab">Em foco · Os três tipos de direito, segundo T. H. Marshall</span>
+      <p><b>Direitos civis:</b> garantem a liberdade individual, como o direito à vida e à liberdade de expressão. <b>Direitos políticos:</b> permitem participar da vida política, como votar e se associar. <b>Direitos sociais:</b> asseguram um mínimo de bem-estar, como educação, saúde e trabalho. A liberdade de expressão é, portanto, um direito civil, e é ela que dá sentido aos outros dois.</p>
+    </div>
+    <h3 class="tsub" id="t-democracia">Por que a democracia precisa dela</h3>
+    <p class="par">O cientista político italiano Norberto Bobbio (1909-2004) mostrou que liberdades civis e liberdades políticas caminham juntas. Sem liberdade de imprensa, de opinião, de associação e de reunião, a participação do povo no poder seria apenas aparência: de que adianta votar sem poder discutir, criticar e se informar? E, no sentido contrário, sem a participação popular no poder, as liberdades civis têm poucas chances de durar.</p>
+    <p class="par">Na prática, isso aparece de várias formas. A liberdade de imprensa permite investigar e divulgar o que o governo faz, o que ajuda a combater a corrupção: quanto mais livre é a imprensa de um país, maior a chance de a população descobrir desvios de dinheiro público. A liberdade de expressão também sustenta o <b>pluralismo</b>, ou seja, a convivência respeitosa entre grupos, opiniões, culturas e interesses diferentes, com diversidade de partidos, de representantes e tolerância às opiniões divergentes. Por isso, os índices que medem a qualidade da democracia no mundo observam as chamadas liberdades civis, como a liberdade de expressão, o acesso à internet e a igualdade perante a lei.</p>
+    <p class="par">É importante notar, porém, que ter o direito garantido na lei (a cidadania formal) não é o mesmo que viver esse direito no dia a dia (a cidadania real). No Brasil, direitos como a liberdade de expressão e pensamento convivem com desigualdades de acesso à educação, à saúde e à informação, o que faz com que nem todos consigam, de fato, ser ouvidos.</p>
+    <h3 class="tsub" id="t-censura">Quando é o Estado que cala: a censura</h3>
+    <p class="par">A <b>censura</b> é o controle sobre o que pode ou não ser dito, publicado ou mostrado. Quando é feita pelo Estado, ela é o oposto da liberdade de expressão. Na ditadura militar, a ideologia da “segurança nacional” afirmava que o país estava ameaçado por ideias que queriam mudar a ordem social, e usava essa suposta ameaça para justificar a repressão, a censura e a suspensão de direitos individuais. A Lei de Imprensa, criada em 1967, deu ao governo o poder de controlar o que os jornais e as emissoras podiam publicar.</p>
+    <p class="par">A resistência veio de vários lados. Artistas encontraram formas de driblar os censores, estudantes e jornalistas protestaram, e a sociedade passou a reivindicar a liberdade de expressão como parte da volta à democracia. O governo de Ernesto Geisel (1974-1979) reduziu a censura aos meios de comunicação, e a Constituição de 1988 fortaleceu a liberdade de imprensa. A Lei de Imprensa só deixou de valer em 2009, quando o Supremo Tribunal Federal (STF) decidiu que ela era incompatível com a Constituição de 1988 (ADPF 130). Essa história ajuda a entender por que a sociedade brasileira desconfia, com razão, de qualquer tentativa de controlar o que as pessoas dizem.</p>
+    <h3 class="tsub" id="t-limites">Nenhum direito é absoluto</h3>
+    <p class="par">Se a censura é tão perigosa, então tudo pode ser dito? Não. A liberdade de expressão não é um direito absoluto. Ela pode sofrer restrições para garantir outros direitos igualmente reconhecidos, como a honra, a imagem e a privacidade. Exercer a liberdade de expressão não pode causar prejuízos a outras pessoas. Veja alguns exemplos:</p>
+    <ul class="lst">
+      <li><b>Calúnia e difamação:</b> atribuir falsamente um crime a alguém ou atingir sua reputação é crime, e continua sendo crime quando acontece em redes sociais, blogs e mensagens diretas. Tudo o que é crime fora da internet também é crime nela.</li>
+      <li><b>Racismo:</b> a Constituição de 1988 definiu o racismo como crime inafiançável e imprescritível, regulamentado pela Lei nº 7.716/1989. Em 2019, o Supremo Tribunal Federal (STF) reconheceu que a homofobia e a transfobia também se enquadram nessa lei.</li>
+      <li><b>Proteção de crianças e adolescentes:</b> propostas de regulação das plataformas digitais preveem a retirada imediata de conteúdos que violem os direitos desse público.</li>
+      <li><b>Zombaria de diferenças:</b> a liberdade de expressão, característica das sociedades democráticas, não significa poder ridicularizar alguém por diferenças culturais, corporais, de origem, de gênero ou de orientação sexual. Muitas piadas se apoiam em estereótipos que, historicamente, serviram para humilhar certos povos e grupos.</li>
+    </ul>
+    <blockquote class="cite def">
+      <span class="lab">O que é discurso de ódio?</span>
+      <p>Comunicação que incita discriminação, hostilidade ou violência contra pessoas ou grupos por causa de atributos como raça, religião, gênero ou orientação sexual.</p>
+    </blockquote>
+    <p class="par">O discurso de ódio é o caso mais grave. Quando uma opinião vira discurso de ódio, ela ultrapassa os limites da liberdade de expressão e se torna crime. A diferença está na natureza do que se diz: criticar uma ideia, uma política ou uma obra faz parte do debate democrático; atacar pessoas por quem elas são, não.</p>
+    <div class="callout gold">
+      <span class="lab">Cuidado com o argumento retórico</span>
+      <p>É comum que manifestações de intolerância se justifiquem “em nome da liberdade de expressão”. Antes de aceitar esse argumento, pergunte-se: o que foi dito critica uma ideia ou ataca um grupo? Pode causar dano a alguém? Incita violência ou discriminação? Se a resposta for sim, não se trata de exercer um direito, e sim de violar o direito de outras pessoas.</p>
+    </div>
+    <h3 class="tsub" id="t-internet">A nova praça pública: internet, fake news e regulação</h3>
+    <p class="par">As redes sociais ampliaram como nunca o alcance da voz de cada pessoa e se tornaram um novo espaço público, onde é possível debater, se organizar e cobrar autoridades. Mas esse mesmo ambiente também espalha preconceito e violência. Em 2022, a SaferNet, organização que defende os direitos humanos no ambiente digital, recebeu mais de 74 mil denúncias de discurso de ódio na internet, um aumento de 67,7% em relação a 2021, com casos de racismo, xenofobia, misoginia, LGBTfobia e intolerância religiosa.</p>
+    <p class="par">Muita gente acredita que o anonimato protege quem agride na rede, mas isso é uma ilusão: autoridades e plataformas conseguem rastrear o endereço de IP, que identifica o dispositivo conectado, e as consequências podem ser multa ou prisão. Além disso, ações on-line têm efeitos reais: o discurso de ódio e o cyberbullying alimentam um ciclo de violência que muitas vezes chega ao plano físico e psicológico.</p>
+    <p class="par">Outro desafio é a <b>desinformação</b>. A expressão “fake news” costuma ser traduzida como “notícias falsas”, mas, a rigor, notícia é uma informação verificável de interesse público; o que circula nesses casos é desinformação. Ela explora sentimentos como raiva e medo, recusa evidências, não cita fontes e se espalha porque as pessoas compartilham sem checar. Quem compartilha é tão importante para a propagação quanto quem produz. A desinformação se liga ao discurso de ódio, pois informações falsas alimentam preconceitos e são usadas para desumanizar minorias. Com a inteligência artificial, surgiram também os <b>deepfakes</b>, áudios e vídeos manipulados que fazem parecer que alguém disse ou fez o que nunca disse ou fez, e que podem abalar a confiança nas eleições.</p>
+    <p class="par">Diante disso, o Brasil criou regras. O Marco Civil da Internet (Lei nº 12.965/2014) estabelece como princípio a garantia da liberdade de expressão, comunicação e manifestação de pensamento, nos termos da Constituição, ao lado da proteção da privacidade e dos dados pessoais. A Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018) regula como as empresas tratam as informações dos usuários. Em 2024, uma resolução do Tribunal Superior Eleitoral proibiu o uso de deepfakes na propaganda eleitoral e determinou que o uso de inteligência artificial seja informado. Mesmo assim, há quem avalie que a legislação ainda não define com clareza a responsabilização por conteúdos falsos ou criminosos.</p>
+    <p class="par">O debate é aberto e divide opiniões. Quem defende regras mais firmes argumenta que a violência e a mentira em larga escala ameaçam a própria democracia. Quem teme os excessos lembra que regulamentar demais pode abrir caminho para a censura. Os modelos internacionais mostram essa tensão: a China mantém controle rígido, com monitoramento e censura de conteúdos nas redes, enquanto a União Europeia aprovou, em 2022, a Lei de Serviços Digitais, com o objetivo de prevenir atividades ilegais e prejudiciais on-line. O desafio de cada sociedade é combater o abuso sem sufocar o debate.</p>
+    <h3 class="tsub" id="t-olhar">Um olhar crítico: quem controla o que circula?</h3>
+    <p class="par">A Sociologia convida você a ir além do que parece óbvio. O sociólogo francês Pierre Bourdieu (1930-2002) alertava para a relação íntima entre mídia e poder. Seguindo essa linha, é possível perguntar se a liberdade de expressão não está, na prática, limitada pelos interesses comerciais e políticos de quem controla emissoras, jornais e plataformas. Na história brasileira, por exemplo, fala-se em “coronelismo eletrônico” para descrever políticos que dominam concessões de rádio e televisão e usam esses meios para promover aliados e atacar adversários. Essa é uma leitura crítica, que você pode discutir e confrontar com outras.</p>
+    <p class="par">Há ainda conflitos entre direitos que não têm resposta simples. Na França, a proibição de que estudantes muçulmanas usassem o véu nas salas de aula foi vista por muitos como uma agressão à liberdade de expressão religiosa, e por outros como defesa de uma escola laica, sem influência de nenhuma religião. Em outro debate, discute-se se limitar a propaganda de bebidas alcoólicas fere a liberdade de escolha ou se protege a saúde pública. Em situações assim, a Sociologia não oferece um gabarito, mas ensina a identificar quais direitos estão em jogo, quem é afetado e com que argumentos cada lado se defende.</p>
+    <h3 class="tsub" id="t-resumo">Em resumo</h3>
+    <ul class="lst">
+      <li>A liberdade de expressão é um direito civil e humano, base da democracia, ligado à liberdade de imprensa, ao pluralismo e à participação política.</li>
+      <li>Ela não é absoluta: encontra limites na honra, na imagem, na privacidade e na dignidade de grupos, e não protege o discurso de ódio.</li>
+      <li>A censura do Estado, como na ditadura militar, é o oposto desse direito e mostra por que é perigoso controlar o que se pode dizer.</li>
+      <li>Na internet, anonimato não é impunidade, e fake news e deepfakes desafiam a democracia e a regulação.</li>
+      <li>Pensar com a Sociologia é perguntar sempre: quem fala, quem é ouvido, quem é calado e quem se beneficia?</li>
+    </ul>
+    <h3 class="tsub" id="t-glossario">Glossário</h3>
+    <table class="gloss">
+      <tr><th>Termo</th><th>Definição</th></tr>
+      <tr><td>Censura</td><td>Controle sobre o que pode ser dito, publicado ou mostrado, exercido pelo Estado ou por outros poderes.</td></tr>
+      <tr><td>Cidadania formal e real</td><td>Direitos previstos em lei (formal) e direitos efetivamente vividos no cotidiano (real).</td></tr>
+      <tr><td>Deepfake</td><td>Áudio ou vídeo criado ou manipulado por inteligência artificial para imitar a imagem ou a voz de uma pessoa.</td></tr>
+      <tr><td>Desinformação</td><td>Informação falsa ou não verificável, compartilhada como se fosse verdadeira.</td></tr>
+      <tr><td>Discurso de ódio</td><td>Comunicação que incita discriminação, hostilidade ou violência contra grupos por raça, religião, gênero ou orientação sexual.</td></tr>
+      <tr><td>Liberalismo político</td><td>Corrente de pensamento que defende liberdades individuais e limites ao poder dos governantes.</td></tr>
+      <tr><td>Pluralismo</td><td>Convivência respeitosa entre grupos, opiniões, culturas e interesses diferentes.</td></tr>
+    </table>
+    <h3 class="tsub" id="t-refs">Referências</h3>
+    <div class="refs">
+      <p>ARAÚJO, Silvia Maria de; BRIDI, Maria Aparecida; MOTIM, Benilde Lenzi. <b>Sociologia</b>: ensino médio: volume único: manual do professor. 2. ed. São Paulo: Scipione, 2016.</p>
+      <p>LAKATOS, Eva Maria; MARCONI, Marina de Andrade (colab.). <b>Sociologia geral</b>. 6. ed. rev. ampl. São Paulo: Atlas, 1990.</p>
+      <p>MACHADO, Igor José de Renó; AMORIM, Henrique; BARROS, Celso Rocha de. <b>Sociologia hoje</b>: ensino médio: volume único: manual do professor. 2. ed. São Paulo: Ática, 2016.</p>
+      <p>MACHADO, Igor José de Renó; AMORIM, Henrique José Domiciano; BARROS, Celso Fernando Rocha de. <b>Do seu jeito</b>: sociologia: área de ciências humanas e sociais aplicadas: volume único: ensino médio: manual do professor. 1. ed. São Paulo: Ática, 2024.</p>
+      <p><b>MODERNA PLUS</b>: sociologia em movimento: ensino médio: volume único: manual do professor. 1. ed. São Paulo: Moderna, 2024.</p>
+      <p>O'DONNELL, Julia Galli; OLIVEIRA, Paulo Edison de; ROTA, Paulo Jorge Storace. <b>Sociologia por toda parte</b>: 1º ao 3º ano: ensino médio: volume único: manual do professor. 1. ed. São Paulo: FTD, 2024.</p>
+      <p>OLIVEIRA, Luiz Fernandes de; COSTA, Ricardo Cesar Rocha da. <b>Sociologia para jovens do século XXI</b>: ensino médio: volume único: manual do professor. 4. ed. Rio de Janeiro: Imperial Novo Milênio, 2016.</p>
+      <p>OLIVEIRA, Luiz Fernandes de; COSTA, Ricardo Cesar Rocha da. <b>Sociologia para jovens do século XXI</b>: volume único. 1. ed. São Paulo: Editora do Brasil, 2024. (Interação ciências humanas e sociais aplicadas).</p>
+      <p>SM EDUCAÇÃO (org.). <b>Ser protagonista</b>: ciências humanas e sociais aplicadas: sociologia: ensino médio: volume único: manual do professor. Editora responsável: Valéria Vaz. 1. ed. São Paulo: Edições SM, 2024.</p>
+    </div>
   </div>
 </section>
 
