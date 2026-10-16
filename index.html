@@ -161,6 +161,33 @@ ul.mat li a{overflow-wrap:anywhere;font-size:13.5px}
 .activity-link-box a{display:inline-flex;align-items:center;gap:8px;background:#a82f65;color:#fff;text-decoration:none;font:800 13px var(--sans);padding:10px 17px;border-radius:8px;transition:.2s;}
 .activity-link-box a:hover{background:#7b2148;transform:translateY(-1px);}
 
+/* box do trabalho (campanha) */
+.work-link-box{margin:16px 0 8px;padding:22px 24px;background:linear-gradient(135deg,#eef7f7,#d6ebec);border:1px solid #b9d9db;border-left:6px solid #1f6f78;border-radius:12px;font-family:var(--sans);text-align:left;box-shadow:0 10px 24px -18px #14565d;}
+.work-link-box .activity-kicker{display:block;font:800 10.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#14565d;margin-bottom:5px;}
+.work-link-box h3{margin:0 0 6px;color:#12304a;font:700 22px/1.25 var(--serif);}
+.work-link-box p{margin:0 0 14px!important;text-indent:0!important;font:15px/1.55 var(--sans);color:#3d5a60;text-align:left!important;}
+.work-link-box a{display:inline-flex;align-items:center;gap:8px;background:#14565d;color:#fff;text-decoration:none;font:800 13px var(--sans);padding:10px 17px;border-radius:8px;transition:.2s;}
+.work-link-box a:hover{background:#12304a;transform:translateY(-1px);}
+
+/* compatibilidade celular (Android / iOS) */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+a,button,summary{-webkit-tap-highlight-color:transparent}
+.cover img{max-height:100svh}
+.toc-ov{top:0;right:0;bottom:0;left:0}
+.nav{-webkit-overflow-scrolling:touch}
+.dr-body{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+figure.fig img{cursor:zoom-in}
+@media(max-width:700px){
+  .cover img{max-height:none}
+  .nav a{padding:12px 14px}
+  .dr-close{width:44px;height:44px}
+  .toc-tab{padding:12px 9px;font-size:11px}
+  .topic-tool{width:44px;height:44px}
+  details.answer summary{padding:12px 0}
+  .body,.body p,.lead,.callout,.alt,details.answer,ul.mat li,figure.fig figcaption{text-align:left}
+  .activity-link-box,.work-link-box{padding:18px}
+  .activity-link-box a,.work-link-box a{display:flex;justify-content:center;padding:14px 17px}
+}
 </style>
 </head>
 <body>
@@ -281,6 +308,14 @@ ul.mat li a{overflow-wrap:anywhere;font-size:13.5px}
       <h3>Enfrentamento ao discurso de ódio</h3>
       <p>Atividade interativa com leitura, interpretação de dados e questões sobre violência on-line e Direitos Humanos.</p>
       <a href="atv/atv1.html" target="_blank" rel="noopener">✎ Fazer atividade</a>
+    </div>
+
+    <!-- Trabalho do Texto I -->
+    <div class="work-link-box" id="trabalho-texto1">
+      <span class="activity-kicker">Trabalho · Texto I</span>
+      <h3>Campanha #RespeitoNasRedes</h3>
+      <p>Em dupla, crie três posts para o Instagram e um cartaz A4 de divulgação na escola sobre o enfrentamento ao discurso de ódio. A página traz o planejamento e prompts prontos para criar as peças com IA.</p>
+      <a href="tr/tr1soc4bim.html" target="_blank" rel="noopener">▶ Abrir trabalho</a>
     </div>
   </div>
 </section>
@@ -652,6 +687,9 @@ ul.mat li a{overflow-wrap:anywhere;font-size:13.5px}
   document.querySelectorAll('.dr-link').forEach(function(a){a.onclick=closeT});
   addEventListener('keydown',function(e){if(e.key==='Escape')closeT()});
 
+  // toque em um gráfico abre a imagem em nova aba (permite ampliar no celular)
+  [].slice.call(document.querySelectorAll('figure.fig img')).forEach(function(im){im.addEventListener('click',function(){window.open(im.currentSrc||im.src,'_blank','noopener')})});
+
   var links=[].slice.call(document.querySelectorAll('#nav a'));
   var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
   if('IntersectionObserver' in window){
@@ -660,7 +698,7 @@ ul.mat li a{overflow-wrap:anywhere;font-size:13.5px}
         if(e.isIntersecting){
           links.forEach(function(a){a.classList.remove('on')});
           var a=map[e.target.id];
-          if(a){a.classList.add('on');var n=document.getElementById('nav');n.scrollTo({left:a.offsetLeft-n.clientWidth/2+a.clientWidth/2,behavior:'smooth'})}
+          if(a){a.classList.add('on');var n=document.getElementById('nav'),x=a.offsetLeft-n.clientWidth/2+a.clientWidth/2;try{n.scrollTo({left:x,behavior:'smooth'})}catch(err){n.scrollLeft=x}}
         }
       });
     },{rootMargin:'-30% 0px -60% 0px'});
