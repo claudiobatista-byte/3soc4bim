@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa de Posicionamento – Liberdade de Expressão e Discurso de Ódio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0f2a4a; --navy-2:#173a63; --blue:#2563eb; --blue-soft:#e8f0fe;
+    --teal:#0d9488; --gold:#f5a524; --bg:#eef2f7; --card:#ffffff;
+    --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --ok:#059669; --ok-bg:#ecfdf5; --bad:#dc2626; --bad-bg:#fef2f2;
+    --radius:18px; --shadow:0 10px 30px -12px rgba(15,42,74,.25);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased}
+  button{font-family:inherit;cursor:pointer}
+  .hidden{display:none!important}
+
+  /* utilitários usados pelos gráficos/tabelas das questões */
+  svg{display:block}
+  .w-full{width:100%}.h-auto{height:auto}.text-xs{font-size:12px}
+  .max-w-md{max-width:28rem}.mx-auto{margin-left:auto;margin-right:auto}
+  .bg-slate-50{background:#f8fafc}.p-4{padding:1rem}.rounded-xl{border-radius:12px}
+  .border{border:1px solid}.border-slate-200{border-color:var(--line)}
+  .font-bold{font-weight:700}.text-slate-700{color:#334155}.text-center{text-align:center}.mb-2{margin-bottom:.5rem}
+
+  /* ---------- Topbar ---------- */
+  .topbar{background:var(--navy);color:#fff;border-bottom:4px solid var(--gold)}
+  .topbar-in{max-width:1080px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px}
+  .brand-mark{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--gold),#f97316);display:grid;place-items:center;font-weight:900;font-size:14px;color:#1b1204;flex:none}
+  .brand-txt small{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#9fb6d3;font-weight:600}
+  .brand-txt strong{font-size:14.5px;font-weight:700}
+  .topbar .student{margin-left:auto;text-align:right;font-size:12px;color:#c7d6ea;line-height:1.35}
+  .topbar .student b{color:#fff;font-weight:700;display:block;font-size:13px}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:24px 20px 56px}
+
+  /* ---------- Capa ---------- */
+  .cover{display:grid;grid-template-columns:1.1fr .9fr;background:var(--card);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+  .cover-left{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 60%,#1e4d82 100%);color:#fff;padding:44px 40px;position:relative;overflow:hidden}
+  .cover-left::after{content:"";position:absolute;right:-90px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(245,165,36,.12)}
+  .cover-left::before{content:"";position:absolute;right:40px;bottom:120px;width:90px;height:90px;border-radius:50%;border:12px solid rgba(255,255,255,.06)}
+  .pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;border-radius:99px;background:rgba(245,165,36,.18);color:var(--gold);border:1px solid rgba(245,165,36,.4)}
+  .cover-left h1{font-size:36px;line-height:1.12;font-weight:900;margin:18px 0 8px;letter-spacing:-.02em}
+  .cover-left h1 span{color:var(--gold)}
+  .cover-left .sub{font-size:15px;color:#c7d6ea;max-width:30rem}
+  .desc-box{margin-top:26px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:18px 20px;position:relative;z-index:1}
+  .desc-box .tag{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .desc-box .tag b{background:var(--gold);color:#1b1204;font-weight:900;font-size:13px;padding:3px 10px;border-radius:8px}
+  .desc-box .tag span{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#9fb6d3;font-weight:700}
+  .desc-box p{font-size:14px;color:#e6eefa;font-style:italic}
+  .steps{margin-top:18px;display:grid;gap:9px;position:relative;z-index:1}
+  .steps div{display:flex;gap:11px;align-items:flex-start;font-size:13px;color:#d3e0f1}
+  .steps i{font-style:normal;flex:none;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff}
+  .cover-right{padding:44px 38px;display:flex;flex-direction:column;justify-content:center}
+  .cover-right h2{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.01em}
+  .cover-right .lead{font-size:13.5px;color:var(--muted);margin:4px 0 22px}
+  label.f{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#475569;margin-bottom:6px}
+  .inp{width:100%;font:inherit;font-size:15.5px;padding:13px 15px;border:2px solid var(--line);border-radius:12px;background:#f8fafc;color:var(--ink);outline:none;transition:.15s}
+  .inp:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(37,99,235,.12)}
+  .inp.err{border-color:var(--bad);background:var(--bad-bg)}
+  .field{margin-bottom:16px}
+  .errmsg{font-size:12px;color:var(--bad);font-weight:600;margin-top:5px;min-height:16px}
+  .btn-primary{width:100%;margin-top:6px;padding:15px 20px;border:0;border-radius:13px;background:linear-gradient(135deg,var(--blue),#1d4ed8);color:#fff;font-weight:800;font-size:15.5px;letter-spacing:.01em;box-shadow:0 10px 20px -8px rgba(37,99,235,.6);transition:.15s}
+  .btn-primary:hover{transform:translateY(-1px);filter:brightness(1.06)}
+  .meta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .meta-row span{font-size:12px;font-weight:600;color:#475569;background:#f1f5f9;padding:6px 11px;border-radius:99px}
+
+  /* ---------- Cabeçalho do simulado ---------- */
+  .qhead{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 22px;box-shadow:var(--shadow);margin-bottom:16px}
+  .qhead-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .qhead h2{font-size:17px;font-weight:800;color:var(--navy)}
+  .qhead .chips{display:flex;gap:7px;flex-wrap:wrap}
+  .chip{font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--blue-soft);color:#1e40af;border:1px solid #c7dafc}
+  .chip.gold{background:#fff7e6;color:#9a5b00;border-color:#fde1a6}
+  .chip.teal{background:#e6f7f5;color:#0b6e65;border-color:#b6e8e2}
+  .bar{height:8px;border-radius:99px;background:#e8edf4;overflow:hidden;margin-top:14px}
+  .bar>div{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--blue));border-radius:99px;transition:width .3s}
+  .bar-txt{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:600;margin-top:7px}
+
+  .nav{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);margin-bottom:16px}
+  .nav-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:8px}
+  .nb{border:2px solid var(--line);background:#f8fafc;border-radius:11px;padding:7px 0;font-weight:800;font-size:13px;color:#475569;transition:.12s;display:flex;flex-direction:column;align-items:center;line-height:1.15}
+  .nb small{font-size:9.5px;font-weight:600;opacity:.8}
+  .nb:hover{border-color:#94a3b8}
+  .nb.cur{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.15);color:var(--blue)}
+  .nb.ans{background:var(--blue-soft);border-color:#9db9f3;color:#1e3a8a}
+  .nb.cur.ans{border-color:var(--blue)}
+  .nb.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+  .nb.no{background:var(--bad);border-color:var(--bad);color:#fff}
+  .nb.cur.ok,.nb.cur.no{box-shadow:0 0 0 3px rgba(15,42,74,.25)}
+
+  /* ---------- Cartão da questão ---------- */
+  .qcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px 32px}
+  .qmeta{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:18px}
+  .qmeta .l{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .qnum{background:var(--navy);color:#fff;font-weight:800;font-size:12px;padding:5px 11px;border-radius:9px}
+  .qtheme{font-size:12.5px;color:var(--muted);font-weight:600}
+  .qtype{font-size:12px;color:var(--muted);font-weight:600}
+  .qcard h3{font-size:21px;font-weight:800;color:var(--navy);letter-spacing:-.01em;line-height:1.25}
+  .cf{margin-top:12px;background:#fff7e6;border:1px solid #fde1a6;border-left:5px solid var(--gold);border-radius:12px;padding:12px 16px;font-size:13.5px;color:#5c3a00}
+  .cf b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9a5b00;margin-bottom:3px}
+  .support{font-size:14.5px;color:#334155;margin-top:10px;text-align:justify}
+  .tbl-wrap{margin:18px 0}
+  .tbl-cap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .tbl-cap b{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#334155}
+  .tbl-cap span{font-size:11.5px;color:#94a3b8}
+  .tbl-box{overflow-x:auto;border:1px solid var(--line);border-radius:13px}
+  table.t{width:100%;border-collapse:collapse;font-size:14px;background:#fff}
+  table.t thead{background:var(--navy);color:#fff}
+  table.t th{padding:10px 14px;text-align:left;font-weight:700;font-size:12.5px}
+  table.t td{padding:10px 14px;border-top:1px solid #edf1f6}
+  table.t tbody tr:nth-child(even){background:#f8fafc}
+  table.t td:first-child{font-weight:800;color:var(--navy)}
+  table.t td:last-child{font-weight:700;color:var(--blue)}
+  table.t.num td:not(:first-child){font-weight:700;color:var(--blue)}
+  .stim{margin:18px 0}
+  .prompt{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#fff;padding:16px 20px;border-radius:14px;font-size:15px;font-weight:600;margin:20px 0 16px;border-left:5px solid var(--gold)}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .opt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px;transition:.14s;display:block;width:100%;color:inherit}
+  .opt:hover:not([disabled]){border-color:#7aa2f5;transform:translateY(-1px)}
+  .opt .oh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .badge{width:30px;height:30px;border-radius:9px;background:#eef2f7;color:#334155;font-weight:800;font-size:13px;display:grid;place-items:center}
+  .opt .lb{font-size:12px;font-weight:600;color:#94a3b8}
+  .opt .body{background:#f8fafc;border:1px solid #edf1f6;border-radius:11px;padding:8px}
+  .opt.sel{border-color:var(--blue);background:#f5f8ff;box-shadow:0 0 0 4px rgba(37,99,235,.12)}
+  .opt.sel .badge{background:var(--blue);color:#fff}
+  .opt.right{border-color:var(--ok);background:var(--ok-bg);box-shadow:0 0 0 3px rgba(5,150,105,.18)}
+  .opt.right .badge{background:var(--ok);color:#fff}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-bg);box-shadow:0 0 0 3px rgba(220,38,38,.15)}
+  .opt.wrong .badge{background:var(--bad);color:#fff}
+  .opt[disabled]{cursor:default}
+  table.m{width:100%;border-collapse:collapse;font-size:13px}
+  table.m th{background:#e2e8f0;color:#475569;padding:6px 8px;font-size:11.5px;font-weight:700;text-align:left}
+  table.m th:not(:first-child),table.m td:not(:first-child){text-align:right}
+  table.m td{padding:6px 8px;border-bottom:1px solid #e9eef5}
+  table.m td:first-child{font-weight:800}
+  table.m td:not(:first-child){font-weight:700;color:var(--blue)}
+
+  .fb{margin-top:22px;border-radius:16px;padding:18px 20px;border:1px solid}
+  .fb.ok{background:var(--ok-bg);border-color:#a7e3c9;color:#064e3b}
+  .fb.no{background:var(--bad-bg);border-color:#f6b8b8;color:#7f1d1d}
+  .fb h4{font-size:15px;font-weight:800;margin-bottom:6px}
+  .fb p{font-size:14px}
+  .fb .diag{margin-top:10px;background:rgba(255,255,255,.75);border-radius:11px;padding:11px 13px;font-size:13px;color:#334155}
+  .fb .diag b{display:block;color:var(--ink);margin-bottom:3px}
+
+  .qfoot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:26px;padding-top:18px;border-top:1px solid var(--line)}
+  .btn{padding:11px 20px;border-radius:12px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:13.5px;color:#334155;transition:.12s}
+  .btn:hover:not([disabled]){border-color:#94a3b8;background:#f8fafc}
+  .btn[disabled]{opacity:.4;cursor:not-allowed}
+  .btn.finish{background:linear-gradient(135deg,var(--teal),#0f766e);color:#fff;border-color:transparent;box-shadow:0 10px 20px -8px rgba(13,148,136,.6)}
+  .btn.finish:hover:not([disabled]){filter:brightness(1.06);background:linear-gradient(135deg,var(--teal),#0f766e)}
+  .btn.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .btn.navy:hover:not([disabled]){background:var(--navy-2)}
+  .hint{font-size:12.5px;color:var(--muted);font-weight:600}
+
+  /* ---------- Resultado ---------- */
+  .result{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
+  .res-hero{background:linear-gradient(160deg,var(--navy),var(--navy-2));color:#fff;padding:34px 36px;display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:center}
+  .ring{position:relative;width:190px;height:190px}
+  .ring svg{width:190px;height:190px;transform:rotate(-90deg)}
+  .ring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .c b{font-size:52px;font-weight:900;line-height:1;letter-spacing:-.03em}
+  .ring .c span{font-size:13px;color:#9fb6d3;font-weight:600;margin-top:3px}
+  .res-hero .who small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9fb6d3;font-weight:700}
+  .res-hero .who h2{font-size:26px;font-weight:900;margin:2px 0 4px;letter-spacing:-.01em}
+  .res-hero .who p{color:#c7d6ea;font-size:14px}
+  .level{display:inline-block;margin-top:14px;padding:7px 14px;border-radius:99px;font-weight:800;font-size:13px}
+  .res-body{padding:28px 36px 34px}
+  .res-body h3{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800;margin-bottom:12px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
+  .stat{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .stat b{display:block;font-size:26px;font-weight:900;color:var(--navy);line-height:1.1}
+  .stat span{font-size:12px;color:var(--muted);font-weight:600}
+  .perf{display:grid;gap:12px;margin-bottom:26px}
+  .perf-row .top{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#334155;margin-bottom:5px}
+  .perf-row .tr{height:10px;background:#e8edf4;border-radius:99px;overflow:hidden}
+  .perf-row .tr>div{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--blue))}
+  .qgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;margin-bottom:26px}
+  .qg{border-radius:11px;padding:9px 0;text-align:center;font-weight:800;font-size:13px;color:#fff}
+  .qg small{display:block;font-size:10px;font-weight:700;opacity:.9}
+  .qg.ok{background:var(--ok)}.qg.no{background:var(--bad)}
+  .res-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .btn.save{background:linear-gradient(135deg,var(--blue),#1d4ed8);color:#fff;border-color:transparent;box-shadow:0 10px 20px -8px rgba(37,99,235,.6);display:inline-flex;align-items:center;gap:8px}
+  .btn.save:hover{filter:brightness(1.06);background:linear-gradient(135deg,var(--blue),#1d4ed8)}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:12px 20px;border-radius:12px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:50;box-shadow:var(--shadow)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .review-banner{background:#fff7e6;border:1px solid #fde1a6;color:#7a4a00;border-radius:14px;padding:12px 18px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13.5px;font-weight:600}
+  .foot{text-align:center;font-size:12px;color:#94a3b8;margin-top:26px}
+
+  @media (max-width:860px){
+    .cover{grid-template-columns:1fr}
+    .cover-left,.cover-right{padding:30px 24px}
+    .cover-left h1{font-size:29px}
+    .res-hero{grid-template-columns:1fr;justify-items:center;text-align:center;padding:28px 22px}
+    .res-body{padding:24px 20px 28px}
+  }
+  .opts:not(.txt) .opt:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:calc(50% - 7px)}
+  .opts.txt{grid-template-columns:1fr;gap:10px}
+  .opt.tx{display:flex;gap:14px;align-items:center;padding:13px 16px}
+  .opt.tx .t{font-size:15px;color:#1e293b;line-height:1.45}
+  .opt.tx .badge{flex:none}
+  table.t.plain td:last-child{font-weight:500;color:#334155}
+  @media (max-width:640px){
+    .opts{grid-template-columns:1fr}
+    .opts:not(.txt) .opt:last-child:nth-child(odd){width:100%}
+    .qcard{padding:22px 18px}
+    .qcard h3{font-size:18px}
+    .nav-grid,.qgrid{grid-template-columns:repeat(5,1fr)}
+    .stats{grid-template-columns:1fr}
+    .topbar .student{display:none}
+    .wrap{padding:16px 12px 40px}
+  }
+</style>
+<style>
+  .opts.txt .opt.tx.sel{border-color:var(--blue);background:#f5f8ff}
+  .case-box{background:#f8fafc;border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:14px;padding:16px 20px;font-size:16px;color:#1e293b;margin:16px 0 4px;line-height:1.55}
+  .case-box .real{display:block;margin-top:8px;font-size:12px;font-weight:700;color:#0b6e65;text-transform:uppercase;letter-spacing:.08em}
+  .tag-t{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:99px}
+  .tag-t.claro{background:#fef2f2;color:#991b1b;border:1px solid #f6b8b8}
+  .tag-t.aberto{background:#e8f0fe;color:#1e40af;border:1px solid #c7dafc}
+  .fb.info{background:#f1f5f9;border-color:#cbd5e1;color:#1e293b}
+  .fb.info .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  .fb.info .two div{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-size:13px}
+  .fb.info .two b{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+  .fb.info .two .a b{color:#9a5b00}.fb.info .two .b b{color:#0b6e65}
+  .fb .law{margin-top:10px;font-size:13px;font-weight:700}
+  .mapwrap{display:grid;grid-template-columns:minmax(0,520px) 1fr;gap:28px;align-items:start}
+  .mapbox svg{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:14px}
+  .hero2{background:linear-gradient(160deg,var(--navy),var(--navy-2));color:#fff;padding:34px 36px}
+  .hero2 small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9fb6d3;font-weight:700}
+  .hero2 h2{font-size:28px;font-weight:900;margin:2px 0 6px;letter-spacing:-.01em}
+  .hero2 p{color:#c7d6ea;font-size:14.5px;max-width:46rem}
+  .axl{display:grid;gap:10px;margin-bottom:6px}.axl div{border:1px solid var(--line);border-left:6px solid var(--c);border-radius:11px;padding:9px 13px;font-size:13px;background:#fff}.axl b{display:block;font-size:13.5px;color:var(--navy)}.chip.t1{background:#fef2f2;color:#991b1b;border-color:#f6b8b8}
+  .note{background:#fff7e6;border:1px solid #fde1a6;border-radius:13px;padding:12px 16px;font-size:13px;color:#5c3a00;margin-bottom:22px}
+  details.refs{margin:0 0 22px;border:1px solid var(--line);border-radius:13px;padding:12px 16px;background:#f8fafc}
+  details.refs summary{cursor:pointer;font-weight:800;font-size:13px;color:var(--navy)}
+  details.refs li{font-size:12.5px;color:#475569;margin:8px 0 0 18px}
+  .rec{display:grid;gap:8px;margin-bottom:26px}
+  .rec div{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:13px;background:#fff}
+  .rec b{flex:none;background:var(--navy);color:#fff;border-radius:8px;padding:2px 9px;font-size:12px}
+  .rec .pt{margin-left:auto;flex:none;font-size:11px;font-weight:700;color:#475569;white-space:nowrap}
+  .rec .lg{flex:none;font-weight:800}
+  .nav-grid{grid-template-columns:repeat(15,1fr)}
+  @media (max-width:860px){.mapwrap{grid-template-columns:1fr}.fb.info .two{grid-template-columns:1fr}.hero2{padding:26px 20px}}
+  @media (max-width:640px){.nav-grid{grid-template-columns:repeat(7,1fr)}}
+  .cover-right{align-items:center;text-align:center}.cover-right>*{width:100%;max-width:340px}.cover-right h2{margin-bottom:20px}.cover-right .inp{text-align:center}.cover-right .meta-row{justify-content:center}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div class="brand-mark" style="font-size:11px">CERO</div>
+  <div class="brand-txt"><small>Colégio Estadual Rodolfo de Oliveira · 2026</small><strong>Sociologia · Perfil de posicionamento</strong></div>
+  <div class="topbar student hidden" id="tbStudent"><b id="tbName"></b><span id="tbTurma"></span></div>
+</div></header>
+
+<main class="wrap">
+
+<section id="cover" class="cover">
+  <div class="cover-left">
+    <span class="pill">Sociologia · 3ª série · Autoavaliação</span>
+    <h1>Qual é o seu perfil diante do <span>discurso de ódio</span> e da <span>liberdade de expressão</span>?</h1>
+    <p class="sub">15 situações de sala de aula e do dia a dia da escola. Você escolhe como reagiria; no final, vê seu perfil em 5 barras: quatro posturas e a coincidência com o que a lei já define.</p>
+    <div class="desc-box">
+      <div class="tag"><b>SEM NOTA</b><span>Não há resposta “certa” de opinião</span></div>
+      <p>Algumas situações têm resposta já definida pela lei; outras são debates abertos, em que pessoas razoáveis discordam. O sistema diz quando é cada caso.</p>
+    </div>
+    <div class="steps">
+      <div><i>1</i>Leia a situação e escolha a reação mais próxima do que você pensa.</div>
+      <div><i>2</i>Veja o que a Constituição, a lei e os textos de aula dizem sobre o caso.</div>
+      <div><i>3</i>No fim, veja seu perfil em porcentagens, por eixo, e refaça o teste para comparar.</div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <h2>Identificação</h2>
+    
+    <div class="field"><label class="f" for="inName">Nome</label><input class="inp" id="inName" maxlength="60" placeholder="Seu nome"></div>
+    <div class="field"><label class="f" for="inTurma">Turma</label><input class="inp" id="inTurma" maxlength="20" placeholder="Ex.: 3ª A"></div>
+    <button class="btn-primary" id="btnStart">Começar →</button>
+    <div class="meta-row"><span>15 situações</span><span>~12 minutos</span><span>5 barras em %</span></div>
+  </div>
+</section>
+
+<section id="quiz" class="hidden">
+  <div class="qhead">
+    <div class="qhead-top"><h2>Perfil de posicionamento</h2>
+      <div class="chips"><span class="chip">Tópico 1 · Discurso de ódio</span><span class="chip gold">Tópico 2 · Liberdade de expressão e limites</span><span class="chip teal">CF/88</span></div></div>
+    <div class="bar"><div id="barFill"></div></div>
+    <div class="bar-txt"><span id="barL">Situação 1 de 15</span><span id="barR">0 respondidas</span></div>
+  </div>
+  <div class="nav"><div class="nav-grid" id="navGrid"></div></div>
+  <div class="qcard" id="qcard"></div>
+</section>
+
+<section id="result" class="result hidden"></section>
+
+<div class="foot">CERO 2026 · Sociologia · Atividade de autoavaliação — as respostas não são enviadas nem armazenadas.</div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const CASES = [{"tema": "Apelido racista na turma", "tipo": "claro", "top": 1, "s": "Na sala do 3º ano, um aluno chama o colega negro de “macaco” todos os dias. A turma ri, e o aluno diz que “é só zoeira”. O colega pediu para trocar de sala.", "fb": "Chamar alguém de “macaco” não é brincadeira: é ofensa racial. Desde 2023 a injúria racial é tratada como crime de racismo. Na escola, a resposta deve proteger o aluno atingido e também ser educativa e justa: ouvir, registrar, envolver a família e aplicar medida prevista, sem punição sumária.", "base": "Lei 7.716/1989, com a Lei 14.532/2023; Lei 13.185/2015 (intimidação sistemática); ECA, arts. 53 e 70.", "real": null, "legal": [2], "pl": null, "pp": null, "o": [{"t": "É brincadeira de adolescente. Melhor ninguém dar importância.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "O professor conversa com a turma sobre racismo, mas a escola não registra nada.", "L": 2, "P": 1, "D": 3, "J": 0}, {"t": "A coordenação registra o caso, ouve os dois alunos, chama as famílias, aplica medida educativa prevista no regimento e trabalha o tema com a turma.", "L": 1, "P": 3, "D": 2, "J": 3}, {"t": "O aluno deve ser suspenso por vários dias na hora, sem ser ouvido.", "L": 0, "P": 3, "D": 0, "J": 0}]}, {"tema": "Debate sobre religião em sala", "tipo": "claro", "top": 1, "s": "Durante um debate de Sociologia, um aluno afirma que, para ele, as doutrinas de uma religião são ilógicas. Um colega religioso se sente ofendido e pede que o professor impeça a fala.", "fb": "Os textos de aula distinguem criticar ideias, que é protegido, de atacar pessoas por pertencerem a um grupo, que não é. A mediação do professor mantém o debate, protege a liberdade de crença do colega e ensina a divergir com respeito.", "base": "CF/88, art. 5º, IV e VI; art. 206, II e III; J. S. Mill, Sobre a liberdade.", "real": null, "legal": [2], "pl": null, "pp": null, "o": [{"t": "O professor deve mandar o aluno se calar, porque religião não se critica.", "L": 0, "P": 3, "D": 0, "J": 0}, {"t": "O aluno pode falar, mas deve avisar que sua fala pode ofender os fiéis.", "L": 1, "P": 2, "D": 1, "J": 1}, {"t": "O aluno pode criticar a ideia, desde que sem atacar os colegas como pessoas. O professor media e dá espaço para a resposta.", "L": 2, "P": 2, "D": 3, "J": 3}, {"t": "Deve poder dizer qualquer coisa, inclusive xingar os fiéis, porque é liberdade de expressão.", "L": 3, "P": 0, "D": 0, "J": 0}]}, {"tema": "Professor e opinião política", "tipo": "aberto", "top": 2, "s": "Em uma aula sobre eleições, o professor deixa claro em quem vai votar e critica um candidato. Alguns pais reclamam de “doutrinação”. Outros dizem que o professor tem liberdade de ensinar e de opinar.", "fb": "A Constituição garante a liberdade de ensinar e o pluralismo de ideias nas escolas. O STF já derrubou leis estaduais e municipais que tentavam proibir temas ou controlar o que o professor diz, mas a escola também tem o dever de apresentar a diversidade de visões.", "base": "CF/88, art. 206, II e III; LDB (Lei 9.394/1996), art. 3º, II e V; STF, ADI 5.537 (2020).", "real": null, "legal": null, "pl": "A liberdade de ensinar é uma garantia constitucional. Proibir o professor de expor ideias empobrece o debate e abre caminho para vigilância e perseguição.", "pp": "Os alunos são adolescentes numa relação de autoridade com o professor. Expor a própria preferência política pode pressionar quem pensa diferente, por isso a neutralidade do conteúdo protege o estudante.", "o": [{"t": "O professor tem liberdade para dizer o que pensa em sala.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "Pode expor sua posição se apresentar também outras visões, com fontes, e deixar os alunos discordarem.", "L": 2, "P": 2, "D": 3, "J": 2}, {"t": "Deve trabalhar apenas dados e conceitos, sem revelar sua preferência.", "L": 1, "P": 2, "D": 1, "J": 2}, {"t": "Política deve ser proibida em sala, e as aulas, gravadas para fiscalização.", "L": 0, "P": 3, "D": 0, "J": 0}]}, {"tema": "Grupo da turma e homofobia", "tipo": "claro", "top": 1, "s": "No grupo de mensagens da turma, circula uma montagem zombando de um colega por ser gay, com frases como “esse tipo de gente não devia estudar aqui”. Vários colocam risadas.", "fb": "A frase “não devia estudar aqui” exclui uma pessoa por sua orientação sexual: é discurso discriminatório. O STF decidiu em 2019 que a homofobia e a transfobia se enquadram nos crimes de racismo da Lei 7.716 enquanto não houver lei específica. A resposta escolar deve acolher, apurar e educar, com proporcionalidade, sem punir todos da mesma forma.", "base": "STF, ADO 26 e MI 4.733 (2019); Lei 7.716/1989; ECA, arts. 17 e 53.", "real": null, "legal": [2], "pl": null, "pp": null, "o": [{"t": "É piada interna do grupo. A escola não tem nada a ver com isso.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "O professor faz uma roda de conversa sobre respeito, mas sem tocar no caso.", "L": 2, "P": 1, "D": 3, "J": 0}, {"t": "A escola acolhe o colega, ouve os envolvidos, chama as famílias, registra e usa o caso para trabalhar o tema, acionando a rede de proteção se necessário.", "L": 1, "P": 3, "D": 2, "J": 3}, {"t": "O grupo deve ser fechado e todos os participantes, punidos igualmente.", "L": 0, "P": 3, "D": 0, "J": 0}]}, {"tema": "Ato dos estudantes no pátio", "tipo": "aberto", "top": 2, "s": "Alunos organizam um ato pacífico no pátio, com cartazes contra a redução da merenda. A direção diz que o ato atrapalha as aulas e quer encerrá-lo.", "fb": "A liberdade de reunião e de manifestação do pensamento são direitos fundamentais, e a Constituição prevê a gestão democrática do ensino público. Ao mesmo tempo, a escola precisa garantir o direito de aprender de todos. O debate é como combinar os dois.", "base": "CF/88, art. 5º, IV e XVI; art. 206, VI; Lei 7.398/1985 (grêmios estudantis).", "real": null, "legal": null, "pl": "Manifestar-se pacificamente é parte da formação cidadã. Exigir autorização prévia do alvo da crítica transforma o direito em favor da direção.", "pp": "A escola tem de proteger o direito à aula de quem não participa e a segurança de todos. Regras claras de horário e local protegem as duas coisas.", "o": [{"t": "O ato deve acontecer quando e como os alunos quiserem, mesmo interrompendo aulas.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "A direção deve negociar horário e local com o grêmio, garantindo que o ato aconteça e as aulas não sejam prejudicadas.", "L": 2, "P": 2, "D": 3, "J": 3}, {"t": "O ato só deve ocorrer com autorização prévia da direção.", "L": 1, "P": 1, "D": 1, "J": 1}, {"t": "Deve ser proibido, e os participantes, punidos.", "L": 0, "P": 3, "D": 0, "J": 0}]}, {"tema": "Colega de outro país", "tipo": "claro", "top": 1, "s": "Um aluno venezuelano chega à turma. Colegas dizem: “volta pro seu país, você está roubando nossas vagas e a merenda”. Ele passa a almoçar sozinho.", "fb": "Debater política de imigração é legítimo. Mandar um colega “voltar” e culpá-lo de roubar vagas é discriminação por procedência nacional. A Lei de Migração repudia a xenofobia, e a Lei 7.716 pune a discriminação por procedência nacional. A escola deve acolher e educar.", "base": "Lei 13.445/2017, art. 3º, II; Lei 7.716/1989, art. 1º e 20; CF/88, art. 5º, caput.", "real": null, "legal": [2], "pl": null, "pp": null, "o": [{"t": "É opinião sobre política de imigração. Cada um pode dizer o que pensa.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "A turma deve ser deixada para se resolver sozinha, que logo passa.", "L": 2, "P": 1, "D": 1, "J": 0}, {"t": "A escola acolhe o aluno, conversa com os autores, registra a ocorrência e organiza uma atividade sobre migração e direitos.", "L": 1, "P": 3, "D": 3, "J": 3}, {"t": "Os autores devem ser transferidos de turma imediatamente.", "L": 0, "P": 3, "D": 0, "J": 0}]}, {"tema": "Jornal do grêmio", "tipo": "claro", "top": 2, "s": "O grêmio estudantil publica no mural um texto com dados mostrando que a escola gastou menos que o prometido em reformas. A direção manda retirar o texto antes de sair, dizendo que “denigre a imagem do colégio”.", "fb": "A Constituição proíbe a censura prévia e protege a manifestação do pensamento. Se o texto tiver erro ou atacar pessoas, a resposta vem depois: correção, direito de resposta e, se for o caso, responsabilização. Crítica à gestão com dados é parte da gestão democrática da escola.", "base": "CF/88, art. 5º, IV, V e IX; art. 206, VI; art. 220, §2º; Lei 7.398/1985.", "real": null, "legal": [2], "pl": null, "pp": null, "o": [{"t": "A direção pode vetar qualquer texto antes de publicar, pois é responsável pela escola.", "L": 0, "P": 2, "D": 0, "J": 0}, {"t": "O texto deve ser aprovado antes por um professor, que corta o que for crítico.", "L": 1, "P": 1, "D": 1, "J": 1}, {"t": "O texto pode ser publicado, e se houver erro ou ofensa pessoal, a direção pode pedir correção ou direito de resposta depois.", "L": 2, "P": 2, "D": 2, "J": 3}, {"t": "O grêmio pode publicar qualquer coisa, inclusive acusar pessoas sem provas.", "L": 3, "P": 0, "D": 0, "J": 0}]}, {"tema": "Gênero na roda de conversa", "tipo": "claro", "top": 1, "s": "Uma professora de Sociologia faz uma roda de conversa sobre respeito à diversidade, incluindo diversidade de gênero. Pais pedem que a prefeitura aprove uma lei proibindo qualquer menção ao tema nas escolas.", "fb": "O STF (ADPF 457, 2020) declarou inconstitucional uma lei do município de Novo Gama, em Goiás, que proibia material com “ideologia de gênero” nas escolas, por violar a liberdade de ensinar, o pluralismo de ideias e a competência da União para fixar diretrizes da educação. Pais têm o direito de dialogar com a escola, mas não de vetar temas por lei local.", "base": "STF, ADPF 457 (2020); CF/88, art. 206, II e III; art. 22, XXIV; LDB, art. 3º.", "real": "Novo Gama (GO), STF, 2020", "legal": [2], "pl": null, "pp": null, "o": [{"t": "A lei deve ser aprovada, porque os pais mandam no que os filhos estudam.", "L": 0, "P": 2, "D": 0, "J": 0}, {"t": "A professora deve evitar o assunto para não gerar conflito.", "L": 1, "P": 1, "D": 1, "J": 0}, {"t": "O tema pode ser tratado com base no currículo, com respeito e fontes, e os pais podem dialogar com a escola sobre dúvidas.", "L": 2, "P": 2, "D": 3, "J": 3}, {"t": "A professora deve falar o que quiser, sem se preocupar com o currículo nem com os pais.", "L": 3, "P": 0, "D": 0, "J": 0}]}, {"tema": "Funk no intervalo", "tipo": "aberto", "top": 2, "s": "Alunos tocam no intervalo um funk cuja letra trata mulheres como objetos. Algumas alunas se sentem ofendidas. A direção pensa em proibir qualquer música com “letra inadequada”.", "fb": "A Constituição protege a expressão artística e também a dignidade e a igualdade das mulheres. Proibir um gênero musical inteiro é diferente de discutir letras específicas e combinar regras de convivência no espaço comum.", "base": "CF/88, art. 5º, I e IX; art. 215; ECA, art. 17.", "real": null, "legal": null, "pl": "Proibir um gênero musical é censura e atinge sobretudo jovens da periferia. Discutir as letras ensina mais do que silenciar.", "pp": "Ouvir letras que desumanizam mulheres no espaço comum da escola pode afetar o ambiente escolar. Regras de convivência protegem o direito de todas de estar na escola sem humilhação.", "o": [{"t": "Música é arte. A escola não deve interferir em nada.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "A escola promove uma conversa sobre as letras e combina com os alunos regras de convivência para o som do intervalo.", "L": 2, "P": 2, "D": 3, "J": 2}, {"t": "Só as músicas aprovadas previamente pela direção devem tocar.", "L": 1, "P": 2, "D": 1, "J": 1}, {"t": "Funk deve ser proibido na escola.", "L": 0, "P": 3, "D": 0, "J": 0}]}, {"tema": "Negacionismo em seminário", "tipo": "claro", "top": 1, "s": "Em um seminário de História, um grupo apresenta como “fato” que o Holocausto não aconteceu, mostrando vídeos de páginas de internet. Um aluno de família judaica fica visivelmente abalado.", "fb": "Negar o Holocausto não é uma “versão” da História: é falsificação que alimenta o antissemitismo. No caso Ellwanger (2003), o STF manteve a condenação de um editor que publicava obras antissemitas e negacionistas, entendendo que o antissemitismo é uma forma de racismo. Em sala, a resposta pedagógica com fontes e acolhimento vem junto com o encaminhamento institucional.", "base": "STF, HC 82.424 (2003); Lei 7.716/1989, art. 20; CF/88, art. 5º, XLII.", "real": "Caso Ellwanger, STF, 2003", "legal": [1], "pl": null, "pp": null, "o": [{"t": "Todo grupo tem direito a apresentar sua versão, e a turma que decida em quem acreditar.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "O professor interrompe, corrige com fontes históricas e documentos, explica por que aquilo é negacionismo e acolhe o aluno atingido, conversando depois com o grupo e a coordenação.", "L": 1, "P": 3, "D": 3, "J": 3}, {"t": "O grupo deve ser reprovado e denunciado à polícia na hora.", "L": 0, "P": 3, "D": 0, "J": 0}, {"t": "O professor deixa a apresentação terminar, mas pede que o grupo cite as fontes.", "L": 2, "P": 1, "D": 2, "J": 1}]}, {"tema": "Cancelamento de um colega", "tipo": "aberto", "top": 2, "s": "Um aluno expressa na aula uma opinião impopular sobre cotas nas universidades, sem ofender ninguém. Depois, a turma o exclui dos grupos de trabalho e passa a ignorá-lo, dizendo que “quem pensa assim não merece amizade”.", "fb": "Discordar de uma ideia faz parte do debate. Excluir uma pessoa por pensar diferente, mesmo sem ela ter ofendido ninguém, pode virar intolerância em outra direção. Ao mesmo tempo, ninguém é obrigado a conviver com quem o ofende. O debate é onde está a linha.", "base": "CF/88, art. 5º, IV; art. 206, III; J. S. Mill, Sobre a liberdade.", "real": null, "legal": null, "pl": "Se a divergência vira exclusão, ninguém mais se arrisca a falar, e a escola perde seu papel de lugar de debate. A pressão do grupo também silencia.", "pp": "A turma também tem direito de se expressar discordando e de escolher as relações. O cuidado é distinguir quem foi excluído por pensar de quem agiu de forma ofensiva ou discriminatória.", "o": [{"t": "Está certo: opiniões ruins merecem consequências sociais.", "L": 1, "P": 2, "D": 0, "J": 0}, {"t": "A escola não deve intervir, porque cada um escolhe com quem convive.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "O professor reabre o debate, ouve os argumentos dos dois lados, ensina a discordar sem excluir e acompanha o clima da turma.", "L": 2, "P": 2, "D": 3, "J": 2}, {"t": "O aluno deve ser obrigado a se retratar publicamente.", "L": 0, "P": 3, "D": 0, "J": 0}]}, {"tema": "Cyberbullying", "tipo": "claro", "top": 1, "s": "Alunos criam uma montagem com a foto de uma colega do 2º ano e a espalham por redes sociais com xingamentos e ameaças. Ela falta às aulas por vários dias.", "fb": "A intimidação sistemática, inclusive virtual, é crime desde a Lei 14.811/2024, e a Lei 13.185/2015 obriga as escolas a adotar ações de prevenção e combate. A resposta combina acolhimento, apuração com ouvida dos envolvidos, família e rede de proteção, sem expulsão sumária.", "base": "Lei 13.185/2015; Código Penal, art. 146-A (Lei 14.811/2024); ECA, arts. 17, 18 e 53.", "real": null, "legal": [2], "pl": null, "pp": null, "o": [{"t": "O que acontece na internet fora da escola não é problema da escola.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "A escola orienta a colega a bloquear os perfis e ignorar.", "L": 2, "P": 1, "D": 1, "J": 0}, {"t": "A escola acolhe a aluna, ouve os envolvidos, convoca as famílias, orienta a preservar provas e, se houver ameaça, aciona o Conselho Tutelar e a polícia.", "L": 1, "P": 3, "D": 2, "J": 3}, {"t": "Todos os que compartilharam devem ser expulsos imediatamente.", "L": 0, "P": 3, "D": 0, "J": 0}]}, {"tema": "Piada com deficiência", "tipo": "claro", "top": 1, "s": "Colegas imitam o jeito de andar de um aluno com paralisia cerebral e fazem apelidos humilhantes na sala. Quem protesta ouve que “ninguém pode mais brincar”.", "fb": "Discriminar pessoa com deficiência é crime, e humilhar um colega por isso não é humor. Mas expor os autores publicamente também seria uma forma de humilhação. A resposta educativa e proporcional é a que protege o aluno e forma os demais.", "base": "Lei 13.146/2015 (Estatuto da Pessoa com Deficiência), art. 88; Lei 13.185/2015; ECA, art. 17.", "real": null, "legal": [2], "pl": null, "pp": null, "o": [{"t": "É só humor. Quem se ofende está exagerando.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "O professor pede respeito, e o assunto fica por aí.", "L": 2, "P": 1, "D": 2, "J": 0}, {"t": "A escola acolhe o aluno, converte o caso em atividade sobre inclusão e capacitismo, convoca as famílias dos envolvidos e registra a ocorrência.", "L": 1, "P": 3, "D": 3, "J": 3}, {"t": "Os autores devem ser expostos publicamente à turma como exemplo.", "L": 0, "P": 3, "D": 0, "J": 0}]}, {"tema": "Meme sobre o professor", "tipo": "aberto", "top": 2, "s": "Alunos criam um meme exagerando o jeito de falar de um professor e postam no perfil da turma. Não há xingamentos nem ameaças, mas o professor se sente ridicularizado.", "fb": "Sátira e humor fazem parte da liberdade de expressão, e o STF já protegeu o humor com autoridades. Ao mesmo tempo, o professor tem direito à imagem e à honra, e a relação de autoridade na escola não anula esses direitos. O debate é onde termina a sátira e começa a humilhação.", "base": "CF/88, art. 5º, V, IX e X; STF, ADI 4.451 (2018).", "real": null, "legal": null, "pl": "Humor com quem tem autoridade é parte da cultura democrática. Punir meme sem ofensa grave ensina que criticar quem manda é perigoso.", "pp": "O professor também é pessoa, com honra e imagem protegidas. Ridicularização pública repetida pode virar humilhação, e a escola deve cuidar dos dois lados.", "o": [{"t": "É humor. O professor deve aceitar, pois é figura pública na escola.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "O professor conversa com a turma sobre limites do humor, e o meme pode ficar se não ofender pessoalmente.", "L": 2, "P": 2, "D": 3, "J": 2}, {"t": "O meme deve sair do ar a pedido do professor, sem discussão.", "L": 1, "P": 2, "D": 0, "J": 1}, {"t": "Os autores devem ser suspensos.", "L": 0, "P": 3, "D": 0, "J": 0}]}, {"tema": "Mensagem política no uniforme", "tipo": "aberto", "top": 2, "s": "Em período eleitoral, alunos aparecem com camisetas, bonés e adesivos de candidatos. Alguns colegas se sentem constrangidos e pedem que a escola proíba.", "fb": "Os alunos têm liberdade de manifestação, e a escola é espaço de formação de cidadãos. Mas a escola pública também precisa evitar que vire palanque e proteger o direito de todos de estudar sem pressão. Uma regra igual para todos, discutida com os estudantes, tende a ser a mais defensável.", "base": "CF/88, art. 5º, IV; art. 205 e art. 206; ECA, arts. 15 e 16.", "real": null, "legal": null, "pl": "Adolescentes que se interessam por política estão exercendo cidadania. Proibir símbolos tira da escola o debate público que ela deveria formar.", "pp": "A escola pública é espaço comum e não pode virar palanque. Alunos podem sofrer pressão ou constrangimento por pensar diferente, e a regra igual protege todos.", "o": [{"t": "Cada um pode usar o que quiser, sem restrição.", "L": 3, "P": 0, "D": 0, "J": 0}, {"t": "A escola discute com os alunos e combina uma regra igual para todos, que valha para qualquer candidato.", "L": 2, "P": 2, "D": 3, "J": 3}, {"t": "Só os candidatos que a direção aprovar devem poder aparecer.", "L": 0, "P": 1, "D": 0, "J": 0}, {"t": "Proibir qualquer símbolo político dentro da escola.", "L": 1, "P": 3, "D": 1, "J": 1}]}];
+const REFS = ["BRASIL. Constituição da República Federativa do Brasil de 1988, arts. 5º, 205, 206, 215, 220 e 227.", "BRASIL. Lei nº 9.394/1996 (LDB), art. 3º.", "BRASIL. Lei nº 8.069/1990 (ECA), arts. 15 a 18, 53 e 70.", "BRASIL. Lei nº 7.716/1989 e Lei nº 14.532/2023 (crimes de racismo e injúria racial).", "BRASIL. Lei nº 13.185/2015 (Programa de Combate à Intimidação Sistemática) e Lei nº 14.811/2024 (Código Penal, art. 146-A).", "BRASIL. Lei nº 13.146/2015 (Estatuto da Pessoa com Deficiência), art. 88; Lei nº 13.445/2017 (Lei de Migração), art. 3º; Lei nº 7.398/1985 (grêmios estudantis).", "BRASIL. Supremo Tribunal Federal. HC 82.424 (2003); ADI 4.451 (2018); ADO 26 e MI 4.733 (2019); ADPF 457 (2020); ADI 5.537 (2020).", "MILL, J. S. Sobre a liberdade.", "Textos de aula: Texto I (discurso de ódio), Texto II (liberdade de expressão como direito humano e seus limites democráticos). CERO 2026."];
+const AX=[
+ {k:"L",n:"Liberdade de expressão",c:"#f5a524",hi:"você tende a deixar a fala circular e a ver a restrição como último recurso",lo:"você tende a aceitar restringir falas com mais facilidade",d:"Prioridade a deixar a fala circular."},
+ {k:"P",n:"Proteção de pessoas e grupos",c:"#2563eb",hi:"você tende a priorizar quem é alvo da fala e o dano que ela pode causar",lo:"você tende a dar menos peso ao dano causado a quem é alvo da fala",d:"Prioridade a quem é atingido pela fala."},
+ {k:"D",n:"Diálogo e educação",c:"#0d9488",hi:"você tende a resolver conflitos conversando, mediando e ensinando",lo:"você tende a resolver conflitos por decisão de autoridade, sem passar pela conversa",d:"Preferência por conversar, mediar e ensinar."},
+ {k:"J",n:"Procedimento justo",c:"#7c3aed",hi:"você tende a defender regras claras, escuta dos envolvidos e consequência proporcional, sem censura prévia nem impunidade",lo:"você tende a aceitar soluções sem regra clara, seja deixando passar, seja punindo na hora",d:"Regras claras, escuta e proporcionalidade."},
+];
+const LEI={n:"Coincidência com a lei",c:"#64748b"};
+const $=id=>document.getElementById(id);
+const LET="ABCD";
+let order=[],ans={},cur=0,name="",turma="",history=[];
+const N=CASES.length;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function setup(){order=CASES.map(c=>shuffle(c.o.map((_,i)=>i)));ans={};cur=0}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2400)}
+$("btnStart").onclick=()=>{
+  name=$("inName").value.trim();turma=$("inTurma").value.trim();
+  if(name){$("tbName").textContent=name;$("tbTurma").textContent=turma;$("tbStudent").classList.remove("hidden")}
+  $("cover").classList.add("hidden");$("quiz").classList.remove("hidden");$("result").classList.add("hidden");
+  setup();render();window.scrollTo(0,0);
+};
+function renderNav(){
+  $("navGrid").innerHTML=CASES.map((c,i)=>`<button class="nb ${i===cur?'cur':''} ${ans[i]!==undefined?'ans':''}" data-i="${i}">${i+1}</button>`).join("");
+  $("navGrid").querySelectorAll(".nb").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;render()});
+  const n=Object.keys(ans).length;
+  $("barFill").style.width=(n/N*100)+"%";
+  $("barL").textContent=`Situação ${cur+1} de ${N}`;
+  $("barR").textContent=`${n} respondidas`;
+}
+function render(){
+  renderNav();
+  const c=CASES[cur],sel=ans[cur];
+  let h=`<div class="qmeta"><div class="l"><span class="qnum">Situação ${cur+1}</span><span class="qtheme">${c.tema} · Tópico ${c.top}</span></div>
+   <span class="tag-t ${c.tipo}">${c.tipo==='claro'?'A lei já trata deste caso':'Debate aberto'}</span></div>
+   <h3>Como você reagiria?</h3>
+   <div class="case-box">${c.s}${c.real?`<span class="real">Caso real · ${c.real}</span>`:''}</div>
+   <div class="opts txt" style="margin-top:16px">`;
+  order[cur].forEach((oi,k)=>{h+=`<button class="opt tx ${sel===oi?'sel':''}" data-o="${oi}"><span class="badge">${LET[k]}</span><span class="t">${c.o[oi].t}</span></button>`});
+  h+=`</div>`;
+  if(sel!==undefined){
+    if(c.tipo==='claro'){
+      const ok=c.legal.includes(sel);
+      h+=`<div class="fb ${ok?'ok':'no'}"><h4>${ok?'Sua escolha está de acordo com o que a lei e as regras da escola esperam.':'Sua escolha difere do que a lei e as regras da escola esperam neste caso.'}</h4><p>${c.fb}</p><div class="law">Base: ${c.base}</div></div>`;
+    }else{
+      h+=`<div class="fb info"><h4>Debate aberto: não há uma resposta única.</h4><p>${c.fb}</p>
+        <div class="two"><div class="a"><b>Quem prioriza a liberdade diz</b>${c.pl}</div><div class="b"><b>Quem prioriza a proteção diz</b>${c.pp}</div></div>
+        <div class="law">Base: ${c.base}</div></div>`;
+    }
+  }
+  const all=Object.keys(ans).length===N;
+  h+=`<div class="qfoot"><button class="btn" id="bPrev" ${cur===0?'disabled':''}>← Anterior</button>
+   <span class="hint">${sel===undefined?'Escolha uma reação para ver a análise':(cur===N-1&&!all?'Faltam situações sem resposta: use a numeração acima':'Você pode trocar de resposta antes de avançar')}</span>
+   ${cur<N-1?`<button class="btn navy" id="bNext" ${sel===undefined?'disabled':''}>Próxima →</button>`:`<button class="btn finish" id="bFin" ${all?'':'disabled'}>Ver meu perfil ✓</button>`}</div>`;
+  $("qcard").innerHTML=h;
+  $("qcard").querySelectorAll(".opt").forEach(b=>b.onclick=()=>{ans[cur]=+b.dataset.o;render();setTimeout(()=>{const f=document.querySelector(".fb");if(f)f.scrollIntoView({behavior:"smooth",block:"nearest"})},50)});
+  if($("bPrev"))$("bPrev").onclick=()=>{cur--;render()};
+  if($("bNext"))$("bNext").onclick=()=>{cur++;render();window.scrollTo(0,0)};
+  if($("bFin"))$("bFin").onclick=finish;
+}
+function calc(){
+  const t={L:0,P:0,D:0,J:0};let lg=0,nl=0;const rows=[];
+  CASES.forEach((c,i)=>{const o=c.o[ans[i]];AX.forEach(a=>t[a.k]+=o[a.k]);
+    let ok=null;if(c.tipo==='claro'){nl++;ok=c.legal.includes(ans[i]);if(ok)lg++}
+    rows.push({i,o,ok})});
+  const r={lg,nl,rows,LEI:Math.round(lg/nl*100)};
+  AX.forEach(a=>r[a.k]=Math.round(t[a.k]/(3*N)*100));
+  return r;
+}
+function bars(r){return AX.map(a=>({...a,v:r[a.k]})).concat([{...LEI,k:"LEI",v:r.LEI}])}
+function groups(r){
+  const g=history.slice(-2).map((h,k,a)=>({l:(history.length-a.length+k+1)+"ª vez",r:h,old:true}));
+  g.push({l:history.length?"Agora":"Você",r:r,old:false});return g;
+}
+function chartSVG(r){
+  const G=groups(r),rows=bars(r),bh=15,gap=4,rowH=24+G.length*(bh+gap)+8,W=520,L=16,TW=W-L-60,H=rows.length*rowH+36;
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Inter,Arial,sans-serif">`;
+  const x50=L+TW*.5;
+  s+=`<line x1="${x50}" x2="${x50}" y1="4" y2="${rows.length*rowH+2}" stroke="#94a3b8" stroke-dasharray="5 4"/><text x="${x50}" y="${H-8}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#64748b">50%</text>
+   <text x="${L}" y="${H-8}" font-size="10.5" font-weight="700" fill="#64748b">0%</text><text x="${L+TW}" y="${H-8}" text-anchor="end" font-size="10.5" font-weight="700" fill="#64748b">100%</text>`;
+  rows.forEach((a,i)=>{
+    const y0=i*rowH+4;
+    s+=`<text x="${L}" y="${y0+14}" font-size="13" font-weight="800" fill="#0f2a4a">${a.n}</text>`;
+    G.forEach((g,k)=>{
+      const v=a.k==="LEI"?g.r.LEI:g.r[a.k],y=y0+22+k*(bh+gap),w=TW*v/100;
+      s+=`<rect x="${L}" y="${y}" width="${TW}" height="${bh}" rx="5" fill="#eef2f7"/><rect x="${L}" y="${y}" width="${Math.max(w,3)}" height="${bh}" rx="5" fill="${a.c}" opacity="${g.old?.4:1}"/>
+      <text x="${L+TW+8}" y="${y+bh-3}" font-size="12.5" font-weight="900" fill="#0f2a4a" opacity="${g.old?.6:1}">${v}%</text>`;
+      if(G.length>1)s+=`<text x="${L+6}" y="${y+bh-4}" font-size="9.5" font-weight="800" fill="${v>12?'#fff':'#475569'}">${g.l}</text>`;
+    });
+  });
+  return s+'</svg>';
+}
+function profile(r){
+  const s=AX.map(a=>({...a,v:r[a.k]})).sort((x,y)=>y.v-x.v);
+  const rng=s[0].v-s[3].v;
+  if(rng<=12)return{t:"Perfil equilibrado",d:`Suas quatro medidas ficaram próximas, entre ${s[3].v}% e ${s[0].v}%. Você não prioriza só uma postura: combina liberdade, proteção, diálogo e procedimento justo na maior parte dos casos. Vale olhar as situações em que você mudou de lado, pois é nelas que os argumentos dos textos mais podem ajudar.`};
+  const two=s[1].v>=s[0].v-8;
+  const t=two?`Destaque em ${s[0].n.toLowerCase()} e ${s[1].n.toLowerCase()}`:`Destaque em ${s[0].n.toLowerCase()}`;
+  const d=`${two?`Em ${s[0].n.toLowerCase()} (${s[0].v}%) e em ${s[1].n.toLowerCase()} (${s[1].v}%) você pontuou mais: ${s[0].hi}; ${s[1].hi}.`:`Em ${s[0].n.toLowerCase()} (${s[0].v}%) você pontuou mais: ${s[0].hi}.`} Ponto para refletir: em ${s[3].n.toLowerCase()} (${s[3].v}%) você pontuou menos, ou seja, ${s[3].lo}. Os textos lembram que nenhum direito é absoluto e que a Constituição combina liberdade com responsabilização posterior.`;
+  return{t,d};
+}
+function finish(){
+  const r=calc(),pf=profile(r);
+  const refsHtml=REFS.map(x=>`<li>${x}</li>`).join("");
+  const rows=r.rows.map(w=>{const c=CASES[w.i];
+    const lg=w.ok===null?'<span class="lg" style="color:#64748b">aberto</span>':(w.ok?'<span class="lg" style="color:var(--ok)">✓ lei</span>':'<span class="lg" style="color:var(--bad)">✗ lei</span>');
+    return `<div><b>${w.i+1}</b><span><strong>${c.tema}.</strong> ${w.o.t}</span>${lg}</div>`}).join("");
+  const leg=AX.map(a=>`<div style="--c:${a.c}"><b>${a.n}</b>${a.d}</div>`).join("")+`<div style="--c:${LEI.c}"><b>${LEI.n}</b>Entre as ${r.nl} situações em que a lei já define a resposta, quantas suas escolhas acompanharam (${r.lg} de ${r.nl}).</div>`;
+  $("quiz").classList.add("hidden");
+  const R=$("result");R.classList.remove("hidden");
+  R.innerHTML=`<div class="hero2"><small>${name?name+(turma?' · '+turma:''):'Seu perfil'}</small><h2>${pf.t}</h2><p>${pf.d}</p></div>
+  <div class="res-body">
+   <div class="note"><b>Como ler:</b> as barras são um espelho aproximado das suas escolhas nestas ${N} situações, não uma nota nem um rótulo definitivo. As quatro primeiras não são opostas: dá para valorizar todas ao mesmo tempo. A última compara suas escolhas com o que a lei já define.</div>
+   <div class="mapwrap"><div class="mapbox">${chartSVG(r)}</div>
+    <div><h3>O que cada barra mede</h3><div class="axl">${leg}</div></div></div>
+   <h3 style="margin-top:28px">Suas escolhas, situação por situação</h3>
+   <div class="rec">${rows}</div>
+   <details class="refs"><summary>Referências e base legal</summary><ol>${refsHtml}</ol></details>
+   <div class="res-actions">
+     <button class="btn save" id="bSave">⬇ Salvar meu gráfico como imagem</button>
+     <button class="btn" id="bRev">Rever as situações</button>
+     <button class="btn navy" id="bAgain">Refazer e comparar</button>
+   </div></div>`;
+  window.scrollTo(0,0);
+  $("bSave").onclick=()=>saveImage(r,pf);
+  $("bRev").onclick=()=>{R.classList.add("hidden");$("quiz").classList.remove("hidden");cur=0;render();window.scrollTo(0,0)};
+  $("bAgain").onclick=()=>{history.push(r);setup();R.classList.add("hidden");$("quiz").classList.remove("hidden");render();window.scrollTo(0,0)};
+}
+function wrap(ctx,t,x,y,w,lh){const words=t.split(" ");let line="";for(const wd of words){const test=line+wd+" ";if(ctx.measureText(test).width>w&&line){ctx.fillText(line.trim(),x,y);line=wd+" ";y+=lh}else line=test}ctx.fillText(line.trim(),x,y);return y+lh}
+function saveImage(r,pf){
+  const G=groups(r),rows=bars(r),W=1200,H=960,c=document.createElement("canvas");c.width=W;c.height=H;const g=c.getContext("2d");
+  g.fillStyle="#eef2f7";g.fillRect(0,0,W,H);
+  g.fillStyle="#0f2a4a";g.fillRect(0,0,W,150);g.fillStyle="#f5a524";g.fillRect(0,150,W,6);
+  g.fillStyle="#9fb6d3";g.font="600 20px Arial";g.fillText("COLÉGIO ESTADUAL RODOLFO DE OLIVEIRA · SOCIOLOGIA · CERO 2026",50,50);
+  g.fillStyle="#fff";g.font="900 38px Arial";g.fillText("Perfil: discurso de ódio e liberdade de expressão",50,100);
+  g.fillStyle="#c7d6ea";g.font="600 22px Arial";g.fillText((name||"Estudante")+(turma?" · "+turma:""),50,134);
+  const ox=50,oy=185,CW=640,CH=700;g.fillStyle="#fff";g.fillRect(ox,oy,CW,CH);
+  const L=ox+30,TW=CW-30-100,bh=22,gap=6,rowH=(CH-60)/rows.length;
+  const x50=L+TW/2;g.strokeStyle="#94a3b8";g.lineWidth=2;g.setLineDash([8,6]);g.beginPath();g.moveTo(x50,oy+20);g.lineTo(x50,oy+CH-40);g.stroke();g.setLineDash([]);
+  g.fillStyle="#64748b";g.font="700 15px Arial";g.textAlign="center";g.fillText("50%",x50,oy+CH-18);g.textAlign="left";g.fillText("0%",L,oy+CH-18);g.textAlign="right";g.fillText("100%",L+TW,oy+CH-18);g.textAlign="left";
+  rows.forEach((a,i)=>{const y0=oy+24+i*rowH;
+    g.fillStyle="#0f2a4a";g.font="800 19px Arial";g.fillText(a.n,L,y0+4);
+    G.forEach((gr,k)=>{const v=a.k==="LEI"?gr.r.LEI:gr.r[a.k],y=y0+14+k*(bh+gap);
+      g.fillStyle="#eef2f7";g.fillRect(L,y,TW,bh);g.globalAlpha=gr.old?0.4:1;g.fillStyle=a.c;g.fillRect(L,y,Math.max(TW*v/100,4),bh);g.globalAlpha=1;
+      g.fillStyle="#0f2a4a";g.font="900 20px Arial";g.fillText(v+"%",L+TW+10,y+bh-3);
+      if(G.length>1){g.fillStyle=v>12?"#fff":"#475569";g.font="800 13px Arial";g.fillText(gr.l,L+6,y+bh-6)}})});
+  const tx=740;let y=215;
+  g.fillStyle="#64748b";g.font="800 15px Arial";g.fillText("SEU PERFIL",tx,y);y+=38;
+  g.fillStyle="#0f2a4a";g.font="900 28px Arial";y=wrap(g,pf.t,tx,y,420,34);y+=6;
+  g.fillStyle="#334155";g.font="500 17px Arial";y=wrap(g,pf.d,tx,y,420,25);y+=10;
+  g.fillStyle="#0f2a4a";g.font="800 17px Arial";g.fillText("Coincidências com a lei: "+r.lg+" de "+r.nl,tx,y);
+  g.fillStyle="#94a3b8";g.font="500 15px Arial";g.textAlign="center";g.fillText("Espelho aproximado das escolhas em "+N+" situações; não é nota. CERO 2026 · Sociologia.",W/2,H-24);
+  c.toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="perfil_liberdade_expressao"+(name?"_"+name.replace(/\s+/g,"_"):"")+".png";document.body.appendChild(a);a.click();a.remove();toast("Imagem salva")});
+}
+
+</script>
+</body>
+</html>
