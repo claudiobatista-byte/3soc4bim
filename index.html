@@ -163,6 +163,17 @@ ul.mat li a{overflow-wrap:anywhere;font-size:13.5px}
 .activity-link-box a{display:inline-flex;align-items:center;gap:8px;background:#a82f65;color:#fff;text-decoration:none;font:800 13px var(--sans);padding:10px 17px;border-radius:8px;transition:.2s;}
 .activity-link-box a:hover{background:#7b2148;transform:translateY(-1px);}
 
+
+/* variações de cor (degradê) dos boxes de atividade e trabalho */
+.activity-link-box.cor-violeta,.work-link-box.cor-violeta{background:linear-gradient(135deg,#f5f1ff,#d9cdf7);border-color:#c5b5ef;border-left-color:#6d4bc3;box-shadow:0 10px 24px -18px #3f2a80;}
+.cor-violeta .activity-kicker{color:#5436a3!important;}.cor-violeta h3{color:#2f1f6b!important;}.cor-violeta p{color:#4c4373!important;}.cor-violeta a{background:#5b3db3!important;}.cor-violeta a:hover{background:#3f2a80!important;}
+.activity-link-box.cor-azul,.work-link-box.cor-azul{background:linear-gradient(135deg,#eef6ff,#c9e0fb);border-color:#b2d1f4;border-left-color:#1f66c4;box-shadow:0 10px 24px -18px #123f7a;}
+.cor-azul .activity-kicker{color:#174f9a!important;}.cor-azul h3{color:#0f2f5c!important;}.cor-azul p{color:#3f5675!important;}.cor-azul a{background:#1b5cb5!important;}.cor-azul a:hover{background:#123f7a!important;}
+.activity-link-box.cor-ambar,.work-link-box.cor-ambar{background:linear-gradient(135deg,#fff8e8,#fbe2a8);border-color:#f0d08a;border-left-color:#c98a12;box-shadow:0 10px 24px -18px #7a5200;}
+.cor-ambar .activity-kicker{color:#8a5d00!important;}.cor-ambar h3{color:#5a3d00!important;}.cor-ambar p{color:#6e5a2e!important;}.cor-ambar a{background:#a56f0b!important;}.cor-ambar a:hover{background:#7a5200!important;}
+.activity-link-box.cor-verde,.work-link-box.cor-verde{background:linear-gradient(135deg,#effaf2,#c7ebd3);border-color:#a9dcba;border-left-color:#2d8a52;box-shadow:0 10px 24px -18px #1a5a35;}
+.cor-verde .activity-kicker{color:#1f6d3f!important;}.cor-verde h3{color:#134a2a!important;}.cor-verde p{color:#3d6049!important;}.cor-verde a{background:#237a47!important;}.cor-verde a:hover{background:#1a5a35!important;}
+
 /* box do trabalho (campanha) */
 .work-link-box{margin:16px 0 8px;padding:22px 24px;background:linear-gradient(135deg,#eef7f7,#d6ebec);border:1px solid #b9d9db;border-left:6px solid #1f6f78;border-radius:12px;font-family:var(--sans);text-align:left;box-shadow:0 10px 24px -18px #14565d;}
 .work-link-box .activity-kicker{display:block;font:800 10.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#14565d;margin-bottom:5px;}
@@ -386,7 +397,7 @@ html.view-texto .dr-link.tx-only{display:flex!important}
 
 
     <!-- Atividade do Texto II -->
-    <div class="activity-link-box" id="atividade-texto2">
+    <div class="activity-link-box cor-violeta" id="atividade-texto2">
       <span class="activity-kicker">Atividade · Texto II</span>
       <h3>Liberdade de expressão e democracia</h3>
       <p>Simulado no estilo do Enem, com 20 questões de Ciências Humanas e Sociais Aplicadas sobre liberdade de expressão, limites democráticos, censura e redes digitais, com gabarito comentado e referências.</p>
@@ -394,11 +405,19 @@ html.view-texto .dr-link.tx-only{display:flex!important}
     </div>
 
     <!-- Atividade do Texto II: charges -->
-    <div class="activity-link-box" id="atividade-texto2-charges">
+    <div class="activity-link-box cor-azul" id="atividade-texto2-charges">
       <span class="activity-kicker">Atividade · Texto II</span>
       <h3>Liberdade de expressão nas charges</h3>
       <p>Dez questões a partir de charges e tirinhas sobre liberdade de expressão, limites democráticos, discurso de ódio, redes digitais e poder, com gabarito comentado e referências.</p>
       <a href="atv/atvenem2.html" target="_blank" rel="noopener">✎ Fazer atividade</a>
+    </div>
+
+    <!-- Trabalho do Texto II: campanha -->
+    <div class="work-link-box cor-ambar" id="trabalho-texto2">
+      <span class="activity-kicker">Trabalho · Texto II</span>
+      <h3>Campanha #LiberdadeParaTodos</h3>
+      <p>Em dupla, crie três posts para o Instagram e um cartaz A4 de divulgação na escola sobre a liberdade de expressão e seus limites democráticos. A página traz o planejamento, um quadro de dados e prompts prontos para criar as peças com IA.</p>
+      <a href="tr/tr2soc4bim.html" target="_blank" rel="noopener">▶ Abrir trabalho</a>
     </div>
 
   </div>
@@ -415,7 +434,7 @@ html.view-texto .dr-link.tx-only{display:flex!important}
     </div>
   </div>
   <div class="body">
-    <div class="activity-link-box" id="atividade-reflexao">
+    <div class="activity-link-box cor-verde" id="atividade-reflexao">
       <span class="activity-kicker">Atividade · Reflexão sobre a temática</span>
       <h3>Perfil de posicionamento: discurso de ódio e liberdade de expressão na escola</h3>
       <p>Antes de seguir para o texto didático, pare e reflita sobre o que você estudou nos tópicos 1 e 2. São quinze situações de sala de aula e do dia a dia da escola: você escolhe como reagiria, vê o que a Constituição e a lei dizem sobre cada caso e, no final, recebe um gráfico de barras com cinco medidas: liberdade de expressão, proteção de pessoas e grupos, diálogo e educação, procedimento justo e coincidência com a lei. Não vale nota. Use o resultado para conversar com a turma sobre o que mudou ou permaneceu no seu modo de pensar.</p>
